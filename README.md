@@ -57,3 +57,20 @@ This repository is only for container related stuff. You also might want to cont
 - [Frappe framework](https://github.com/frappe/frappe#contributing),
 - [ERPNext](https://github.com/frappe/erpnext#contributing),
 - [Frappe Bench](https://github.com/frappe/bench).
+
+# Panayiotis Notes
+How to build containers.
+- Change the .env `FRAPPE_SITE_NAME_HEADER=panayiotis`
+- `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.erpnext.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
+- Build worker image to include hrms with command in folder images/worker `docker build -f Dockerfile . --tag phalouvas/erpnext-worker --build-arg FRAPPE_VERSION=v14.17.1 --build-arg ERPNEXT_VERSION=v14.9.0  --build-arg HRMS_VERSION=v1.0.0 --build-arg PYTHON_VERSION=3.10.5 --build-arg NODE_VERSION=19.3.0`
+- change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
+- `docker compose --project-name erpnext -f kainotomo.yml up -d`
+- `docker compose --project-name erpnext -f kainotomo.yml down -v`
+- To create a new site with backend shell 
+  - `bench new-site kainotomo.erpnext.localhost --db-name kainotomo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app payments --install-app erpnext`
+  - `bench new-site optimusland.erpnext.localhost --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app payments --install-app erpnext --set-default`
+- To install human resources module open a shell in backend
+  - in folder ~/frappe-bench/apps run `git clone https://github.com/frappe/hrms.git`
+  - in folder ~/frappe-bench/ run `install-app hrms`
+  - in folder ~/frappe-bench/sites run `bench --site kainotomo.erpnext.localhost install-app hrms`
+  
