@@ -62,11 +62,11 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build -f Dockerfile . --tag phalouvas/erpnext-worker:0.0.1 --build-arg FRAPPE_VERSION=v14.23.0 --build-arg ERPNEXT_VERSION=v14.13.0  --build-arg HRMS_VERSION=v1.0.0 --build-arg PYTHON_VERSION=3.10.5 --build-arg NODE_VERSION=19.3.0`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:1.0.0`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down -v`
 - To create a new site with backend shell 
-  - `bench new-site erpnext.kainotomo.com --db-name kainotomo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app payments --install-app erpnext`
-  - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app payments --install-app erpnext --set-default`
+  - `bench new-site erpnext.kainotomo.com --db-name kainotomo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
+  - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext --set-default`
   

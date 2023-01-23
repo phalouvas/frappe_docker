@@ -97,12 +97,6 @@ ARG FRAPPE_BRANCH=version-14
 ARG FRAPPE_PATH=https://github.com/frappe/frappe
 ARG ERPNEXT_REPO=https://github.com/frappe/erpnext
 ARG ERPNEXT_BRANCH=version-14
-ARG PAYMENTS_BRANCH=develop
-ARG PAYMENTS_REPO=https://github.com/frappe/payments
-ARG HRMS_BRANCH=develop
-ARG HRMS_REPO=https://github.com/frappe/hrms
-ARG AGRICULTURE_BRANCH=develop
-ARG AGRICULTURE_REPO=https://github.com/frappe/agriculture
 RUN bench init \
   --frappe-branch=${FRAPPE_BRANCH} \
   --frappe-path=${FRAPPE_PATH} \
@@ -113,9 +107,8 @@ RUN bench init \
   /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
   bench get-app --branch=${ERPNEXT_BRANCH} --resolve-deps erpnext ${ERPNEXT_REPO} && \
-  bench get-app --branch=${PAYMENTS_BRANCH} --resolve-deps erpnext ${PAYMENTS_REPO} && \
-  bench get-app --branch=${HRMS_BRANCH} --resolve-deps erpnext ${HRMS_REPO} && \
-  bench get-app --branch=${AGRICULTURE_BRANCH} --resolve-deps erpnext ${AGRICULTURE_REPO} && \
+  bench get-app --branch=develop hrms https://github.com/frappe/hrms && \
+  bench get-app --branch=develop agriculture https://github.com/frappe/agriculture && \
   echo "$(jq 'del(.db_host, .redis_cache, .redis_queue, .redis_socketio)' sites/common_site_config.json)" \
     > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
