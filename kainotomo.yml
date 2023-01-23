@@ -65,7 +65,28 @@ services:
       source: db-data
       target: /var/lib/mysql
       volume: {}
-  frontend:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.0
+    environment:
+      - PMA_HOSTS=db
+      - PMA_PORTS=3306
+      - UPLOAD_LIMIT=2000M
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+    - mode: ingress
+      target: 80
+      published: "8380"
+      protocol: tcp
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: phpmyadmin-data
+      target: /sessions
+      volume: {}
+  frontend1:
     command:
     - nginx-entrypoint.sh
     depends_on:
@@ -217,6 +238,8 @@ volumes:
     name: frappe_docker2_redis-socketio-data
   sites:
     name: frappe_docker2_sites
+  phpmyadmin-data:
+    name: frappe_docker2_phpmyadmin
 x-backend-defaults:
   depends_on:
     configurator:
