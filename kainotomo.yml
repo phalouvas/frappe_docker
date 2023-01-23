@@ -77,7 +77,7 @@ services:
     ports:
     - mode: ingress
       target: 80
-      published: "8380"
+      published: "8381"
       protocol: tcp
     networks:
       default: null
@@ -110,6 +110,36 @@ services:
     - mode: ingress
       target: 8080
       published: "8382"
+      protocol: tcp
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  frontend2:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: optimuslandcy.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:1.0.0
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: "8383"
       protocol: tcp
     volumes:
     - type: volume
