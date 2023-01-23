@@ -1,4 +1,4 @@
-name: frappe_docker
+name: frappe_docker2
 services:
   backend:
     depends_on:
@@ -76,7 +76,7 @@ services:
     environment:
       BACKEND: backend:8000
       CLIENT_MAX_BODY_SIZE: 50m
-      FRAPPE_SITE_NAME_HEADER: optimuslandcy.com
+      FRAPPE_SITE_NAME_HEADER: erpnext.kainotomo.com
       PROXY_READ_TIMOUT: "120"
       SOCKETIO: websocket:9000
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
@@ -88,7 +88,7 @@ services:
     ports:
     - mode: ingress
       target: 8080
-      published: "8380"
+      published: "8382"
       protocol: tcp
     volumes:
     - type: volume
