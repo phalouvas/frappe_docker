@@ -30,7 +30,7 @@ services:
     - -c
     environment:
       DB_HOST: db
-      DB_PORT: "3306"
+      DB_PORT: "3406"
       REDIS_CACHE: redis-cache:6379
       REDIS_QUEUE: redis-queue:6379
       REDIS_SOCKETIO: redis-socketio:6379
@@ -69,7 +69,7 @@ services:
     image: phpmyadmin/phpmyadmin:5.2.0
     environment:
       - PMA_HOSTS=db
-      - PMA_PORTS=3306
+      - PMA_PORTS=3406
       - UPLOAD_LIMIT=2000M
     depends_on:
       db:

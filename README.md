@@ -66,9 +66,10 @@ This repository is only for container related stuff. You also might want to cont
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down -v`
+- In MariaDB container edit file `/etc/mysql/mariadb.cnf` and add/change port to 3406. The restart container.
 - To create a new site with backend shell 
-  - `bench new-site erpnext.kainotomo.com --db-name kainotomo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --set-default`
+  - `bench new-site erpnext.kainotomo.com --db-name kainotomo --db-host db --db-port 3406 --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --set-default`
   - `bench --site erpnext.kainotomo.com enable-scheduler`
-  - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
+  - `bench new-site optimuslandcy.com --db-name optimusland --db-host db --db-port 3406 --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site optimuslandcy.com enable-scheduler`
   
