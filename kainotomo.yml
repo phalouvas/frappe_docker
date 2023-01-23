@@ -1,4 +1,4 @@
-name: frappe_docker2
+name: frappe_docker
 services:
   backend:
     depends_on:
@@ -256,20 +256,20 @@ services:
       volume: {}
 networks:
   default:
-    name: frappe_docker2_default
+    name: frappe_docker_default
 volumes:
   db-data:
-    name: frappe_docker2_db-data
+    name: frappe_docker_db-data
   redis-cache-data:
-    name: frappe_docker2_redis-cache-data
+    name: frappe_docker_redis-cache-data
   redis-queue-data:
-    name: frappe_docker2_redis-queue-data
+    name: frappe_docker_redis-queue-data
   redis-socketio-data:
-    name: frappe_docker2_redis-socketio-data
+    name: frappe_docker_redis-socketio-data
   sites:
-    name: frappe_docker2_sites
+    name: frappe_docker_sites
   phpmyadmin-data:
-    name: frappe_docker2_phpmyadmin
+    name: frappe_docker_phpmyadmin
 x-backend-defaults:
   depends_on:
     configurator:
