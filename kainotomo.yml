@@ -146,6 +146,66 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+  frontend3:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: erptest.kainotomo.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:1.0.0
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: "8384"
+      protocol: tcp
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  frontend4:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: test.optimuslandcy.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:1.0.0
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: "8385"
+      protocol: tcp
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
   queue-default:
     command:
     - bench

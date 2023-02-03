@@ -65,10 +65,15 @@ This repository is only for container related stuff. You also might want to cont
 - Build worker image to include hrms with command in folder images/kainotomo `docker build -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:1.0.0`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
-- `docker compose --project-name frappe_docker -f kainotomo.yml down -v`
+- `docker compose --project-name frappe_docker -f kainotomo.yml down`
 - To create a new site with backend shell 
   - `bench new-site erpnext.kainotomo.com --db-name kainotomo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --set-default`
   - `bench --site erpnext.kainotomo.com enable-scheduler`
   - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site optimuslandcy.com enable-scheduler`
+- Create staging sites
+  - `bench new-site erptest.kainotomo.com --db-name kainotomo_test --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
+  - `bench --site erptest.kainotomo.com enable-scheduler`
+  - `bench new-site test.optimuslandcy.com --db-name optimusland_test --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
+  - `bench --site test.optimuslandcy.com enable-scheduler`
   
