@@ -77,3 +77,15 @@ This repository is only for container related stuff. You also might want to cont
   - `bench new-site test.optimuslandcy.com --db-name optimusland_test --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site test.optimuslandcy.com enable-scheduler`
   
+## Upgrade
+- Run `bench switch-to-branch --help`
+- If you see message "INFO: A newer version of bench is available" then to upgrade bench run `python3 -m pip install --upgrade frappe-bench`
+- Update git
+  - `bench get-app --branch=develop agriculture https://github.com/frappe/agriculture`
+  - `bench get-app --branch=version-14 hrms https://github.com/frappe/hrms`
+  - `bench get-app --branch=version-14 erpnext https://github.com/frappe/erpnext`
+- Migrate
+  - `bench --site erptest.kainotomo.com  migrate`
+  - `bench --site erpnext.kainotomo.com  migrate`
+  - `bench --site test.optimuslandcy.com  migrate`
+  - `bench --site optimuslandcy.com  migrate`
