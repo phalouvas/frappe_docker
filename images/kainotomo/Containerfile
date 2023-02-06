@@ -107,7 +107,8 @@ RUN bench init \
   /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
   bench get-app --branch=${ERPNEXT_BRANCH} --resolve-deps erpnext ${ERPNEXT_REPO} && \
-  bench get-app --branch=develop hrms https://github.com/frappe/hrms && \
+  bench get-app --branch=develop payments https://github.com/frappe/payments && \
+  bench get-app --branch=version-14 hrms https://github.com/frappe/hrms && \
   bench get-app --branch=develop agriculture https://github.com/frappe/agriculture && \
   echo "$(jq 'del(.db_host, .redis_cache, .redis_queue, .redis_socketio)' sites/common_site_config.json)" \
     > sites/common_site_config.json && \

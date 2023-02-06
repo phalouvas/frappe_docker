@@ -62,7 +62,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:1.0.0`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.15.1`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -78,12 +78,9 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site test.optimuslandcy.com enable-scheduler`
   
 ## Upgrade
-- Run `bench switch-to-branch --help`
-- If you see message "INFO: A newer version of bench is available" then to upgrade bench run `python3 -m pip install --upgrade frappe-bench`
-- Update git
-  - `bench get-app --branch=develop agriculture https://github.com/frappe/agriculture`
-  - `bench get-app --branch=version-14 hrms https://github.com/frappe/hrms`
-  - `bench get-app --branch=version-14 erpnext https://github.com/frappe/erpnext`
+- Update accordingly file images/kainotomo/Containerfile with latest branches
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:x.x.x` where x.x.x the erpnext version
+- Change version to file kainotomo.yml
 - Migrate
   - `bench --site erptest.kainotomo.com  migrate`
   - `bench --site erpnext.kainotomo.com  migrate`
