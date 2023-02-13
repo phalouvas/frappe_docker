@@ -76,6 +76,8 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erptest.kainotomo.com enable-scheduler`
   - `bench new-site test.optimuslandcy.com --db-name optimusland_test --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site test.optimuslandcy.com enable-scheduler`
+  - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
+  - `bench --site erpdemo.kainotomo.com enable-scheduler`
   
 ## Upgrade
 - Update accordingly file images/kainotomo/Containerfile with latest branches
@@ -86,3 +88,4 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erpnext.kainotomo.com  migrate`
   - `bench --site test.optimuslandcy.com  migrate`
   - `bench --site optimuslandcy.com  migrate`
+  - `bench --site erpdemo.kainotomo.com  migrate`
