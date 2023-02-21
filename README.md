@@ -62,7 +62,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.15.1`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.16.0`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -83,9 +83,12 @@ This repository is only for container related stuff. You also might want to cont
 - Update accordingly file images/kainotomo/Containerfile with latest branches
 - Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:x.x.x` where x.x.x the erpnext version
 - Change version to file kainotomo.yml
+- Run 
+  - `docker compose --project-name frappe_docker -f kainotomo.yml down`
+  - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - Migrate
-  - `bench --site erptest.kainotomo.com  migrate`
-  - `bench --site erpnext.kainotomo.com  migrate`
-  - `bench --site test.optimuslandcy.com  migrate`
-  - `bench --site optimuslandcy.com  migrate`
-  - `bench --site erpdemo.kainotomo.com  migrate`
+  - `bench --site erptest.kainotomo.com migrate`
+  - `bench --site test.optimuslandcy.com migrate`
+  - `bench --site erpnext.kainotomo.com migrate`
+  - `bench --site optimuslandcy.com migrate`
+  - `bench --site erpdemo.kainotomo.com migrate`
