@@ -80,6 +80,7 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
   
 ## Upgrade
+- Fetch from remotes
 - Update accordingly file images/kainotomo/Containerfile with latest branches
 - Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:x.x.x` where x.x.x the erpnext version
 - Change version to file kainotomo.yml
