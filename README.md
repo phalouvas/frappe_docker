@@ -81,8 +81,10 @@ This repository is only for container related stuff. You also might want to cont
   
 ## Upgrade
 - Fetch from remotes
-- Update accordingly file images/kainotomo/Containerfile with latest branches
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:x.x.x` where x.x.x the erpnext version
+- Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
+  - for erpnext from 14.18.3 to x.x.x
+  - and frappe from 14.28.1 to x.x.x
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.18.3` where 14.18.3 the erpnext version
 - Change version to file kainotomo.yml
 - Run 
   - `docker compose --project-name frappe_docker -f kainotomo.yml down`
