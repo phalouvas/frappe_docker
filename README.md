@@ -62,7 +62,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.18.3`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.20.0`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -82,9 +82,9 @@ This repository is only for container related stuff. You also might want to cont
 ## Upgrade
 - Fetch from remotes
 - Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
-  - for erpnext from 14.18.3 to x.x.x
-  - and frappe from 14.28.1 to x.x.x
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.18.3` where 14.18.3 the erpnext version
+  - for erpnext from 14.20.0 to x.x.x
+  - and frappe from 14.30.0 to x.x.x
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.20.0` where 14.20.0 the erpnext version
 - Change version to file kainotomo.yml
 - Run 
   - `docker compose --project-name frappe_docker -f kainotomo.yml down`
