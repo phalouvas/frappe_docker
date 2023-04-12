@@ -71,6 +71,7 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erpnext.kainotomo.com enable-scheduler`
   - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site optimuslandcy.com enable-scheduler`
+  - `bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
 - Create staging sites
   - `bench new-site erptest.kainotomo.com --db-name kainotomo_test --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
   - `bench --site erptest.kainotomo.com enable-scheduler`
@@ -95,3 +96,4 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erpnext.kainotomo.com migrate`
   - `bench --site optimuslandcy.com migrate`
   - `bench --site erpdemo.kainotomo.com migrate`
+  - `bench --site erp.detima.com migrate`
