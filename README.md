@@ -97,3 +97,4 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site optimuslandcy.com migrate`
   - `bench --site erpdemo.kainotomo.com migrate`
   - `bench --site erp.detima.com migrate`
+- Create version on github
