@@ -62,7 +62,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.24.3`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.25.1`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -77,15 +77,15 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erptest.kainotomo.com enable-scheduler`
   - `bench new-site test.optimuslandcy.com --db-name optimusland_test --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site test.optimuslandcy.com enable-scheduler`
-  - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
+  - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
   
 ## Upgrade
 - Fetch from remotes
 - Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
-  - for erpnext from 14.24.3 to x.x.x
-  - and frappe from 14.36.1 to x.x.x
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.24.3` where 14.24.3 the erpnext version
+  - for erpnext from 14.25.1 to x.x.x
+  - and frappe from 14.36.3 to x.x.x
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.25.1` where 14.25.1 the erpnext version
 - Change version to file kainotomo.yml
 - Run 
   - `docker compose --project-name frappe_docker -f kainotomo.yml down`
