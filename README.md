@@ -83,6 +83,7 @@ This repository is only for container related stuff. You also might want to cont
 - Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.27.0` where 14.27.0 the erpnext version
 - Change version to file kainotomo.yml
 - Run 
+  - `docker compose --project-name frappe_docker -f kainotomo.yml down`
   - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - Migrate
   - `bench --site erpnext.kainotomo.com migrate`
