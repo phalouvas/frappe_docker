@@ -114,6 +114,8 @@ RUN bench init \
   bench get-app --branch=master frappe_helper https://github.com/quantumbitcore/frappe_helper && \
   bench get-app --branch=${ERPNEXT_BRANCH} healthcare https://github.com/frappe/health && \
   bench get-app --branch=master paypalstandardpayments https://github.com/phalouvas/erpnext-paypal-standard-checkout && \
+  bench get-app --branch=master digital_subscriptions https://github.com/phalouvas/erpnext_digital_subscriptions && \
+  bench get-app --branch=master vies_validation https://github.com/phalouvas/erpnext_vies_validation && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
