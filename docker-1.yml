@@ -214,6 +214,7 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    ports:
     - mode: ingress
       target: 8080
       published: "8082"
@@ -248,6 +249,7 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    ports:
     - mode: ingress
       target: 8080
       published: "8083"
@@ -282,6 +284,7 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    ports:
     - mode: ingress
       target: 8080
       published: "8084"
