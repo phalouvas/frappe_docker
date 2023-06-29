@@ -1,0 +1,310 @@
+name: frappe
+services:
+  backend:
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  configurator:
+    command:
+    - |
+      bench set-config -g db_host $$DB_HOST; bench set-config -gp db_port $$DB_PORT; bench set-config -g redis_cache "redis://$$REDIS_CACHE"; bench set-config -g redis_queue "redis://$$REDIS_QUEUE"; bench set-config -g redis_socketio "redis://$$REDIS_SOCKETIO"; bench set-config -gp socketio_port $$SOCKETIO_PORT;
+    depends_on:
+      db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
+      redis-queue:
+        condition: service_started
+      redis-socketio:
+        condition: service_started
+    entrypoint:
+    - bash
+    - -c
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      REDIS_CACHE: redis-cache:6379
+      REDIS_QUEUE: redis-queue:6379
+      REDIS_SOCKETIO: redis-socketio:6379
+      SOCKETIO_PORT: "9000"
+    image: phalouvas/erpnext-worker:14.27.1
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  queue-default:
+    command:
+    - bench
+    - worker
+    - --queue
+    - default
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  queue-long:
+    command:
+    - bench
+    - worker
+    - --queue
+    - long
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  queue-short:
+    command:
+    - bench
+    - worker
+    - --queue
+    - short
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  redis-cache:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: redis-cache-data
+      target: /data
+      volume: {}
+  redis-queue:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: redis-queue-data
+      target: /data
+      volume: {}
+  redis-socketio:
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: redis-socketio-data
+      target: /data
+      volume: {}
+  scheduler:
+    command:
+    - bench
+    - schedule
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  websocket:
+    command:
+    - node
+    - /home/frappe/frappe-bench/apps/frappe/socketio.js
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  erpnext_kainotomo_com:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: erpnext.kainotomo.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.erpnext_kainotomo_com.entrypoints=websecure
+      - traefik.http.routers.erpnext_kainotomo_com.rule=Host(`erpnext.kainotomo.com`)
+      - traefik.http.routers.erpnext_kainotomo_com.tls.certresolver=myresolver
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  optimuslandcy_com:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: optimuslandcy.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.optimuslandcy_com.entrypoints=websecure
+      - traefik.http.routers.optimuslandcy_com.rule=Host(`optimuslandcy.com`)
+      - traefik.http.routers.optimuslandcy_com.com.tls.certresolver=myresolver
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  erpdemo_kainotomo_com:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: erpdemo.kainotomo.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=websecure
+      - traefik.http.routers.erpdemo_kainotomo_com.rule=Host(`erpdemo.kainotomo.com`)
+      - traefik.http.routers.erpdemo_kainotomo_com.com.tls.certresolver=myresolver
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+  erp_detima_com:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: erp.detima.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:14.27.1
+    restart: unless-stopped
+    networks:
+      default: null
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.erp_detima_com.entrypoints=websecure
+      - traefik.http.routers.erp_detima_com.rule=Host(`erp.detima.com`)
+      - traefik.http.routers.erp_detima_com.com.tls.certresolver=myresolver
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+volumes:
+  redis-cache-data:
+    name: frappe_docker_redis-cache-data
+  redis-queue-data:
+    name: frappe_docker_redis-queue-data
+  redis-socketio-data:
+    name: frappe_docker_redis-socketio-data
+  sites:
+    name: frappe_docker_sites
+networks:
+  default:
+    name: docker-default-net
+    external: true
+x-backend-defaults:
+  depends_on:
+    configurator:
+      condition: service_completed_successfully
+  image: phalouvas/erpnext-worker:14.27.1
+  volumes:
+  - sites:/home/frappe/frappe-bench/sites
+x-depends-on-configurator:
+  depends_on:
+    configurator:
+      condition: service_completed_successfully
