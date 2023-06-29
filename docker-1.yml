@@ -179,11 +179,15 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: "8081"
+      protocol: tcp
     labels:
       - traefik.enable=true
-      - traefik.http.routers.erpnext_kainotomo_com.entrypoints=websecure
+      - traefik.http.routers.erpnext_kainotomo_com.entrypoints=web
       - traefik.http.routers.erpnext_kainotomo_com.rule=Host(`erpnext.kainotomo.com`)
-      - traefik.http.routers.erpnext_kainotomo_com.tls.certresolver=myresolver
     volumes:
     - type: volume
       source: sites
@@ -210,11 +214,14 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    - mode: ingress
+      target: 8080
+      published: "8082"
+      protocol: tcp
     labels:
       - traefik.enable=true
-      - traefik.http.routers.optimuslandcy_com.entrypoints=websecure
+      - traefik.http.routers.optimuslandcy_com.entrypoints=web
       - traefik.http.routers.optimuslandcy_com.rule=Host(`optimuslandcy.com`)
-      - traefik.http.routers.optimuslandcy_com.com.tls.certresolver=myresolver
     volumes:
     - type: volume
       source: sites
@@ -241,11 +248,14 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    - mode: ingress
+      target: 8080
+      published: "8083"
+      protocol: tcp
     labels:
       - traefik.enable=true
-      - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=websecure
+      - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=web
       - traefik.http.routers.erpdemo_kainotomo_com.rule=Host(`erpdemo.kainotomo.com`)
-      - traefik.http.routers.erpdemo_kainotomo_com.com.tls.certresolver=myresolver
     volumes:
     - type: volume
       source: sites
@@ -272,11 +282,14 @@ services:
     restart: unless-stopped
     networks:
       default: null
+    - mode: ingress
+      target: 8080
+      published: "8084"
+      protocol: tcp
     labels:
       - traefik.enable=true
-      - traefik.http.routers.erp_detima_com.entrypoints=websecure
+      - traefik.http.routers.erp_detima_com.entrypoints=web
       - traefik.http.routers.erp_detima_com.rule=Host(`erp.detima.com`)
-      - traefik.http.routers.erp_detima_com.com.tls.certresolver=myresolver
     volumes:
     - type: volume
       source: sites
