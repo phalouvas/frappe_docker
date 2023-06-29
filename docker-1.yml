@@ -184,10 +184,6 @@ services:
       target: 8080
       published: "8081"
       protocol: tcp
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.erpnext_kainotomo_com.entrypoints=web
-      - traefik.http.routers.erpnext_kainotomo_com.rule=Host(`erpnext.kainotomo.com`)
     volumes:
     - type: volume
       source: sites
@@ -219,10 +215,6 @@ services:
       target: 8080
       published: "8082"
       protocol: tcp
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.optimuslandcy_com.entrypoints=web
-      - traefik.http.routers.optimuslandcy_com.rule=Host(`optimuslandcy.com`)
     volumes:
     - type: volume
       source: sites
@@ -254,10 +246,6 @@ services:
       target: 8080
       published: "8083"
       protocol: tcp
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=web
-      - traefik.http.routers.erpdemo_kainotomo_com.rule=Host(`erpdemo.kainotomo.com`)
     volumes:
     - type: volume
       source: sites
@@ -289,10 +277,6 @@ services:
       target: 8080
       published: "8084"
       protocol: tcp
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.erp_detima_com.entrypoints=web
-      - traefik.http.routers.erp_detima_com.rule=Host(`erp.detima.com`)
     volumes:
     - type: volume
       source: sites
