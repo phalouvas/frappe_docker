@@ -289,12 +289,6 @@ services:
       target: 8080
       published: "8084"
       protocol: tcp
-    labels:
-      - traefik.enable=true
-      - traefik.port=8083
-      - traefik.http.routers.erp_detima_com.entrypoints=websecure
-      - traefik.http.routers.erp_detima_com.rule=Host(`erp.detima.com`)
-      - traefik.http.routers.erp_detima_com.tls.certresolver=myresolver
     volumes:
     - type: volume
       source: sites
