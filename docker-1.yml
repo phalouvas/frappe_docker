@@ -241,11 +241,11 @@ services:
     restart: unless-stopped
     networks:
       default: null
-    ports:
-    - mode: ingress
-      target: 8080
-      published: "8083"
-      protocol: tcp
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=websecure
+      - traefik.http.routers.erpdemo_kainotomo_com.rule=Host(`erpdemo.kainotomo.com`)
+      - traefik.http.routers.erpdemo_kainotomo_com.tls.certresolver=myresolver2
     volumes:
     - type: volume
       source: sites
