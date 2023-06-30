@@ -251,7 +251,7 @@ services:
       - traefik.port=8083
       - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=websecure
       - traefik.http.routers.erpdemo_kainotomo_com.rule=Host(`erpdemo.kainotomo.com`)
-      - traefik.http.routers.erpdemo_kainotomo_com.tls.certresolver=myresolver2
+      - traefik.http.routers.erpdemo_kainotomo_com.tls.certresolver=myresolver
     volumes:
     - type: volume
       source: sites
