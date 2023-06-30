@@ -72,6 +72,7 @@ This repository is only for container related stuff. You also might want to cont
   - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app agriculture --install-app hrms --install-app erpnext`
   - `bench --site optimuslandcy.com enable-scheduler`
   - `bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
+  - `bench --site erp.detima.com enable-scheduler`
   - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
   
