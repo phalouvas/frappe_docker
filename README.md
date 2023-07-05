@@ -106,8 +106,8 @@ This repository is only for container related stuff. You also might want to cont
 - `cd /home/azureuser/frappe_docker`
 - `git pull`
 - Run 
-  - `docker compose --project-name frappe_docker -f kainotomo.yml down`
-  - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
+  - `docker compose --project-name frappe_docker -f docker-1.yml down`
+  - `docker compose --project-name frappe_docker -f docker-1.yml up -d`
 - SSH in docker image
   - Get image_id `docker ps -q -f name=backend*`
   - `docker exec -it image_id /bin/bash`
