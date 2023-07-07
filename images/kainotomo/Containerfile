@@ -107,7 +107,7 @@ RUN bench init \
   /home/frappe/frappe-bench && \
   cd /home/frappe/frappe-bench && \
   bench get-app --branch=${ERPNEXT_BRANCH} --resolve-deps erpnext ${ERPNEXT_REPO} && \
-  bench get-app --branch=develop payments https://github.com/frappe/payments && \
+  bench get-app --branch=${ERPNEXT_BRANCH} payments https://github.com/frappe/payments && \
   bench get-app --branch=${ERPNEXT_BRANCH} hrms https://github.com/frappe/hrms && \
   bench get-app --branch=develop agriculture https://github.com/frappe/agriculture && \
   bench get-app --branch=master restaurant_management https://github.com/kainotomo/erpnext-restaurant && \
@@ -116,6 +116,7 @@ RUN bench init \
   bench get-app --branch=master paypalstandardpayments https://github.com/phalouvas/erpnext-paypal-standard-checkout && \
   bench get-app --branch=master digital_subscriptions https://github.com/phalouvas/erpnext_digital_subscriptions && \
   bench get-app --branch=master vies_validation https://github.com/phalouvas/erpnext_vies_validation && \
+  bench get-app --branch=master cyprus_banks https://github.com/phalouvas/erpnext_cyprus_banks.git && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
