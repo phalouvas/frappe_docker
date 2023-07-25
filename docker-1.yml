@@ -306,6 +306,43 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+  theodoulouparts_com:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: theodoulouparts.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:14.31.3
+    restart: unless-stopped
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: "8085"
+      protocol: tcp
+    labels:
+      - traefik.enable=true
+      - traefik.port=8085
+      - traefik.http.routers.theodoulouparts_com.entrypoints=websecure
+      - traefik.http.routers.theodoulouparts_com.rule=Host(`theodoulouparts.com`)
+      - traefik.http.routers.theodoulouparts_com.tls.certresolver=myresolver
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
 volumes:
   redis-cache-data:
     name: frappe_docker_redis-cache-data
