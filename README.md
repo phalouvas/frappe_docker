@@ -63,7 +63,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.31.2`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.31.3`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -74,6 +74,8 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site optimuslandcy.com enable-scheduler`
   - `bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
   - `bench --site erp.detima.com enable-scheduler`
+  - `bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks`
+  - `bench --site theodoulouparts.com enable-scheduler`
   - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app vehicle_repair_management`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
   
@@ -82,9 +84,9 @@ This repository is only for container related stuff. You also might want to cont
 ### Development Server
 - Fetch from remotes
 - Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
-  - for erpnext from 14.31.2 to x.x.x
+  - for erpnext from 14.31.3 to x.x.x
   - and frappe from 14.41.0 to x.x.x
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.31.2` where 14.31.2 the erpnext version
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.31.3` where 14.31.3 the erpnext version
 - Change version to file kainotomo.yml
 - Run 
   - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -94,9 +96,10 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erpnext.kainotomo.com migrate`
   - `bench --site optimuslandcy.com migrate`
   - `bench --site erp.detima.com migrate`
+  - `bench --site theodoulouparts.com migrate`
 - Test locally
 - Create version on github
-- `docker push phalouvas/erpnext-worker:14.31.2`
+- `docker push phalouvas/erpnext-worker:14.31.3`
 
 ### Production Server
 - SSH on production server `ssh -i ~/.ssh/docker-1.pem azureuser@20.234.68.148`
