@@ -76,6 +76,8 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erp.detima.com enable-scheduler`
   - `bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks`
   - `bench --site theodoulouparts.com enable-scheduler`
+  - `bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks`
+  - `bench --site megarton.com enable-scheduler`
   - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app vehicle_repair_management`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
 
@@ -104,6 +106,7 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site optimuslandcy.com migrate`
   - `bench --site erp.detima.com migrate`
   - `bench --site theodoulouparts.com migrate`
+  - `bench --site megarton.com migrate`
 - Test locally
 - Create version on github
 - `docker push phalouvas/erpnext-worker:14.31.3`
@@ -127,3 +130,4 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site optimuslandcy.com migrate`
   - `bench --site erp.detima.com migrate`
   - `bench --site theodoulouparts.com migrate`
+  - `bench --site megarton.com migrate`
