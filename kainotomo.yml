@@ -360,6 +360,18 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+  backup:
+    image: phalouvas/erpnext-worker:14.31.3
+    entrypoint: ["bash", "-c"]
+    command:
+      - bench --site all backup
+    networks:
+      default: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
 networks:
   default:
     name: frappe_docker_default

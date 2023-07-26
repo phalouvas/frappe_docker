@@ -78,6 +78,13 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site theodoulouparts.com enable-scheduler`
   - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app vehicle_repair_management`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
+
+  ## How to schedule backups
+  Add crontab entry for backup every 6 hours.
+
+  ```
+  0 */4 * * * docker compose --project-name frappe exec backend bench --site all backup --with-files > /dev/null
+  ```
   
 ## Upgrade
 
