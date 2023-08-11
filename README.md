@@ -63,7 +63,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.33.0`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.34.2`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -93,9 +93,9 @@ This repository is only for container related stuff. You also might want to cont
 ### Development Server
 - Fetch from remotes
 - Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
-  - for erpnext from 14.33.0 to x.x.x
-  - and frappe from 14.43.0 to x.x.x
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.33.0` where 14.33.0 the erpnext version
+  - for erpnext from 14.34.2 to x.x.x
+  - and frappe from 14.44.0 to x.x.x
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.34.2` where 14.34.2 the erpnext version
 - Change version to file kainotomo.yml
 - Run 
   - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -109,7 +109,7 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site megarton.com migrate`
 - Test locally
 - Create version on github
-- `docker push phalouvas/erpnext-worker:14.33.0`
+- `docker push phalouvas/erpnext-worker:14.34.2`
 
 ### Production Server
 - SSH on production server `ssh -i ~/.ssh/docker-1.pem azureuser@20.234.68.148`

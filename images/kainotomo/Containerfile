@@ -119,7 +119,6 @@ RUN bench init \
   bench get-app --branch=master cyprus_banks https://github.com/phalouvas/erpnext_cyprus_banks.git && \
   bench get-app --branch=master vehicle_repair_management https://github.com/phalouvas/erpnext_vehicle_repair_management.git && \
   bench get-app --branch=master pos_screen https://github.com/phalouvas/erpnext_pos_screen.git && \
-  bench get-app --branch=master posawesome https://github.com/yrestom/POS-Awesome.git && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
