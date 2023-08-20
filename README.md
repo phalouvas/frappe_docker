@@ -131,3 +131,4 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erp.detima.com migrate`
   - `bench --site theodoulouparts.com migrate`
   - `bench --site megarton.com migrate`
+- To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
