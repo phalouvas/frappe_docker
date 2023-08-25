@@ -4,7 +4,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -36,7 +36,7 @@ services:
       REDIS_QUEUE: redis-queue:6379
       REDIS_SOCKETIO: redis-socketio:6379
       SOCKETIO_PORT: "9000"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     networks:
       default: null
     volumes:
@@ -106,7 +106,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -137,7 +137,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -168,7 +168,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -199,7 +199,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -230,7 +230,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -261,7 +261,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -284,7 +284,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -302,7 +302,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -320,7 +320,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -366,7 +366,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -382,7 +382,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     restart: unless-stopped
     networks:
       default: null
@@ -392,7 +392,7 @@ services:
       target: /home/frappe/frappe-bench/sites
       volume: {}
   backup:
-    image: phalouvas/erpnext-worker:14.35.2
+    image: phalouvas/erpnext-worker:14.36.0
     entrypoint: ["bash", "-c"]
     command:
       - bench --site all backup
@@ -423,7 +423,7 @@ x-backend-defaults:
   depends_on:
     configurator:
       condition: service_completed_successfully
-  image: phalouvas/erpnext-worker:14.35.2
+  image: phalouvas/erpnext-worker:14.36.0
   volumes:
   - sites:/home/frappe/frappe-bench/sites
 x-depends-on-configurator:
