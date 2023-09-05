@@ -14,6 +14,8 @@ RUN useradd -ms /bin/bash frappe \
     vim \
     nginx \
     gettext-base \
+    poppler-utils \
+    tesseract-ocr-ell \
     # weasyprint dependencies
     libpango-1.0-0 \
     libharfbuzz0b \
@@ -89,8 +91,6 @@ RUN apt-get update \
     gcc \
     build-essential \
     libbz2-dev \
-    poppler-utils \
-    tesseract-ocr-ell \
     && rm -rf /var/lib/apt/lists/*
 
 USER frappe
