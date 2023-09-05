@@ -142,6 +142,11 @@ VOLUME [ \
   "/home/frappe/frappe-bench/logs" \
 ]
 
+# Run after start commands
+ENV RUN_ENTRYPOINT=false
+COPY ./images/kainotomo/entrypoint.sh /home/frappe/frappe-bench/entrypoint.sh
+ENTRYPOINT ["/home/frappe/frappe-bench/entrypoint.sh"]
+
 CMD [ \
   "/home/frappe/frappe-bench/env/bin/gunicorn", \
   "--chdir=/home/frappe/frappe-bench/sites", \
