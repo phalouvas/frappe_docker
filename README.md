@@ -121,6 +121,7 @@ This repository is only for container related stuff. You also might want to cont
   - `ssh-add ~/.ssh/github`
 - `cd /home/azureuser/frappe_docker`
 - `git pull`
+- `docker pull phalouvas/erpnext-worker:14.37.1c`
 - Run 
   - `docker compose down`
   - `docker compose up -d`
