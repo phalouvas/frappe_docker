@@ -5,6 +5,8 @@ services:
       configurator:
         condition: service_completed_successfully
     image: phalouvas/erpnext-worker:14.37.1d
+    environment:
+      RUN_ENTRYPOINT: "true"
     restart: unless-stopped
     networks:
       default: null
