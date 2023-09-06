@@ -63,7 +63,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.37.1c`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.37.1d`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -93,16 +93,16 @@ This repository is only for container related stuff. You also might want to cont
 ### Development Server
 - Fetch from remotes
 - Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
-  - for erpnext from 14.37.1c to x.x.x
+  - for erpnext from 14.37.1d to x.x.x
   - and frappe from 14.47.2 to x.x.x
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.37.1c` where 14.37.1c the erpnext version
+- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.37.1d` where 14.37.1d the erpnext version
 - Change version to file kainotomo.yml
 - Run 
   - `docker compose --project-name frappe_docker -f kainotomo.yml down`
   - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - Test locally
 - Create version on github
-- `docker push phalouvas/erpnext-worker:14.37.1c`
+- `docker push phalouvas/erpnext-worker:14.37.1d`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
 ### Production Server
@@ -112,7 +112,7 @@ This repository is only for container related stuff. You also might want to cont
   - `ssh-add ~/.ssh/github`
 - `cd /home/azureuser/frappe_docker`
 - `git pull`
-- `docker pull phalouvas/erpnext-worker:14.37.1c`
+- `docker pull phalouvas/erpnext-worker:14.37.1d`
 - Run 
   - `docker compose down`
   - `docker compose up -d`

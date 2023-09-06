@@ -144,7 +144,7 @@ VOLUME [ \
 
 # Run after start commands
 ENV RUN_ENTRYPOINT=false
-COPY ./images/kainotomo/entrypoint.sh /home/frappe/frappe-bench/entrypoint.sh
+COPY --chown=frappe:frappe ./images/kainotomo/entrypoint.sh /home/frappe/frappe-bench/entrypoint.sh
 ENTRYPOINT ["/home/frappe/frappe-bench/entrypoint.sh"]
 
 CMD [ \
