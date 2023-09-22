@@ -21,6 +21,8 @@
     "grapecity.gc-excelviewer",
     "mtxr.sqltools",
     "visualstudioexptteam.vscodeintellicode",
-    "github.copilot"
+    "github.copilot",
+    "github.copilot-chat",
+    "github.vscode-pull-request-github"
   ]
 }
