@@ -76,9 +76,9 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site erp.detima.com enable-scheduler`
   - `bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app theodoulou`
   - `bench --site theodoulouparts.com enable-scheduler`
-  - `bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app pos_screen --install-app posawesome`
+  - `bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app pos_screen`
   - `bench --site megarton.com enable-scheduler`
-  - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app vehicle_repair_management`
+  - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
 
   ## How to schedule backups
