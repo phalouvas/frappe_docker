@@ -15,7 +15,7 @@ version: "3"
 
 services:
   backend:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -25,7 +25,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   configurator:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -54,7 +54,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   create-site:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -107,7 +107,7 @@ services:
       - db-data:/var/lib/mysql
 
   frontend:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -130,7 +130,7 @@ services:
       - "8080:8080"
 
   queue-default:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -145,7 +145,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   queue-long:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -160,7 +160,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   queue-short:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -202,7 +202,7 @@ services:
       - redis-socketio-data:/data
 
   scheduler:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
@@ -215,7 +215,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   websocket:
-    image: frappe/erpnext:v14.43.0c
+    image: frappe/erpnext:v14.44.0
     platform: linux/amd64
     deploy:
       restart_policy:
