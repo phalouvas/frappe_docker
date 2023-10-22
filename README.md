@@ -94,10 +94,10 @@ This repository is only for container related stuff. You also might want to cont
 
 ### Development Server
 - Fetch from remotes
-- Change version for erpnext 14.44.0 and frappe 14.52.0 to latest
+- Change version for erpnext 14.44.0 and frappe 14.52.1 to latest
 - Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
   - for erpnext from 14.44.0 to x.x.x
-  - and frappe from 14.52.0 to x.x.x
+  - and frappe from 14.52.1 to x.x.x
 - Drop all containers `docker compose --project-name frappe_docker -f kainotomo.yml down`
 - Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.44.0` where 14.44.0 the erpnext version
 - Create all containers
