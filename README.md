@@ -133,3 +133,10 @@ This repository is only for container related stuff. You also might want to cont
   - `cd /home/azureuser/frappe_docker`
 - `git pull`
 - `docker pull phalouvas/erpnext-worker:14.44.0`
+- Run 
+  - `docker compose down`
+  - `docker compose up -d`
+- SSH in docker image if you want to run extra commands
+  - Get image_id `docker ps -q -f name=backend*`
+  - `docker exec -it image_id /bin/bash`
+- To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
