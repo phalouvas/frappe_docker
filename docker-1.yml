@@ -1,5 +1,6 @@
 name: frappe
 services:
+
   backend:
     depends_on:
       configurator:
@@ -15,6 +16,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   configurator:
     command:
     - |
@@ -44,6 +46,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   queue-default:
     command:
     - bench
@@ -98,6 +101,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   redis-cache:
     image: redis:6.2-alpine
     restart: unless-stopped
@@ -128,6 +132,7 @@ services:
       source: redis-socketio-data
       target: /data
       volume: {}
+
   scheduler:
     command:
     - bench
@@ -144,6 +149,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   websocket:
     command:
     - node
@@ -160,6 +166,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   backup:
     image: phalouvas/erpnext-worker:14.44.0
     entrypoint: ["bash", "-c"]
@@ -172,6 +179,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   erpnext_kainotomo_com:
     command:
     - nginx-entrypoint.sh
@@ -394,6 +402,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
 volumes:
   redis-cache-data:
     name: frappe_docker_redis-cache-data

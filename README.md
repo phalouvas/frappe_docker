@@ -80,6 +80,8 @@ This repository is only for container related stuff. You also might want to cont
   - `bench --site megarton.com enable-scheduler`
   - `bench new-site sports.kainotomo.com --db-name sports --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app sports_management`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
+  - `bench new-site app.swissmedhealth.com --db-name swissmed --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app hrms --install-app healthcare`
+  - `bench --site app.swissmedhealth.com enable-scheduler`
   - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
 
@@ -107,7 +109,7 @@ This repository is only for container related stuff. You also might want to cont
 - `docker push phalouvas/erpnext-worker:14.44.0`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
-### Production Server
+### Production Server docker-1
 - SSH on production server `ssh -i ~/.ssh/docker-1.pem azureuser@20.234.68.148`
 - Activate github
   - `eval "$(ssh-agent -s)"`
@@ -122,3 +124,5 @@ This repository is only for container related stuff. You also might want to cont
   - Get image_id `docker ps -q -f name=backend*`
   - `docker exec -it image_id /bin/bash`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
+
+### Production Server docker-1

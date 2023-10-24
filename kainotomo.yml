@@ -15,6 +15,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   configurator:
     command:
     - |
@@ -46,6 +47,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   db:
     command:
     - --character-set-server=utf8mb4
@@ -69,6 +71,7 @@ services:
       source: db-data
       target: /var/lib/mysql
       volume: {}
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:5.2.0
     restart: unless-stopped
@@ -91,6 +94,7 @@ services:
       source: phpmyadmin-data
       target: /sessions
       volume: {}
+
   erpnext.kainotomo.com:
     command:
     - nginx-entrypoint.sh
@@ -277,6 +281,38 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+  app_swissmedhealth_com:
+    command:
+    - nginx-entrypoint.sh
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+    environment:
+      BACKEND: backend:8000
+      CLIENT_MAX_BODY_SIZE: 50m
+      FRAPPE_SITE_NAME_HEADER: app.swissmedhealth.com
+      PROXY_READ_TIMOUT: "120"
+      SOCKETIO: websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+    image: phalouvas/erpnext-worker:14.44.0
+    restart: unless-stopped
+    networks:
+      default: null
+    ports:
+    - mode: ingress
+      target: 8080
+      published: "8390"
+      protocol: tcp
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}
+
   queue-default:
     command:
     - bench
@@ -331,6 +367,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   redis-cache:
     image: redis:6.2-alpine
     restart: unless-stopped
@@ -361,6 +398,7 @@ services:
       source: redis-socketio-data
       target: /data
       volume: {}
+
   scheduler:
     command:
     - bench
@@ -377,6 +415,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   websocket:
     command:
     - node
@@ -393,6 +432,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
   backup:
     image: phalouvas/erpnext-worker:14.44.0
     entrypoint: ["bash", "-c"]
@@ -405,6 +445,7 @@ services:
       source: sites
       target: /home/frappe/frappe-bench/sites
       volume: {}
+
 networks:
   default:
     name: frappe_docker_default
