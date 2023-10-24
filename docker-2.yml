@@ -209,7 +209,7 @@ services:
       - traefik.enable=true
       - traefik.port=8082
       - traefik.http.routers.app_swissmedhealth_com.entrypoints=websecure
-      - traefik.http.routers.app_swissmedhealth_com.rule=Host(`erpnext.kainotomo.com`)
+      - traefik.http.routers.app_swissmedhealth_com.rule=Host(`app.swissmedhealth.com`)
       - traefik.http.routers.app_swissmedhealth_com.tls.certresolver=myresolver
     volumes:
     - type: volume
