@@ -125,7 +125,7 @@ This repository is only for container related stuff. You also might want to cont
   - `docker exec -it image_id /bin/bash`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
-### Production Server docker-1
+### Production Server docker-2
 - SSH on production server `ssh -i ~/.ssh/docker-2.pem azureuser@51.138.190.62`
 - Activate github
   - `eval "$(ssh-agent -s)"`
