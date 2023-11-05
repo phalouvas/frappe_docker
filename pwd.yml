@@ -67,7 +67,7 @@ services:
           fi
         done;
         echo "sites/common_site_config.json found";
-        bench new-site frontend --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnext --set-default;
+        bench new-site --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnext --set-default frontend;
 
   db:
     image: mariadb:10.6
@@ -119,7 +119,7 @@ services:
       - bench
       - worker
       - --queue
-      - long
+      - long,default,short
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
@@ -133,7 +133,7 @@ services:
       - bench
       - worker
       - --queue
-      - short
+      - short,default
     volumes:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
