@@ -12,6 +12,7 @@ bench --site optimuslandcy.com migrate
 bench --site erp.detima.com migrate
 bench --site theodoulouparts.com migrate
 bench --site megarton.com migrate
+bench --site app.swissmedhealth.com migrate
 
 fi;
 
