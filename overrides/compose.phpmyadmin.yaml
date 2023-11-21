@@ -16,9 +16,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.port=8081
-      - traefik.http.routers.phpmyadmin.entrypoints=websecure
+      - traefik.http.routers.phpmyadmin.entrypoints=https
       - traefik.http.routers.phpmyadmin.rule=Host(`${PMA_HOSTNAME}`)
-      - traefik.http.routers.phpmyadmin.tls.certresolver=myresolver
+      - traefik.http.routers.phpmyadmin.tls.certresolver=le
     networks:
       - phpmyadmin-network
       - mariadb-network
