@@ -26,7 +26,7 @@ services:
       traefik.http.routers.phpmyadmin-https.service: phpmyadmin
       traefik.http.routers.phpmyadmin-https.tls: "true"
       traefik.http.routers.phpmyadmin-https.tls.certresolver: le
-      traefik.http.services.phpmyadmin.loadbalancer.server.port: "8080"
+      traefik.http.services.phpmyadmin.loadbalancer.server.port: "8081"
     networks:
       - phpmyadmin-network
       - mariadb-network
