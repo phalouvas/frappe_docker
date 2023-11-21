@@ -32,7 +32,7 @@ services:
     - bash
     - -c
     environment:
-      DB_HOST: db
+      DB_HOST: mariadb-database
       DB_PORT: "3306"
       REDIS_CACHE: redis-cache:6379
       REDIS_QUEUE: redis-queue:6379
