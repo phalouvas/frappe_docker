@@ -15,6 +15,7 @@ services:
       - UPLOAD_LIMIT=2000M
     labels:
       - traefik.enable=true
+      - traefik.port=8081
       - traefik.http.routers.phpmyadmin.entrypoints=websecure
       - traefik.http.routers.phpmyadmin.rule=Host(`${PMA_HOSTNAME}`)
       - traefik.http.routers.phpmyadmin.tls.certresolver=myresolver
