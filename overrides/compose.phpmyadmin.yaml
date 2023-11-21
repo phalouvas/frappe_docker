@@ -1,0 +1,39 @@
+version: "3.3"
+
+services:
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.1
+    restart: unless-stopped
+    ports:
+    - mode: ingress
+      target: 80
+      published: "8181"
+      protocol: tcp
+    environment:
+      - PMA_HOSTS=${PMA_HOSTS}
+      - PMA_PORTS=${PMA_PORTS}
+      - UPLOAD_LIMIT=2000M
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.phpmyadmin.entrypoints=websecure
+      - traefik.http.routers.phpmyadmin.rule=Host(`${PMA_HOSTNAME}`)
+      - traefik.http.routers.phpmyadmin.tls.certresolver=myresolver
+    networks:
+      - phpmyadmin-network
+      - mariadb-network
+    volumes:
+    - type: volume
+      source: phpmyadmin-data
+      target: /sessions
+      volume: {}
+
+networks:
+  phpmyadmin-network:
+    external: false
+  mariadb-network:
+    name: mariadb-network
+    external: true
+
+volumes:
+  phpmyadmin-data:
+    name: phpmyadmin-data
