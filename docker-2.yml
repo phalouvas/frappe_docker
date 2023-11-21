@@ -9,7 +9,8 @@ services:
       RUN_ENTRYPOINT: "true"
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -39,7 +40,8 @@ services:
       SOCKETIO_PORT: "9000"
     image: phalouvas/erpnext-worker:14.48.1
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -58,7 +60,8 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -76,7 +79,8 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -94,7 +98,8 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -105,7 +110,8 @@ services:
     image: redis:6.2-alpine
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: redis-cache-data
@@ -115,7 +121,8 @@ services:
     image: redis:6.2-alpine
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: redis-queue-data
@@ -125,7 +132,8 @@ services:
     image: redis:6.2-alpine
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: redis-socketio-data
@@ -142,7 +150,8 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -159,7 +168,8 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -172,7 +182,8 @@ services:
     command:
       - bench --site all backup
     networks:
-      default: null
+      bench-network: null
+      mariadb-network: null
     volumes:
     - type: volume
       source: sites
@@ -199,7 +210,8 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
+      traefik-public: null
     ports:
     - mode: ingress
       target: 8080
@@ -227,8 +239,13 @@ volumes:
   sites:
     name: frappe_docker_sites
 networks:
-  default:
-    name: docker-default-net
+  bench-network:
+    name: erpnext-v14
+  mariadb-network:
+    name: mariadb-network
+    external: true
+  traefik-public:
+    name: traefik-public
     external: true
 x-backend-defaults:
   depends_on:
