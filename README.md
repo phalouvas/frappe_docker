@@ -91,7 +91,10 @@ This repository is only for container related stuff. You also might want to cont
   ```
   0 */4 * * * docker compose --project-name frappe exec backend bench --site all backup --with-files > /dev/null
   ```
-  
+
+## How to create containers
+- `docker compose --project-name phpmyadmin --env-file ~/gitops/phpmyadmin.env -f overrides/compose.phpmyadmin.yaml up -d`
+
 ## Upgrade
 
 ### Development Server
