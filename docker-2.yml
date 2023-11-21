@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -41,7 +41,7 @@ services:
     image: phalouvas/erpnext-worker:14.48.1
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -61,7 +61,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -80,7 +80,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -99,7 +99,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -111,7 +111,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: redis-cache-data
@@ -122,7 +122,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: redis-queue-data
@@ -133,7 +133,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: redis-socketio-data
@@ -151,7 +151,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -169,7 +169,7 @@ services:
     restart: unless-stopped
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -183,7 +183,7 @@ services:
       - bench --site all backup
     networks:
       bench-network: null
-      mariadb-network: null
+      traefik-public: null
     volumes:
     - type: volume
       source: sites
@@ -241,9 +241,6 @@ volumes:
 networks:
   bench-network:
     name: erpnext-v14
-  mariadb-network:
-    name: mariadb-network
-    external: true
   traefik-public:
     name: traefik-public
     external: true
