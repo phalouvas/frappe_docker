@@ -7,7 +7,7 @@ services:
     ports:
     - mode: ingress
       target: 80
-      published: "8181"
+      published: "8081"
       protocol: tcp
     environment:
       - PMA_HOSTS=${PMA_HOSTS}
