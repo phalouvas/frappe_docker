@@ -4,7 +4,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     environment:
       RUN_ENTRYPOINT: "true"
     restart: unless-stopped
@@ -38,7 +38,7 @@ services:
       REDIS_QUEUE: redis-queue:6379
       REDIS_SOCKETIO: redis-socketio:6379
       SOCKETIO_PORT: "9000"
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     networks:
       bench-network: null
       mariadb-network: null
@@ -57,7 +57,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
       bench-network: null
@@ -76,7 +76,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
       bench-network: null
@@ -95,7 +95,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
       bench-network: null
@@ -147,7 +147,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
       bench-network: null
@@ -165,7 +165,7 @@ services:
     depends_on:
       configurator:
         condition: service_completed_successfully
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
       bench-network: null
@@ -177,7 +177,7 @@ services:
       volume: {}
 
   backup:
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     entrypoint: ["bash", "-c"]
     command:
       - bench --site all backup
@@ -207,7 +207,7 @@ services:
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
       UPSTREAM_REAL_IP_RECURSIVE: "off"
-    image: phalouvas/erpnext-worker:14.49.0
+    image: phalouvas/erpnext-worker:14.48.1
     restart: unless-stopped
     networks:
       bench-network: null
@@ -245,7 +245,7 @@ x-backend-defaults:
   depends_on:
     configurator:
       condition: service_completed_successfully
-  image: phalouvas/erpnext-worker:14.49.0
+  image: phalouvas/erpnext-worker:14.48.1
   volumes:
   - sites:/home/frappe/frappe-bench/sites
 x-depends-on-configurator:
