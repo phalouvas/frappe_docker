@@ -1,0 +1,14 @@
+services:
+  backup:
+    image: frappe/erpnext:${ERPNEXT_VERSION}
+    entrypoint: ["bash", "-c"]
+    command:
+      - bench --site all backup
+    networks:
+      bench-network: null
+      mariadb-network: null
+    volumes:
+    - type: volume
+      source: sites
+      target: /home/frappe/frappe-bench/sites
+      volume: {}

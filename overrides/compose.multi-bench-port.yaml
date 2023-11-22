@@ -1,0 +1,9 @@
+services:
+  frontend:
+    ports:
+    - mode: ingress
+      target: 8080
+      published: ${FRONTEND_PORT?FRONTEND_PORT not set}
+      protocol: tcp
+    labels:
+      - traefik.port=${FRONTEND_PORT?FRONTEND_PORT not set}
