@@ -217,6 +217,20 @@ services:
       target: 8080
       published: "8082"
       protocol: tcp
+    labels:
+      traefik.docker.network: traefik-public
+      traefik.port: "8082"
+      traefik.enable: "true"
+      traefik.http.routers.app_swissmedhealth_com-http.entrypoints: http
+      traefik.http.routers.app_swissmedhealth_com-http.middlewares: https-redirect
+      traefik.http.routers.app_swissmedhealth_com-http.rule: Host(`app.swissmedhealth.com`)
+      traefik.http.routers.app_swissmedhealth_com-http.service: phpmyadmin
+      traefik.http.routers.app_swissmedhealth_com-https.entrypoints: https
+      traefik.http.routers.app_swissmedhealth_com-https.rule: Host(`app.swissmedhealth.com`)
+      traefik.http.routers.app_swissmedhealth_com-https.service: phpmyadmin
+      traefik.http.routers.app_swissmedhealth_com-https.tls: "true"
+      traefik.http.routers.app_swissmedhealth_com-https.tls.certresolver: le
+      traefik.http.services.app_swissmedhealth_com.loadbalancer.server.port: "8080"
     volumes:
     - type: volume
       source: sites
