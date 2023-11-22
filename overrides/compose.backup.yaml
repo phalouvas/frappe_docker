@@ -1,6 +1,6 @@
 services:
   backup:
-    image: frappe/erpnext:${ERPNEXT_VERSION}
+    image: phalouvas/erpnext-worker:${ERPNEXT_VERSION}
     entrypoint: ["bash", "-c"]
     command:
       - bench --site all backup

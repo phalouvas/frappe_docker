@@ -99,15 +99,19 @@ This repository is only for container related stuff. You also might want to cont
 
 ### Development Server
 - Fetch from remotes
-- Change version for erpnext 14.48.1 and frappe 14.55.0 to latest
-- Update accordingly file images/kainotomo/Containerfile with latest branches e.g. 
-  - for erpnext from 14.48.1 to x.x.x
-  - and frappe from 14.55.0 to x.x.x
-- Drop all containers `docker compose --project-name frappe_docker -f kainotomo.yml down`
-- Create new image `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.48.1` where 14.48.1 the erpnext version
-- Create all containers
-  - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
-- Test locally
+- Fix version 14.48.1 to new in repository gitops
+- Add any necessary apps in file ~/kainotomo/frappe_docker/images/custom/apps.json
+- Export apps to variable `export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/apps.json)`
+- Build image
+  ```shell
+  docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
+    --build-arg=FRAPPE_BRANCH=version-14 \
+    --build-arg=PYTHON_VERSION=3.10.12 \
+    --build-arg=NODE_VERSION=16.20.1 \
+    --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
+    --tag=phalouvas/erpnext-worker:14.48.1 \
+    --file=images/custom/Containerfile .
+    ```
 - Create version on github
 - `docker push phalouvas/erpnext-worker:14.48.1`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
@@ -117,6 +121,8 @@ This repository is only for container related stuff. You also might want to cont
 - Activate github
   - `eval "$(ssh-agent -s)"`
   - `ssh-add ~/.ssh/github`
+- `cd /home/azureuser/gitops`
+- `git pull`
 - `cd /home/azureuser/frappe_docker`
 - `git pull`
 - `docker pull phalouvas/erpnext-worker:14.48.1`
@@ -133,9 +139,11 @@ This repository is only for container related stuff. You also might want to cont
 - Activate github
   - `eval "$(ssh-agent -s)"`
   - `ssh-add ~/.ssh/github`
+  - `cd /home/azureuser/gitops`
+  - `git pull`
   - `cd /home/azureuser/frappe_docker`
-- `git pull`
-- `docker pull phalouvas/erpnext-worker:14.48.1`
+  - `git pull`
+  - `docker pull phalouvas/erpnext-worker:14.48.1`
 - Run 
   - `docker compose down`
   - `docker compose up -d`
