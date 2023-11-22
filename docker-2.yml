@@ -229,7 +229,7 @@ services:
       traefik.http.routers.app_swissmedhealth_com-https.rule: Host(`app.swissmedhealth.com`)
       traefik.http.routers.app_swissmedhealth_com-https.service: phpmyadmin
       traefik.http.routers.app_swissmedhealth_com-https.tls: "true"
-      traefik.http.routers.app_swissmedhealth_com-https.tls.certresolver: le
+      traefik.http.routers.app_swissmedhealth_com-https.tls.certresolver: le2
       traefik.http.services.app_swissmedhealth_com.loadbalancer.server.port: "8080"
     volumes:
     - type: volume
