@@ -16,10 +16,6 @@
     "branch": "version-14"
   },
   {
-    "url": "https://github.com/frappe/agriculture",
-    "branch": "develop"
-  },
-  {
     "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
     "branch": "master"
   },
@@ -40,10 +36,6 @@
     "branch": "master"
   },
   {
-    "url": "https://github.com/phalouvas/invoice2erpnext.git",
-    "branch": "master"
-  },
-  {
     "url": "https://github.com/phalouvas/erpnext_theodoulou",
     "branch": "master"
   },
@@ -54,17 +46,5 @@
   {
     "url": "https://github.com/kainotomo/erpnext-restaurant",
     "branch": "master"
-  },
-  {
-    "url": "https://github.com/quantumbitcore/frappe_helper",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_vehicle_repair_management.git",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/yrestom/POS-Awesome.git",
-    "branch": "version-14"
   }
 ]
