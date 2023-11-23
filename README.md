@@ -106,14 +106,14 @@ This repository is only for container related stuff. You also might want to cont
   ```shell
   docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-14 \
-    --build-arg=PYTHON_VERSION=3.10.12 \
-    --build-arg=NODE_VERSION=16.20.1 \
+    --build-arg=PYTHON_VERSION=3.11.4 \
+    --build-arg=NODE_VERSION=16.18.0 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:14.49.0 \
+    --tag=phalouvas/erpnext-worker:14.48.1b \
     --file=images/custom/Containerfile .
     ```
 - Create version on github
-- `docker push phalouvas/erpnext-worker:14.49.0`
+- `docker push phalouvas/erpnext-worker:14.48.1b`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
 ### Production Server docker-1
