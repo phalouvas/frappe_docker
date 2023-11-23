@@ -145,8 +145,8 @@ This repository is only for container related stuff. You also might want to cont
   - `git pull`
   - `docker pull phalouvas/erpnext-worker:14.49.0`
 - Run 
-  - `docker compose down`
-  - `docker compose up -d`
+  - `docker compose --project-name erpnext-v14 down`
+  - `docker compose --project-name erpnext-v14 -f ~/gitops/docker-2/erpnext-v14.yaml up -d`
 - SSH in docker image if you want to run extra commands
   - Get image_id `docker ps -q -f name=backend*`
   - `docker exec -it image_id /bin/bash`
