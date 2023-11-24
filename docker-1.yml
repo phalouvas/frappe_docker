@@ -219,11 +219,19 @@ services:
       published: "8081"
       protocol: tcp
     labels:
-      - traefik.enable=true
-      - traefik.port=8081
-      - traefik.http.routers.erpnext_kainotomo_com.entrypoints=websecure
-      - traefik.http.routers.erpnext_kainotomo_com.rule=Host(`erpnext.kainotomo.com`)
-      - traefik.http.routers.erpnext_kainotomo_com.tls.certresolver=myresolver
+      traefik.docker.network: traefik-public
+      traefik.enable: "true"
+      traefik.http.routers.erpnext-v14-http.entrypoints: http
+      traefik.http.routers.erpnext-v14-http.middlewares: https-redirect
+      traefik.http.routers.erpnext-v14-http.rule: Host(`erpnext.kainotomo.com`)
+      traefik.http.routers.erpnext-v14-http.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.entrypoints: https
+      traefik.http.routers.erpnext-v14-https.rule: Host(`erpnext.kainotomo.com`)
+      traefik.http.routers.erpnext-v14-https.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.tls: "true"
+      traefik.http.routers.erpnext-v14-https.tls.certresolver: le
+      traefik.http.services.erpnext-v14.loadbalancer.server.port: "8080"
+      traefik.port: "8081"
     volumes:
     - type: volume
       source: sites
@@ -257,11 +265,19 @@ services:
       published: "8082"
       protocol: tcp
     labels:
-      - traefik.enable=true
-      - traefik.port=8082
-      - traefik.http.routers.optimuslandcy_com.entrypoints=websecure
-      - traefik.http.routers.optimuslandcy_com.rule=Host(`optimuslandcy.com`)
-      - traefik.http.routers.optimuslandcy_com.tls.certresolver=myresolver
+      traefik.docker.network: traefik-public
+      traefik.enable: "true"
+      traefik.http.routers.erpnext-v14-http.entrypoints: http
+      traefik.http.routers.erpnext-v14-http.middlewares: https-redirect
+      traefik.http.routers.erpnext-v14-http.rule: Host(`optimuslandcy.com`)
+      traefik.http.routers.erpnext-v14-http.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.entrypoints: https
+      traefik.http.routers.erpnext-v14-https.rule: Host(`optimuslandcy.com`)
+      traefik.http.routers.erpnext-v14-https.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.tls: "true"
+      traefik.http.routers.erpnext-v14-https.tls.certresolver: le
+      traefik.http.services.erpnext-v14.loadbalancer.server.port: "8080"
+      traefik.port: "8082"
     volumes:
     - type: volume
       source: sites
@@ -295,11 +311,19 @@ services:
       published: "8083"
       protocol: tcp
     labels:
-      - traefik.enable=true
-      - traefik.port=8083
-      - traefik.http.routers.erpdemo_kainotomo_com.entrypoints=websecure
-      - traefik.http.routers.erpdemo_kainotomo_com.rule=Host(`erpdemo.kainotomo.com`)
-      - traefik.http.routers.erpdemo_kainotomo_com.tls.certresolver=myresolver
+      traefik.docker.network: traefik-public
+      traefik.enable: "true"
+      traefik.http.routers.erpnext-v14-http.entrypoints: http
+      traefik.http.routers.erpnext-v14-http.middlewares: https-redirect
+      traefik.http.routers.erpnext-v14-http.rule: Host(`erpdemo.kainotomo.com`)
+      traefik.http.routers.erpnext-v14-http.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.entrypoints: https
+      traefik.http.routers.erpnext-v14-https.rule: Host(`erpdemo.kainotomo.com`)
+      traefik.http.routers.erpnext-v14-https.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.tls: "true"
+      traefik.http.routers.erpnext-v14-https.tls.certresolver: le
+      traefik.http.services.erpnext-v14.loadbalancer.server.port: "8080"
+      traefik.port: "8083"
     volumes:
     - type: volume
       source: sites
@@ -333,11 +357,19 @@ services:
       published: "8084"
       protocol: tcp
     labels:
-      - traefik.enable=true
-      - traefik.port=8084
-      - traefik.http.routers.erp_detima_com.entrypoints=websecure
-      - traefik.http.routers.erp_detima_com.rule=Host(`erp.detima.com`)
-      - traefik.http.routers.erp_detima_com.tls.certresolver=myresolver
+      traefik.docker.network: traefik-public
+      traefik.enable: "true"
+      traefik.http.routers.erpnext-v14-http.entrypoints: http
+      traefik.http.routers.erpnext-v14-http.middlewares: https-redirect
+      traefik.http.routers.erpnext-v14-http.rule: Host(`erp.detima.com`)
+      traefik.http.routers.erpnext-v14-http.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.entrypoints: https
+      traefik.http.routers.erpnext-v14-https.rule: Host(`erp.detima.com`)
+      traefik.http.routers.erpnext-v14-https.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.tls: "true"
+      traefik.http.routers.erpnext-v14-https.tls.certresolver: le
+      traefik.http.services.erpnext-v14.loadbalancer.server.port: "8080"
+      traefik.port: "8084"
     volumes:
     - type: volume
       source: sites
@@ -371,11 +403,19 @@ services:
       published: "8085"
       protocol: tcp
     labels:
-      - traefik.enable=true
-      - traefik.port=8085
-      - traefik.http.routers.theodoulouparts_com.entrypoints=websecure
-      - traefik.http.routers.theodoulouparts_com.rule=Host(`theodoulouparts.com`)
-      - traefik.http.routers.theodoulouparts_com.tls.certresolver=myresolver
+      traefik.docker.network: traefik-public
+      traefik.enable: "true"
+      traefik.http.routers.erpnext-v14-http.entrypoints: http
+      traefik.http.routers.erpnext-v14-http.middlewares: https-redirect
+      traefik.http.routers.erpnext-v14-http.rule: Host(`theodoulouparts.com`)
+      traefik.http.routers.erpnext-v14-http.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.entrypoints: https
+      traefik.http.routers.erpnext-v14-https.rule: Host(`theodoulouparts.com`)
+      traefik.http.routers.erpnext-v14-https.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.tls: "true"
+      traefik.http.routers.erpnext-v14-https.tls.certresolver: le
+      traefik.http.services.erpnext-v14.loadbalancer.server.port: "8080"
+      traefik.port: "8085"
     volumes:
     - type: volume
       source: sites
@@ -409,11 +449,19 @@ services:
       published: "8086"
       protocol: tcp
     labels:
-      - traefik.enable=true
-      - traefik.port=8085
-      - traefik.http.routers.megarton_com.entrypoints=websecure
-      - traefik.http.routers.megarton_com.rule=Host(`megarton.com`)
-      - traefik.http.routers.megarton_com.tls.certresolver=myresolver
+      traefik.docker.network: traefik-public
+      traefik.enable: "true"
+      traefik.http.routers.erpnext-v14-http.entrypoints: http
+      traefik.http.routers.erpnext-v14-http.middlewares: https-redirect
+      traefik.http.routers.erpnext-v14-http.rule: Host(`megarton.com`)
+      traefik.http.routers.erpnext-v14-http.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.entrypoints: https
+      traefik.http.routers.erpnext-v14-https.rule: Host(`megarton.com`)
+      traefik.http.routers.erpnext-v14-https.service: erpnext-v14
+      traefik.http.routers.erpnext-v14-https.tls: "true"
+      traefik.http.routers.erpnext-v14-https.tls.certresolver: le
+      traefik.http.services.erpnext-v14.loadbalancer.server.port: "8080"
+      traefik.port: "8086"
     volumes:
     - type: volume
       source: sites
