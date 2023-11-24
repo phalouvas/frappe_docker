@@ -7,7 +7,7 @@ services:
     ports:
     - mode: ingress
       target: 80
-      published: ${PUBLISHED_PORT:-8081}
+      published: "${PUBLISHED_PORT:-8081}"
       protocol: tcp
     environment:
       - PMA_HOSTS=${PMA_HOSTS}
@@ -15,7 +15,7 @@ services:
       - UPLOAD_LIMIT=2000M
     labels:
       traefik.docker.network: traefik-public
-      traefik.port: {$PUBLISHED_PORT:-8081}
+      traefik.port: "{$PUBLISHED_PORT:-8081}"
       traefik.enable: "true"
       traefik.http.routers.phpmyadmin-http.entrypoints: http
       traefik.http.routers.phpmyadmin-http.middlewares: https-redirect
