@@ -81,7 +81,7 @@ This repository is only for container related stuff. You also might want to cont
   - `bench new-site sports.kainotomo.com --db-name x_sports --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app sports_management`
   - `bench new-site app.swissmedhealth.com --db-name x_swissmed --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app hrms --install-app healthcare`
   - `bench --site app.swissmedhealth.com enable-scheduler`
-  - `bench new-site erpdemo.kainotomo.com --db-name x_kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments`
+  - `bench new-site erpdemo.kainotomo.com --db-name x_kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
 
   ## How to schedule backups
@@ -129,7 +129,7 @@ This repository is only for container related stuff. You also might want to cont
   - `docker compose down`
   - `docker compose up -d`
 - SSH in docker image if you want to run extra commands
-  - Get image_id `docker ps -q -f name=backend*`
+  - Get image_id `docker ps -f name=backend*`
   - `docker exec -it image_id /bin/bash`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
