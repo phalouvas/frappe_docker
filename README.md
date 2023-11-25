@@ -68,20 +68,20 @@ This repository is only for container related stuff. You also might want to cont
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
 - To create a new site with backend shell 
-  - `bench new-site erpnext.kainotomo.com --db-name x_kainotomo_erpnext --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app paypalstandardpayments --install-app digital_subscriptions --install-app vies_validation --set-default`
+  - `bench new-site erpnext.kainotomo.com --db-name kainotomo_erpnext --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app paypalstandardpayments --install-app digital_subscriptions --install-app vies_validation --set-default`
   - `bench --site erpnext.kainotomo.com enable-scheduler`
-  - `bench new-site optimuslandcy.com --db-name x_optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app payments --install-app hrms --install-app erpnext --install-app cyprus_banks`
+  - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app payments --install-app hrms --install-app erpnext --install-app cyprus_banks`
   - `bench --site optimuslandcy.com enable-scheduler`
-  - `bench new-site erp.detima.com --db-name x_detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks`
+  - `bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks`
   - `bench --site erp.detima.com enable-scheduler`
-  - `bench new-site theodoulouparts.com --db-name x_theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app theodoulou`
+  - `bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app theodoulou`
   - `bench --site theodoulouparts.com enable-scheduler`
-  - `bench new-site megarton.com --db-name x_megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app pos_screen`
+  - `bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app pos_screen`
   - `bench --site megarton.com enable-scheduler`
-  - `bench new-site sports.kainotomo.com --db-name x_sports --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app sports_management`
-  - `bench new-site app.swissmedhealth.com --db-name x_swissmed --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app hrms --install-app healthcare`
+  - `bench new-site sports.kainotomo.com --db-name sports --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app sports_management`
+  - `bench new-site app.swissmedhealth.com --db-name swissmed --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app hrms --install-app healthcare`
   - `bench --site app.swissmedhealth.com enable-scheduler`
-  - `bench new-site erpdemo.kainotomo.com --db-name x_kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
+  - `bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
   - `bench --site erpdemo.kainotomo.com enable-scheduler`
 
   ## How to schedule backups
