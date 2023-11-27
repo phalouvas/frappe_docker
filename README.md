@@ -100,7 +100,7 @@ This repository is only for container related stuff. You also might want to cont
 - Fetch from remotes
 - Fix version 14.49.0 to new in repository gitops
 - Add any necessary apps in file ~/kainotomo/frappe_docker/images/custom/apps.json
-- Export apps to variable `export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/apps.json)`
+- Export apps to variable `export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)`
 - Build image
   ```shell
   docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
