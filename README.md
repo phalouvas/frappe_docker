@@ -104,7 +104,9 @@ This repository is only for container related stuff. You also might want to cont
 #### V14
 - Export apps to variable and build image
   ```shell
+
   export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)
+
   docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-14 \
     --build-arg=PYTHON_VERSION=3.11.4 \
@@ -112,6 +114,7 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
     --tag=phalouvas/erpnext-worker:14.50.0 \
     --file=images/custom/Containerfile .
+
     ```
 - Create version on github
 - `docker push phalouvas/erpnext-worker:14.50.0`
@@ -119,7 +122,9 @@ This repository is only for container related stuff. You also might want to cont
 #### V15
 - Export apps to variable and build image
   ```shell
+
   export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v15.json)
+
   docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-14 \
     --build-arg=PYTHON_VERSION=3.11.6 \
@@ -127,6 +132,7 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
     --tag=phalouvas/erpnext-worker:15.3.0 \
     --file=images/custom/Containerfile .
+    
     ```
 - Create version on github
 - `docker push phalouvas/erpnext-worker:15.3.0`
