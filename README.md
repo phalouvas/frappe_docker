@@ -186,7 +186,7 @@ This repository is only for container related stuff. You also might want to cont
     docker compose --project-name erpnext-v15 -f ~/gitops/docker-2/erpnext-v15.yaml up -d
   ```
 - SSH in docker image if you want to run extra commands
-  - Get image_id `docker ps -q -f name=backend*`
+  - Get image_id `docker ps -f name=backend*`
   - `docker exec -it image_id /bin/bash`
   - `bench --site all migrate`
 - `docker images | grep erpnext`
