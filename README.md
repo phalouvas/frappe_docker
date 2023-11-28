@@ -132,12 +132,16 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
     --tag=phalouvas/erpnext-worker:15.3.0 \
     --file=images/custom/Containerfile .
-    
+
     ```
 - Create version on github
 - `docker push phalouvas/erpnext-worker:15.3.0`
     ```
 
+### Update localhost
+- `docker compose --project-name erpnext-v15 down`
+- `docker compose --project-name erpnext-v15 -f ~/gitops/localhost/erpnext-v15.yaml up -d`
+- `docker images | grep erpnext`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
 ### Production Server docker-1
