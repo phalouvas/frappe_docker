@@ -63,7 +63,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.49.0`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.50.0`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -98,7 +98,7 @@ This repository is only for container related stuff. You also might want to cont
 
 ### Development Server
 - Fetch from remotes
-- Fix version 14.49.0 to new in repository gitops
+- Fix version 14.50.0 to new in repository gitops
 - Add any necessary apps in file ~/kainotomo/frappe_docker/images/custom/apps.json
 - Export apps to variable `export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)`
 - Build image
@@ -108,11 +108,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.4 \
     --build-arg=NODE_VERSION=16.18.0 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:14.49.0 \
+    --tag=phalouvas/erpnext-worker:14.50.0 \
     --file=images/custom/Containerfile .
     ```
 - Create version on github
-- `docker push phalouvas/erpnext-worker:14.49.0`
+- `docker push phalouvas/erpnext-worker:14.50.0`
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
 ### Production Server docker-1
@@ -124,7 +124,7 @@ This repository is only for container related stuff. You also might want to cont
 - `git pull`
 - `cd /home/azureuser/frappe_docker`
 - `git pull`
-- `docker pull phalouvas/erpnext-worker:14.49.0`
+- `docker pull phalouvas/erpnext-worker:14.50.0`
 - Run 
   - `docker compose down`
   - `docker compose up -d`
@@ -142,7 +142,7 @@ This repository is only for container related stuff. You also might want to cont
   - `git pull`
   - `cd /home/azureuser/frappe_docker`
   - `git pull`
-  - `docker pull phalouvas/erpnext-worker:14.49.0`
+  - `docker pull phalouvas/erpnext-worker:14.50.0`
 - Run 
   - `docker compose --project-name erpnext-v14 down`
   - `docker compose --project-name erpnext-v14 -f ~/gitops/docker-2/erpnext-v14.yaml up -d`
