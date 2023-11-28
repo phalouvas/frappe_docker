@@ -100,9 +100,11 @@ This repository is only for container related stuff. You also might want to cont
 - Fetch from remotes
 - Fix version 14.50.0 to new in repository gitops
 - Add any necessary apps in file ~/kainotomo/frappe_docker/images/custom/apps.json
-- Export apps to variable `export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)`
-- Build image
+
+#### V14
+- Export apps to variable and build image
   ```shell
+  export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)
   docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-14 \
     --build-arg=PYTHON_VERSION=3.11.4 \
@@ -113,6 +115,23 @@ This repository is only for container related stuff. You also might want to cont
     ```
 - Create version on github
 - `docker push phalouvas/erpnext-worker:14.50.0`
+
+#### V15
+- Export apps to variable and build image
+  ```shell
+  export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v15.json)
+  docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
+    --build-arg=FRAPPE_BRANCH=version-14 \
+    --build-arg=PYTHON_VERSION=3.11.6 \
+    --build-arg=NODE_VERSION=18.18.2 \
+    --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
+    --tag=phalouvas/erpnext-worker:15.3.0 \
+    --file=images/custom/Containerfile .
+    ```
+- Create version on github
+- `docker push phalouvas/erpnext-worker:15.3.0`
+    ```
+
 - To delete old images in order to free up space use command `docker rmi -f phalouvas/erpnext-worker:x.x.x` where x.x.x the old version
 
 ### Production Server docker-1
@@ -125,9 +144,12 @@ This repository is only for container related stuff. You also might want to cont
 - `cd /home/azureuser/frappe_docker`
 - `git pull`
 - `docker pull phalouvas/erpnext-worker:14.50.0`
+- `docker pull phalouvas/erpnext-worker:15.3.0`
 - Run 
-  - `docker compose down`
-  - `docker compose up -d`
+  - `docker compose --project-name erpnext-v14 down`
+  - `docker compose --project-name erpnext-v14 -f ~/gitops/docker-1/erpnext-v14.yaml up -d`
+  - `docker compose --project-name erpnext-v15 down`
+  - `docker compose --project-name erpnext-v15 -f ~/gitops/docker-1/erpnext-v15.yaml up -d`
 - SSH in docker image if you want to run extra commands
   - Get image_id `docker ps -f name=backend*`
   - `docker exec -it image_id /bin/bash`
@@ -143,9 +165,12 @@ This repository is only for container related stuff. You also might want to cont
   - `cd /home/azureuser/frappe_docker`
   - `git pull`
   - `docker pull phalouvas/erpnext-worker:14.50.0`
+  - `docker pull phalouvas/erpnext-worker:15.3.0`
 - Run 
   - `docker compose --project-name erpnext-v14 down`
   - `docker compose --project-name erpnext-v14 -f ~/gitops/docker-2/erpnext-v14.yaml up -d`
+  - `docker compose --project-name erpnext-v15 down`
+  - `docker compose --project-name erpnext-v15 -f ~/gitops/docker-2/erpnext-v15.yaml up -d`
 - SSH in docker image if you want to run extra commands
   - Get image_id `docker ps -q -f name=backend*`
   - `docker exec -it image_id /bin/bash`
