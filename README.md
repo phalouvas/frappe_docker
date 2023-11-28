@@ -147,19 +147,20 @@ This repository is only for container related stuff. You also might want to cont
 ### Production Server docker-1
 - SSH on production server `ssh -i ~/.ssh/docker-1.pem azureuser@20.234.68.148`
 - Activate github
-  - `eval "$(ssh-agent -s)"`
-  - `ssh-add ~/.ssh/github`
-- `cd /home/azureuser/gitops`
-- `git pull`
-- `cd /home/azureuser/frappe_docker`
-- `git pull`
-- `docker pull phalouvas/erpnext-worker:14.50.0`
-- `docker pull phalouvas/erpnext-worker:15.3.0`
-- Run 
-  - `docker compose --project-name erpnext-v14 down`
-  - `docker compose --project-name erpnext-v14 -f ~/gitops/docker-1/erpnext-v14.yaml up -d`
-  - `docker compose --project-name erpnext-v15 down`
-  - `docker compose --project-name erpnext-v15 -f ~/gitops/docker-1/erpnext-v15.yaml up -d`
+  ```shell
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/github
+    cd /home/azureuser/gitops
+    git pull
+    cd /home/azureuser/frappe_docker
+    git pull
+    docker pull phalouvas/erpnext-worker:14.50.0
+    docker pull phalouvas/erpnext-worker:15.3.0
+    docker compose --project-name erpnext-v14 down
+    docker compose --project-name erpnext-v14 -f ~/gitops/docker-1/erpnext-v14.yaml up -d
+    docker compose --project-name erpnext-v15 down
+    docker compose --project-name erpnext-v15 -f ~/gitops/docker-1/erpnext-v15.yaml up -d
+  ```
 - SSH in docker image if you want to run extra commands
   - Get image_id `docker ps -f name=backend*`
   - `docker exec -it image_id /bin/bash`
@@ -170,19 +171,20 @@ This repository is only for container related stuff. You also might want to cont
 ### Production Server docker-2
 - SSH on production server `ssh -i ~/.ssh/docker-2.pem azureuser@51.138.190.62`
 - Activate github
-  - `eval "$(ssh-agent -s)"`
-  - `ssh-add ~/.ssh/github`
-  - `cd /home/azureuser/gitops`
-  - `git pull`
-  - `cd /home/azureuser/frappe_docker`
-  - `git pull`
-  - `docker pull phalouvas/erpnext-worker:14.50.0`
-  - `docker pull phalouvas/erpnext-worker:15.3.0`
-- Run 
-  - `docker compose --project-name erpnext-v14 down`
-  - `docker compose --project-name erpnext-v14 -f ~/gitops/docker-2/erpnext-v14.yaml up -d`
-  - `docker compose --project-name erpnext-v15 down`
-  - `docker compose --project-name erpnext-v15 -f ~/gitops/docker-2/erpnext-v15.yaml up -d`
+  ```shell
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/github
+    cd /home/azureuser/gitops
+    git pull
+    cd /home/azureuser/frappe_docker
+    git pull
+    docker pull phalouvas/erpnext-worker:14.50.0
+    docker pull phalouvas/erpnext-worker:15.3.0
+    docker compose --project-name erpnext-v14 down
+    docker compose --project-name erpnext-v14 -f ~/gitops/docker-2/erpnext-v14.yaml up -d
+    docker compose --project-name erpnext-v15 down
+    docker compose --project-name erpnext-v15 -f ~/gitops/docker-2/erpnext-v15.yaml up -d
+  ```
 - SSH in docker image if you want to run extra commands
   - Get image_id `docker ps -q -f name=backend*`
   - `docker exec -it image_id /bin/bash`
