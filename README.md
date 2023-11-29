@@ -70,13 +70,13 @@ This repository is only for container related stuff. You also might want to cont
 - To create a new site with backend shell 
   - `bench new-site erpnext.kainotomo.com --db-name kainotomo_erpnext --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app paypalstandardpayments --install-app digital_subscriptions --install-app vies_validation --set-default`
   - `bench --site erpnext.kainotomo.com enable-scheduler`
-  - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app payments --install-app hrms --install-app erpnext --install-app cyprus_banks`
+  - `bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app payments --install-app hrms --install-app erpnext`
   - `bench --site optimuslandcy.com enable-scheduler`
-  - `bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks`
+  - `bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext`
   - `bench --site erp.detima.com enable-scheduler`
-  - `bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app theodoulou`
+  - `bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app theodoulou`
   - `bench --site theodoulouparts.com enable-scheduler`
-  - `bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app cyprus_banks --install-app pos_screen`
+  - `bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app pos_screen`
   - `bench --site megarton.com enable-scheduler`
   - `bench new-site sports.kainotomo.com --db-name sports --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app sports_management`
   - `bench new-site app.swissmedhealth.com --db-name swissmed --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app hrms --install-app healthcare`
@@ -115,9 +115,9 @@ This repository is only for container related stuff. You also might want to cont
     --tag=phalouvas/erpnext-worker:14.50.0 \
     --file=images/custom/Containerfile .
 
+  docker push phalouvas/erpnext-worker:14.50.0
+
     ```
-- Create version on github
-- `docker push phalouvas/erpnext-worker:14.50.0`
 
 #### V15
 - Export apps to variable and build image
@@ -126,16 +126,15 @@ This repository is only for container related stuff. You also might want to cont
   export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v15.json)
 
   docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
-    --build-arg=FRAPPE_BRANCH=version-14 \
+    --build-arg=FRAPPE_BRANCH=version-15 \
     --build-arg=PYTHON_VERSION=3.11.6 \
     --build-arg=NODE_VERSION=18.18.2 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
     --tag=phalouvas/erpnext-worker:15.3.0 \
     --file=images/custom/Containerfile .
 
-    ```
-- Create version on github
-- `docker push phalouvas/erpnext-worker:15.3.0`
+  docker push phalouvas/erpnext-worker:15.3.0
+
     ```
 
 ### Update localhost
