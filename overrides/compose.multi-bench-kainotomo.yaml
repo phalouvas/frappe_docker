@@ -1,0 +1,31 @@
+services:
+  frontend:
+    restart: unless-stopped
+    ports:
+    - mode: ingress
+      target: 8080
+      published: ${FRONTEND_PORT?FRONTEND_PORT not set}
+      protocol: tcp
+    labels:
+      - traefik.port=${FRONTEND_PORT?FRONTEND_PORT not set}
+
+  redis-cache:
+    restart: unless-stopped
+
+  redis-queue:
+    restart: unless-stopped
+
+  backend:
+    restart: unless-stopped
+
+  queue-long:
+    restart: unless-stopped
+
+  queue-short:
+    restart: unless-stopped
+
+  scheduler:
+    restart: unless-stopped
+
+  websocket:
+    restart: unless-stopped
