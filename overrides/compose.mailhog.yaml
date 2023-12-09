@@ -34,6 +34,7 @@ services:
 
 networks:
   mailhog-network:
+    name: mailhog-network
     external: false
   traefik-public:
     name: traefik-public
