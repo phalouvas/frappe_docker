@@ -119,7 +119,7 @@ This repository is only for container related stuff. You also might want to cont
 
   export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)
 
-  docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
+  docker build --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-14 \
     --build-arg=PYTHON_VERSION=3.11.4 \
     --build-arg=NODE_VERSION=16.18.0 \
@@ -128,6 +128,8 @@ This repository is only for container related stuff. You also might want to cont
     --file=images/custom/Containerfile .
 
   docker push phalouvas/erpnext-worker:14.53.0
+  docker tag phalouvas/erpnext-worker:14.53.0 phalouvas/erpnext-worker:version-14
+  docker push phalouvas/erpnext-worker:version-14
 
     ```
 
@@ -137,7 +139,7 @@ This repository is only for container related stuff. You also might want to cont
 
   export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v15.json)
 
-  docker build --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
+  docker build --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-15 \
     --build-arg=PYTHON_VERSION=3.11.6 \
     --build-arg=NODE_VERSION=18.18.2 \
@@ -146,6 +148,8 @@ This repository is only for container related stuff. You also might want to cont
     --file=images/custom/Containerfile .
 
   docker push phalouvas/erpnext-worker:15.5.0
+  docker tag phalouvas/erpnext-worker:15.5.0 phalouvas/erpnext-worker:version-15
+  docker push phalouvas/erpnext-worker:version-15
 
     ```
 
