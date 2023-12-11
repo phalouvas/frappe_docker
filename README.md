@@ -193,8 +193,8 @@ This repository is only for container related stuff. You also might want to cont
     git pull
     cd /home/azureuser/frappe_docker
     git pull
-    docker pull phalouvas/erpnext-worker:14.53.0
-    docker pull phalouvas/erpnext-worker:15.5.0
+    docker pull phalouvas/erpnext-worker:version-14
+    docker pull phalouvas/erpnext-worker:version-15
     docker compose --project-name erpnext-v14 down
     docker compose --project-name erpnext-v14 -f ~/gitops/docker-2/erpnext-v14.yaml up -d
     docker compose --project-name erpnext-v15 down
