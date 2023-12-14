@@ -63,7 +63,7 @@ This repository is only for container related stuff. You also might want to cont
 ## How to build containers.
 - Change the .env `FRAPPE_SITE_NAME_HEADER=erpnext.kainotomo.com`
 - `docker compose -f compose.yaml -f overrides/compose.noproxy.yaml -f overrides/compose.mariadb.yaml -f overrides/compose.redis.yaml config > kainotomo.yml`
-- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.53.0`
+- Build worker image to include hrms with command in folder images/kainotomo `docker build --no-cache -f ./images/kainotomo/Containerfile . --tag phalouvas/erpnext-worker:14.54.2`
 - change in file kainotomo.yml image from frappe/erpnext-worker:x.x.x to phalouvas/erpnext-worker:latest
 - `docker compose --project-name frappe_docker -f kainotomo.yml up -d`
 - `docker compose --project-name frappe_docker -f kainotomo.yml down`
@@ -110,7 +110,7 @@ This repository is only for container related stuff. You also might want to cont
 
 ### Development Server
 - Fetch from remotes
-- Fix version 14.53.0 to new in repository gitops
+- Fix version 14.54.2 to new in repository gitops
 - Add any necessary apps in file ~/kainotomo/frappe_docker/images/custom/apps.json
 
 #### V14
@@ -124,11 +124,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.4 \
     --build-arg=NODE_VERSION=16.18.0 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:14.53.0 \
+    --tag=phalouvas/erpnext-worker:14.54.2 \
     --file=images/custom/Containerfile .
 
-  docker push phalouvas/erpnext-worker:14.53.0
-  docker tag phalouvas/erpnext-worker:14.53.0 phalouvas/erpnext-worker:version-14
+  docker push phalouvas/erpnext-worker:14.54.2
+  docker tag phalouvas/erpnext-worker:14.54.2 phalouvas/erpnext-worker:version-14
   docker push phalouvas/erpnext-worker:version-14
 
     ```
@@ -144,11 +144,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.6 \
     --build-arg=NODE_VERSION=18.18.2 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:15.5.0 \
+    --tag=phalouvas/erpnext-worker:15.6.1 \
     --file=images/custom/Containerfile .
 
-  docker push phalouvas/erpnext-worker:15.5.0
-  docker tag phalouvas/erpnext-worker:15.5.0 phalouvas/erpnext-worker:version-15
+  docker push phalouvas/erpnext-worker:15.6.1
+  docker tag phalouvas/erpnext-worker:15.6.1 phalouvas/erpnext-worker:version-15
   docker push phalouvas/erpnext-worker:version-15
 
     ```
