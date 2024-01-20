@@ -49,4 +49,9 @@ services:
 
 volumes:
   mariadb-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /mnt/c/Users/Public/Documents/mariadb
   postgresql-data:
