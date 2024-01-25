@@ -124,11 +124,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.4 \
     --build-arg=NODE_VERSION=16.18.0 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:14.61.1 \
+    --tag=phalouvas/erpnext-worker:14.61.1b \
     --file=images/custom/Containerfile .
 
-  docker push phalouvas/erpnext-worker:14.61.1
-  docker tag phalouvas/erpnext-worker:14.61.1 phalouvas/erpnext-worker:version-14
+  docker push phalouvas/erpnext-worker:14.61.1b
+  docker tag phalouvas/erpnext-worker:14.61.1b phalouvas/erpnext-worker:version-14
   docker push phalouvas/erpnext-worker:version-14
 
     ```
@@ -144,11 +144,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.6 \
     --build-arg=NODE_VERSION=18.18.2 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:15.10.5 \
+    --tag=phalouvas/erpnext-worker:15.10.5b \
     --file=images/custom/Containerfile .
 
-  docker push phalouvas/erpnext-worker:15.10.5
-  docker tag phalouvas/erpnext-worker:15.10.5 phalouvas/erpnext-worker:version-15
+  docker push phalouvas/erpnext-worker:15.10.5b
+  docker tag phalouvas/erpnext-worker:15.10.5b phalouvas/erpnext-worker:version-15
   docker push phalouvas/erpnext-worker:version-15
 
     ```
