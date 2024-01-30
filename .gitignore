@@ -29,3 +29,5 @@ venv
 backups
 
 !.devcontainer
+# NodeJS
+node_modules
