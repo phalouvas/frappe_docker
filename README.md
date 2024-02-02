@@ -124,11 +124,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.4 \
     --build-arg=NODE_VERSION=16.18.0 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:14.61.2 \
+    --tag=phalouvas/erpnext-worker:14.61.3 \
     --file=images/custom/Containerfile .
 
-  docker push phalouvas/erpnext-worker:14.61.2
-  docker tag phalouvas/erpnext-worker:14.61.2 phalouvas/erpnext-worker:version-14
+  docker push phalouvas/erpnext-worker:14.61.3
+  docker tag phalouvas/erpnext-worker:14.61.3 phalouvas/erpnext-worker:version-14
   docker push phalouvas/erpnext-worker:version-14
 
     ```
