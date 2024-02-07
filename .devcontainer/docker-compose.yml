@@ -12,22 +12,29 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
 
-  # Enable PostgreSQL only if you use it, see development/README.md for more information.
-  # postgresql:
-  #   image: postgres:11.8
-  #   environment:
-  #     POSTGRES_PASSWORD: 123
-  #   volumes:
-  #     - postgresql-data:/var/lib/postgresql/data
-
   redis-cache:
     image: redis:alpine
+    volumes:
+      - type: volume
+        source: redis-cache-data
+        target: /data
+        volume: {}
 
   redis-queue:
     image: redis:alpine
+    volumes:
+      - type: volume
+        source: redis-queue-data
+        target: /data
+        volume: {}
 
   redis-socketio:
     image: redis:alpine
+    volumes:
+      - type: volume
+        source: redis-socketio-data
+        target: /data
+        volume: {}
 
   frappe:
     image: frappe/bench:latest
@@ -49,4 +56,6 @@ services:
 
 volumes:
   mariadb-data:
-  postgresql-data:
+  redis-cache-data:
+  redis-queue-data:
+  redis-socketio-data:
