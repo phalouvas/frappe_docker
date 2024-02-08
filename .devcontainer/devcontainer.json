@@ -25,5 +25,10 @@
     "github.copilot-chat",
     "github.vscode-pull-request-github",
     "donjayamanne.githistory"
-  ]
+  ],
+  "portsAttributes": {
+    "8082": {
+      "label": "phpMyAdmin"
+    }
+  }
 }
