@@ -1,5 +1,23 @@
 version: "3.7"
 services:
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.2.1
+    ports:
+    - mode: ingress
+      target: 80
+      published: 8082
+      protocol: tcp
+    environment:
+      - PMA_HOSTS=mariadb
+      - PMA_PORTS=3306
+      - UPLOAD_LIMIT=2000M
+    volumes:
+    - type: volume
+      source: phpmyadmin-data
+      target: /sessions
+      volume: {}
+
   mariadb:
     image: mariadb:10.6
     command:
@@ -59,3 +77,4 @@ volumes:
   redis-cache-data:
   redis-queue-data:
   redis-socketio-data:
+  phpmyadmin-data:
