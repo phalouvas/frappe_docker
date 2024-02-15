@@ -46,5 +46,9 @@
   {
     "url": "https://github.com/kainotomo/erpnext-restaurant",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/phalouvas/myproperty",
+    "branch": "master"
   }
 ]
