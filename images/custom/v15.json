@@ -50,5 +50,13 @@
   {
     "url": "https://github.com/phalouvas/myproperty",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/frappe/health",
+    "branch": "version-15"
+  },
+  {
+    "url": "https://github.com/phalouvas/swissmedhealth",
+    "branch": "master"
   }
 ]
