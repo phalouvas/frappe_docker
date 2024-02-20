@@ -117,7 +117,7 @@ This repository is only for container related stuff. You also might want to cont
 - Export apps to variable and build image
   ```shell
 
-  export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v14.json)
+  export APPS_JSON_BASE64=$(base64 -w 0 ~/frappe_docker/images/custom/v14.json)
 
   docker build  --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-14 \
@@ -137,7 +137,7 @@ This repository is only for container related stuff. You also might want to cont
 - Export apps to variable and build image
   ```shell
 
-  export APPS_JSON_BASE64=$(base64 -w 0 ~/kainotomo/frappe_docker/images/custom/v15.json)
+  export APPS_JSON_BASE64=$(base64 -w 0 ~/frappe_docker/images/custom/v15.json)
 
   docker build  --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-15 \
