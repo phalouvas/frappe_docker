@@ -19,6 +19,8 @@ services:
       # Enable HTTP Basic auth, using the middleware created above
       - traefik.http.routers.traefik-public-https.middlewares=admin-auth
     command:
+      # Use the test server for Let's Encrypt certificates
+      - --certificatesresolvers.le.acme.caServer=${CASERVER:?No CASERVER set}
       # Enable Docker in Traefik, so that it reads labels from Docker services
       - --providers.docker=true
       # Do not expose all Docker services, only the ones explicitly exposed
