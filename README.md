@@ -137,7 +137,7 @@ This repository is only for container related stuff. You also might want to cont
 - Export apps to variable and build image
   ```shell
 
-  export APPS_JSON_BASE64=$(base64 -w 0 ~/frappe_docker/images/custom/v15.json)
+  export APPS_JSON_BASE64=$(base64 -w 0 ~/frappe_docker/images/azure/v15.json)
 
   docker build  --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
     --build-arg=FRAPPE_BRANCH=version-15 \
@@ -145,7 +145,7 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=NODE_VERSION=18.18.2 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
     --tag=phalouvas/erpnext-worker:15.15.0 \
-    --file=images/custom/Containerfile .
+    --file=images/azure/Containerfile .
 
   docker push phalouvas/erpnext-worker:15.15.0
   docker tag phalouvas/erpnext-worker:15.15.0 phalouvas/erpnext-worker:version-15
