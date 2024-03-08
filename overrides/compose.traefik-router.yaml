@@ -1,0 +1,6 @@
+services:
+  traefik:
+    command:
+      - --configFile=/home/traefik.toml
+    volumes:
+      - ${TRAEFIK_CONFIG_FILE:-traefik.toml}:/home/traefik.toml
