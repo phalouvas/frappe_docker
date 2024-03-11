@@ -1,6 +1,4 @@
 services:
   traefik:
-    command:
-      - --configFile=/home/traefik-router.yaml
     volumes:
-      - ${TRAEFIK_CONFIG_FILE:-traefik-router.yaml}:/home/traefik-router.yaml
+      - ${TRAEFIK_CONFIG_FILE:-traefik.yaml}:/etc/traefik/traefik.yaml:rw
