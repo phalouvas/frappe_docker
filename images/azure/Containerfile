@@ -19,6 +19,7 @@ RUN useradd -ms /bin/bash frappe \
     vim \
     nginx \
     gettext-base \
+    file \
     poppler-utils \
     tesseract-ocr-ell \
     # weasyprint dependencies
