@@ -95,7 +95,7 @@ This repository is only for container related stuff. You also might want to cont
   bench --site erpdemo.kainotomo.com enable-scheduler
 
   bench new-site smart.numuscy.com --db-name numuscy --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app smartpractices
-  bench --site erpdemo.kainotomo.com enable-scheduler
+  bench --site smart.numuscy.com enable-scheduler
 
   ```
 
