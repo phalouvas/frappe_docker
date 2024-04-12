@@ -62,5 +62,9 @@
   {
     "url": "https://github.com/kainotomo/invoice2erpnext.git",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/phalouvas/smartpractices.git",
+    "branch": "master"
   }
 ]
