@@ -97,6 +97,9 @@ This repository is only for container related stuff. You also might want to cont
   bench new-site smart.numuscy.com --db-name numuscy --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments
   bench --site smart.numuscy.com enable-scheduler
 
+  bench new-site gpapachristodoulou.com --db-name gpapa --mariadb-root-password pRep5v3Nzw_aMMV --admin-password EL5:5aydh72rQjP --install-app erpnext --install-app payments
+  bench --site gpapachristodoulou.com enable-scheduler
+
   ```
 
   ## How to schedule backups
