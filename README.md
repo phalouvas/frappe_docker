@@ -70,34 +70,34 @@ This repository is only for container related stuff. You also might want to cont
 - To create a new site with backend shell 
   ```shell
 
-  bench new-site erpnext.kainotomo.com --db-name kainotomo_erpnext --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments --install-app paypalstandardpayments --install-app digital_subscriptions --install-app vies_validation --set-default
+  bench new-site erpnext.kainotomo.com --db-name kainotomo_erpnext --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app hrms --install-app erpnext --install-app payments --install-app paypalstandardpayments --install-app digital_subscriptions --install-app vies_validation --set-default
   bench --site erpnext.kainotomo.com enable-scheduler
   
-  bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app payments --install-app hrms --install-app erpnext
+  bench new-site optimuslandcy.com --db-name optimusland --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app payments --install-app hrms --install-app erpnext
   bench --site optimuslandcy.com enable-scheduler
 
-  bench new-site erp.detima.com --db-name detima --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext
+  bench new-site erp.detima.com --db-name detima --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app hrms --install-app erpnext
   bench --site erp.detima.com enable-scheduler
 
-  bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app theodoulou
+  bench new-site theodoulouparts.com --db-name theodoulouparts --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app hrms --install-app erpnext --install-app theodoulou
   bench --site theodoulouparts.com enable-scheduler
 
-  bench new-site megarton.com --db-name megarton --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app pos_screen
+  bench new-site megarton.com --db-name megarton --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app hrms --install-app erpnext --install-app pos_screen
   bench --site megarton.com enable-scheduler
 
-  bench new-site cyprussportsfever.com --db-name sports --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app sports_management
+  bench new-site cyprussportsfever.com --db-name sports --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app erpnext --install-app payments --install-app sports_management
   bench --site cyprussportsfever.com enable-scheduler
 
-  bench new-site app.swissmedhealth.com --db-name swissmed --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments --install-app hrms --install-app healthcare --set-default
+  bench new-site app.swissmedhealth.com --db-name swissmed --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app erpnext --install-app payments --install-app hrms --install-app healthcare --set-default
   bench --site app.swissmedhealth.com enable-scheduler
 
-  bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext
+  bench new-site erpdemo.kainotomo.com --db-name kainotomo_demo --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app hrms --install-app erpnext
   bench --site erpdemo.kainotomo.com enable-scheduler
 
-  bench new-site smart.numuscy.com --db-name numuscy --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app hrms --install-app erpnext --install-app payments
+  bench new-site smart.numuscy.com --db-name numuscy --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app hrms --install-app erpnext --install-app payments
   bench --site smart.numuscy.com enable-scheduler
 
-  bench new-site gpapachristodoulou.com --db-name gpapa --mariadb-root-password pRep5v3Nzw_aMMV --admin-password pRep5v3Nzw_aMMV --install-app erpnext --install-app payments
+  bench new-site gpapachristodoulou.com --db-name gpapa --mariadb-root-password xxxxxxxx --admin-password xxxxxxxx --install-app erpnext --install-app payments
   bench --site gpapachristodoulou.com enable-scheduler
 
   ```
