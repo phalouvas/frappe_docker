@@ -122,11 +122,11 @@ This repository is only for container related stuff. You also might want to cont
     --build-arg=PYTHON_VERSION=3.11.6 \
     --build-arg=NODE_VERSION=18.18.2 \
     --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:15.33.0 \
+    --tag=phalouvas/erpnext-worker:15.33.5 \
     --file=images/azure/Containerfile .
 
-  docker push phalouvas/erpnext-worker:15.33.0
-  docker tag phalouvas/erpnext-worker:15.33.0 phalouvas/erpnext-worker:version-15
+  docker push phalouvas/erpnext-worker:15.33.5
+  docker tag phalouvas/erpnext-worker:15.33.5 phalouvas/erpnext-worker:version-15
   docker push phalouvas/erpnext-worker:version-15
 
     ```
