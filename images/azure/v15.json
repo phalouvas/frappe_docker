@@ -70,5 +70,9 @@
   {
     "url": "https://github.com/phalouvas/optimusland.git",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/phalouvas/erpnext_cyprus",
+    "branch": "master"
   }
 ]
