@@ -74,5 +74,9 @@
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/phalouvas/nimbus_theme",
+    "branch": "master"
   }
 ]
