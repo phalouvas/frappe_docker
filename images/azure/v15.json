@@ -79,5 +79,9 @@
   {
     "url": "https://github.com/kainotomo/nimbus_theme.git",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/kainotomo/pakore.git",
+    "branch": "master"
   }
 ]
