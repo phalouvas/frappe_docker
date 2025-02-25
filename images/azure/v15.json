@@ -83,5 +83,9 @@
   {
     "url": "https://github.com/kainotomo/pakore.git",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/phalouvas/cyprus_law.git",
+    "branch": "master"
   }
 ]
