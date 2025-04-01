@@ -65,6 +65,10 @@
     "branch": "master"
   },
   {
+    "url": "https://github.com/phalouvas/doc2sys.git",
+    "branch": "master"
+  },
+  {
     "url": "https://github.com/phalouvas/smartpractices.git",
     "branch": "master"
   },
