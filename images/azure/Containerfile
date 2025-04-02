@@ -20,8 +20,6 @@ RUN useradd -ms /bin/bash frappe \
     nginx \
     gettext-base \
     file \
-    poppler-utils \
-    tesseract-ocr-ell \
     # weasyprint dependencies
     libpango-1.0-0 \
     libharfbuzz0b \
