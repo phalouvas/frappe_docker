@@ -95,5 +95,9 @@
   {
     "url": "https://github.com/phalouvas/isellandfix.git",
     "branch": "master"
+  },
+  {
+    "url": "https://github.com/phalouvas/cognitive_folio.git",
+    "branch": "master"
   }
 ]
