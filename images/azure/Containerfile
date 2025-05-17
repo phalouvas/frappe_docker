@@ -130,6 +130,7 @@ RUN export APP_INSTALL_ARGS="" && \
   echo "{}" > sites/common_site_config.json && \
   bench pip install azure-ai-documentintelligence \
   bench pip install yfinance \
+  bench pip install openai \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
 FROM base as backend
