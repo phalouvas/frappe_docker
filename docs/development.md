@@ -144,7 +144,7 @@ sed -i '/redis/d' ./Procfile
 You can create a new site with the following command:
 
 ```shell
-bench new-site --no-mariadb-socket sitename
+bench new-site --mariadb-user-host-login-scope=% sitename
 ```
 
 sitename MUST end with .localhost for trying deployments locally.
@@ -152,18 +152,18 @@ sitename MUST end with .localhost for trying deployments locally.
 for example:
 
 ```shell
-bench new-site --no-mariadb-socket development.localhost
+bench new-site --mariadb-user-host-login-scope=% development.localhost
 ```
 
 The same command can be run non-interactively as well:
 
 ```shell
-bench new-site --mariadb-root-password 123 --admin-password admin --no-mariadb-socket development.localhost
+bench new-site --db-root-password 123 --admin-password admin --mariadb-user-host-login-scope=% development.localhost
 ```
 
 The command will ask the MariaDB root password. The default root password is `123`.
 This will create a new site and a `development.localhost` directory under `frappe-bench/sites`.
-The option `--no-mariadb-socket` will configure site's database credentials to work with docker.
+The option `--mariadb-user-host-login-scope=%` will configure site's database credentials to work with docker.
 You may need to configure your system /etc/hosts if you're on Linux, Mac, or its Windows equivalent.
 
 To setup site with PostgreSQL as database use option `--db-type postgres` and `--db-host postgresql`. (Available only v12 onwards, currently NOT available for ERPNext).
@@ -221,6 +221,11 @@ bench --site development.localhost install-app erpnext
 ```
 
 Note: Both frappe and erpnext must be on branch with same name. e.g. version-14
+You can use the `switch-to-branch` command to align versions if you get an error about mismatching versions.
+
+```shell
+bench switch-to-branch version-xx
+```
 
 ### Start Frappe without debugging
 
@@ -238,7 +243,7 @@ Note: To start bench with debugger refer section for debugging.
 
 Most developers work with numerous clients and versions. Moreover, apps may be required to be installed by everyone on the team working for a client.
 
-This is simplified using a script to automate the process of creating a new bench / site and installing the required apps. `Administrator` password is for created sites is `admin`.
+This is simplified using a script to automate the process of creating a new bench / site and installing the required apps. The `Administrator` password for created sites is `admin`.
 
 Sample `apps-example.json` is used by default, it installs erpnext on current stable release. To install custom apps, copy the `apps-example.json` to custom json file and make changes to list of apps. Pass this file to the `installer.py` script.
 

@@ -18,5 +18,4 @@ services:
       - redis-queue-data:/data
 
 volumes:
-  redis-cache-data:
   redis-queue-data:
