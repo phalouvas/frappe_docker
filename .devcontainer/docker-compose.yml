@@ -26,7 +26,7 @@ services:
     - --skip-innodb-read-only-compressed
     environment:
       MYSQL_ROOT_PASSWORD: 123
-    image: mariadb:11.4
+    image: mariadb:11.8
     volumes:
       - mariadb-data:/var/lib/mysql
 
