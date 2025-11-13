@@ -19,6 +19,8 @@ services:
       # Enable HTTP Basic auth, using the middleware created above
       - traefik.http.routers.traefik-public-https.middlewares=admin-auth
     command:
+      # Enable v2 rule syntax compatibility for gradual migration
+      - --core.defaultRuleSyntax=v2
       # Use the test server for Let's Encrypt certificates
       - --certificatesresolvers.le.acme.caServer=${CASERVER:?No CASERVER set}
       # Enable Docker in Traefik, so that it reads labels from Docker services
