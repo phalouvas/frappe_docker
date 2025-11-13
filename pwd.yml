@@ -141,7 +141,7 @@ services:
       - logs:/home/frappe/frappe-bench/logs
 
   redis-queue:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     deploy:
       restart_policy:
         condition: on-failure
@@ -149,7 +149,7 @@ services:
       - redis-queue-data:/data
 
   redis-cache:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     deploy:
       restart_policy:
         condition: on-failure

@@ -8,12 +8,12 @@ services:
       - redis-queue
 
   redis-cache:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     volumes:
       - redis-cache-data:/data
 
   redis-queue:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     volumes:
       - redis-queue-data:/data
 

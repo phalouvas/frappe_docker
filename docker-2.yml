@@ -107,38 +107,28 @@ services:
       volume: {}
 
   redis-cache:
-    image: redis:6.2-alpine
-    restart: unless-stopped
+    image: redis:7.4-alpine
     networks:
       bench-network: null
       mariadb-network: null
+    restart: unless-stopped
     volumes:
-    - type: volume
-      source: redis-cache-data
-      target: /data
-      volume: {}
+      - type: volume
+        source: redis-cache-data
+        target: /data
+        volume: {}
   redis-queue:
-    image: redis:6.2-alpine
-    restart: unless-stopped
-    networks:
+    image: redis:7.4-alpine
       bench-network: null
       mariadb-network: null
+    restart: unless-stopped
     volumes:
-    - type: volume
-      source: redis-queue-data
-      target: /data
-      volume: {}
+      - type: volume
+        source: redis-queue-data
+        target: /data
+        volume: {}
   redis-socketio:
-    image: redis:6.2-alpine
-    restart: unless-stopped
-    networks:
-      bench-network: null
-      mariadb-network: null
-    volumes:
-    - type: volume
-      source: redis-socketio-data
-      target: /data
-      volume: {}
+    image: redis:7.4-alpine
 
   scheduler:
     command:

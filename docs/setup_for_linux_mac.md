@@ -160,23 +160,14 @@ services:
       - sites:/home/frappe/frappe-bench/sites
       - logs:/home/frappe/frappe-bench/logs
 
-  redis-queue:
-    image: redis:6.2-alpine
-    platform: linux/amd64
-    deploy:
-      restart_policy:
-        condition: on-failure
-    volumes:
-      - redis-queue-data:/data
-
   redis-cache:
-    image: redis:6.2-alpine
-    platform: linux/amd64
-    deploy:
-      restart_policy:
-        condition: on-failure
+    image: redis:7.4-alpine
+    restart: unless-stopped
     volumes:
-      - redis-cache-data:/data
+      - redis-cache-vol:/data
+
+  redis-queue:
+    image: redis:7.4-alpine
 
   scheduler:
     image: frappe/erpnext:v15

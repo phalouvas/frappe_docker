@@ -1,36 +1,45 @@
 version: "3.3"
 
 services:
-  mailhog:
-    image: mailhog/mailhog:latest
+  mailpit:
+    image: axllent/mailpit:latest
     restart: unless-stopped
     ports:
     - mode: ingress
       target: 8025
       published: "${MAILHOG_PUBLISHED_PORT:-8025}"
       protocol: tcp
+    - mode: ingress
+      target: 1025
+      published: "1025"
+      protocol: tcp
     labels:
       traefik.docker.network: traefik-public
       traefik.port: "{$MAILHOG_PUBLISHED_PORT:-8025}"
       traefik.enable: "true"
-      traefik.http.routers.mailhog-http.entrypoints: http
-      traefik.http.routers.mailhog-http.middlewares: https-redirect
-      traefik.http.routers.mailhog-http.rule: Host(`${MAILHOG_HOSTNAME}`)
-      traefik.http.routers.mailhog-http.service: mailhog
-      traefik.http.routers.mailhog-https.entrypoints: https
-      traefik.http.routers.mailhog-https.rule: Host(`${MAILHOG_HOSTNAME}`)
-      traefik.http.routers.mailhog-https.service: mailhog
-      traefik.http.routers.mailhog-https.tls: "true"
-      traefik.http.routers.mailhog-https.tls.certresolver: le
-      traefik.http.services.mailhog.loadbalancer.server.port: "8025"
+      traefik.http.routers.mailpit-http.entrypoints: http
+      traefik.http.routers.mailpit-http.middlewares: https-redirect
+      traefik.http.routers.mailpit-http.rule: Host(`${MAILHOG_HOSTNAME}`)
+      traefik.http.routers.mailpit-http.service: mailpit
+      traefik.http.routers.mailpit-https.entrypoints: https
+      traefik.http.routers.mailpit-https.rule: Host(`${MAILHOG_HOSTNAME}`)
+      traefik.http.routers.mailpit-https.service: mailpit
+      traefik.http.routers.mailpit-https.tls: "true"
+      traefik.http.routers.mailpit-https.tls.certresolver: le
+      traefik.http.services.mailpit.loadbalancer.server.port: "8025"
     networks:
       - mailhog-network
       - traefik-public
     volumes:
     - type: volume
-      source: mailhog-data
-      target: /sessions
+      source: mailpit-data
+      target: /data
       volume: {}
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 networks:
   mailhog-network:
@@ -41,5 +50,5 @@ networks:
     external: true
 
 volumes:
-  mailhog-data:
-    name: mailhog-data
+  mailpit-data:
+    name: mailpit-data

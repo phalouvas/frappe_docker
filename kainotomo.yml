@@ -369,17 +369,17 @@ services:
       volume: {}
 
   redis-cache:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     networks:
-      default: null
+      bench-network: null
     volumes:
     - type: volume
       source: redis-cache-data
       target: /data
       volume: {}
   redis-queue:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     networks:
       default: null
@@ -388,16 +388,12 @@ services:
       source: redis-queue-data
       target: /data
       volume: {}
+  volume: {}
   redis-socketio:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     networks:
-      default: null
-    volumes:
-    - type: volume
-      source: redis-socketio-data
-      target: /data
-      volume: {}
+      bench-network: null
 
   scheduler:
     command:

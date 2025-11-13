@@ -108,7 +108,7 @@ services:
       volume: {}
 
   redis-cache:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     networks:
       bench-network: null
@@ -119,7 +119,7 @@ services:
       target: /data
       volume: {}
   redis-queue:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     networks:
       bench-network: null
@@ -130,7 +130,7 @@ services:
       target: /data
       volume: {}
   redis-socketio:
-    image: redis:6.2-alpine
+    image: redis:7.4-alpine
     restart: unless-stopped
     networks:
       bench-network: null
