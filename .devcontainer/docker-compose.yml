@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.2.1
+    image: phpmyadmin/phpmyadmin:5.2.3
     ports:
     - mode: ingress
       target: 80

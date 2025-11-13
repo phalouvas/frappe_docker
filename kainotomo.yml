@@ -73,7 +73,7 @@ services:
       volume: {}
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.2.0
+    image: phpmyadmin/phpmyadmin:5.2.3
     restart: unless-stopped
     environment:
       - PMA_HOSTS=db

@@ -7,7 +7,7 @@ services:
       - db
 
   db:
-    image: postgres:13.5
+    image: postgres:16.6
     command: []
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD:?No db password set}
