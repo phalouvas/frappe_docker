@@ -19,14 +19,14 @@ services:
       volume: {}
 
   mariadb:
-    image: mariadb:10.6
     command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --skip-character-set-client-handshake
-      - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci
+    - --skip-character-set-client-handshake
+    - --skip-innodb-read-only-compressed
     environment:
       MYSQL_ROOT_PASSWORD: 123
+    image: mariadb:11.4
     volumes:
       - mariadb-data:/var/lib/mysql
 

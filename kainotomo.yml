@@ -62,7 +62,7 @@ services:
       - mysqladmin ping -h localhost --password=xxxxxxxx
       interval: 1s
       retries: 15
-    image: mariadb:10.6
+    image: mariadb:11.4
     restart: unless-stopped
     networks:
       default: null

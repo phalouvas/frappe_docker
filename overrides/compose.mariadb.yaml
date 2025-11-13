@@ -8,7 +8,7 @@ services:
         condition: service_healthy
 
   db:
-    image: mariadb:10.6
+    image: mariadb:11.4
     healthcheck:
       test: mysqladmin ping -h localhost --password=${DB_PASSWORD}
       interval: 1s
@@ -17,7 +17,7 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
-      - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
+      - --skip-innodb-read-only-compressed
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?No db password set}
     volumes:
