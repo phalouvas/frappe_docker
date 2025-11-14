@@ -46,4 +46,4 @@ services:
 networks:
   traefik-public:
     name: traefik-public
-    external: false
+    external: true

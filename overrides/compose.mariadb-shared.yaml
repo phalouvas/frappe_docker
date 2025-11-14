@@ -27,7 +27,7 @@ services:
 networks:
   mariadb-network:
     name: mariadb-network
-    external: false
+    external: true
 
 volumes:
   db-data:

@@ -47,6 +47,13 @@ services:
       - ${HTTPS_PUBLISH_PORT:-443}:443
     volumes:
       - cert-data:/certificates
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    name: traefik-public
+    external: true
 
 volumes:
   cert-data:

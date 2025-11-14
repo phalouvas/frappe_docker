@@ -26,6 +26,13 @@ services:
       MARIADB_AUTO_UPGRADE: 1
     volumes:
       - db-data:/var/lib/mysql
+    networks:
+      - mariadb-network
+
+networks:
+  mariadb-network:
+    name: mariadb-network
+    external: true
 
 volumes:
   db-data:
