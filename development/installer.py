@@ -30,6 +30,7 @@ def main():
     parser = get_args_parser()
     args = parser.parse_args()
     init_bench_if_not_exist(args)
+    install_additional_packages(args)
     create_site_in_bench(args)
 
 
@@ -143,6 +144,18 @@ def init_bench_if_not_exist(args):
             init_command,
         ]
         subprocess.call(command, env=env, cwd=os.getcwd())
+        # Rename git remotes to 'origin' for VS Code compatibility
+        apps_dir = os.path.join(os.getcwd(), args.bench_name, "apps")
+        if os.path.exists(apps_dir):
+            for app in os.listdir(apps_dir):
+                app_path = os.path.join(apps_dir, app)
+                if os.path.isdir(app_path) and os.path.exists(os.path.join(app_path, ".git")):
+                    result = subprocess.run(["git", "remote"], cwd=app_path, capture_output=True, text=True)
+                    if result.returncode == 0:
+                        remote_name = result.stdout.strip()
+                        if remote_name and remote_name != 'origin':
+                            subprocess.run(["git", "remote", "rename", remote_name, "origin"], cwd=app_path)
+                            cprint(f"Renamed remote '{remote_name}' to 'origin' for {app}", level=3)
         cprint("Configuring Bench ...", level=2)
         cprint("Set db_host", level=3)
         if args.db_type:
@@ -195,6 +208,29 @@ def init_bench_if_not_exist(args):
         )
     except subprocess.CalledProcessError as e:
         cprint(e.output, level=1)
+
+
+def install_additional_packages(args):
+    cprint("Installing additional packages...", level=2)
+    packages = [
+        "azure-ai-documentintelligence",
+        "yfinance",
+        "openai",
+        "PyPDF2",
+        "tiktoken",
+        "duckduckgo_search",
+        "requests",
+        "beautifulsoup4",
+        "markdownify",
+        "pdfplumber",
+        "edgartools"
+    ]
+    for package in packages:
+        cprint(f"Installing {package}...", level=3)
+        subprocess.call(
+            ["bench", "pip", "install", package],
+            cwd=os.path.join(os.getcwd(), args.bench_name),
+        )
 
 
 def create_site_in_bench(args):
