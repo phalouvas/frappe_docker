@@ -158,9 +158,9 @@ This repository is only for container related stuff. You also might want to cont
     --tag=phalouvas/erpnext-worker:version-15 \
     --file=images/azure/Containerfile .
 
-  docker tag phalouvas/erpnext-worker:version-15 phalouvas/erpnext-worker:15.92.1
+  docker tag phalouvas/erpnext-worker:version-15 phalouvas/erpnext-worker:15.94.1
   docker push phalouvas/erpnext-worker:version-15
-  docker push phalouvas/erpnext-worker:15.92.1
+  docker push phalouvas/erpnext-worker:15.94.1
 
     ```
 
