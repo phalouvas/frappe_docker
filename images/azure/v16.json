@@ -5,7 +5,7 @@
   },
   {
     "url": "https://github.com/frappe/payments",
-    "branch": "main"
+    "branch": "develop"
   },
   {
     "url": "https://github.com/frappe/hrms",
@@ -13,7 +13,7 @@
   },
   {
     "url": "https://github.com/frappe/webshop",
-    "branch": "main"
+    "branch": "develop"
   },
   {
     "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
@@ -53,7 +53,7 @@
   },
   {
     "url": "https://github.com/frappe/health",
-    "branch": "main"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/eumaria",
