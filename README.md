@@ -132,50 +132,49 @@ This repository is only for container related stuff. You also might want to cont
 
 ## Upgrade
 
-### Development Server
+### Automated Multi-Version Build (v14, v15, v16)
+
+The `build_all_versions.sh` script automates building, tagging, and pushing all three ERPNext versions to Docker Hub.
+
+**Setup:**
+1. Ensure the required JSON app configuration files exist:
+   - `images/custom/v14.json` - v14 apps configuration
+   - `images/azure/v15.json` - v15 apps configuration
+   - `images/azure/v16.json` - v16 apps configuration
+
+2. Make the script executable:
+   ```shell
+   chmod +x build_all_versions.sh
+   ```
+
+3. Docker Hub credentials must be available (already logged in via `docker login`)
+
+**Usage:**
+```shell
+./build_all_versions.sh
+```
+
+**To release a new version:**
+Edit the `RELEASE_VERSION` variable in `build_all_versions.sh`:
+```bash
+RELEASE_VERSION="1.1"  # Change from 1.0 to 1.1, etc.
+```
+
+**Expected Output:**
+The script will build and push:
+- `phalouvas/erpnext-worker:14-1.0` (release tag)
+- `phalouvas/erpnext-worker:14-latest` (latest tag)
+- `phalouvas/erpnext-worker:15-1.0` (release tag)
+- `phalouvas/erpnext-worker:15-latest` (latest tag)
+- `phalouvas/erpnext-worker:16-1.0` (release tag)
+- `phalouvas/erpnext-worker:16-latest` (latest tag)
+
+---
+
+### Development Server (Manual Build - Legacy)
 - Fetch from remotes
 - Fix version 14.61.1 to new in repository gitops
 - Add any necessary apps in file ~/kainotomo/frappe_docker/images/custom/apps.json
-
-#### V14
-- Export apps to variable and build image
-  ```shell
-
-  export APPS_JSON_BASE64=$(base64 -w 0 ~/frappe_docker/images/custom/v14.json)
-
-  docker build  --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
-    --build-arg=FRAPPE_BRANCH=version-14 \
-    --build-arg=PYTHON_VERSION=3.11.4 \
-    --build-arg=NODE_VERSION=16.18.0 \
-    --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:14.62.4 \
-    --file=images/custom/Containerfile .
-
-  docker push phalouvas/erpnext-worker:14.62.4
-  docker tag phalouvas/erpnext-worker:14.62.4 phalouvas/erpnext-worker:version-14
-  docker push phalouvas/erpnext-worker:version-14
-
-    ```
-
-#### V15
-- Export apps to variable and build image
-  ```shell
-
-  export APPS_JSON_BASE64=$(base64 -w 0 ~/frappe_docker/images/azure/v15.json)
-
-  docker build  --no-cache --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
-    --build-arg=FRAPPE_BRANCH=version-15 \
-    --build-arg=PYTHON_VERSION=3.11.6 \
-    --build-arg=NODE_VERSION=18.18.2 \
-    --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
-    --tag=phalouvas/erpnext-worker:version-15 \
-    --file=images/azure/Containerfile .
-
-  docker tag phalouvas/erpnext-worker:version-15 phalouvas/erpnext-worker:15.94.1
-  docker push phalouvas/erpnext-worker:version-15
-  docker push phalouvas/erpnext-worker:15.94.1
-
-    ```
 
 ### Update localhost
 - `docker compose --project-name erpnext-v15 down`
