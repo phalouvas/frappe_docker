@@ -54,8 +54,8 @@ build_and_push() {
 
 # Build v14
 build_and_push 14 \
-    ~/frappe_docker/images/custom/v14.json \
-    images/custom/Containerfile \
+    ~/frappe_docker/images/azure/v14.json \
+    images/azure/Containerfile \
     version-14 \
     3.10.13 \
     16.20.2
