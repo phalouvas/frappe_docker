@@ -54,6 +54,18 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
+  v16:
+    uses: ./.github/workflows/docker-build-push.yml
+    with:
+      repo: erpnext
+      version: "16"
+      push: ${{ github.repository == 'frappe/frappe_docker' && github.event_name != 'pull_request' }}
+      python_version: 3.14.2
+      node_version: 24.12.0
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+
   update_versions:
     name: Update example.env and pwd.yml
     runs-on: ubuntu-latest
@@ -62,7 +74,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup Python
         uses: actions/setup-python@v6
@@ -113,4 +125,4 @@ jobs:
         run: |
           git clone git@github.com:frappe/helm.git && cd helm
           pip install -r release_wizard/requirements.txt
-          ./release_wizard/wizard 15 patch --remote origin --ci
+          ./release_wizard/wizard 16 patch --remote origin --ci
