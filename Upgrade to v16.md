@@ -89,3 +89,71 @@ All phalouvas/kainotomo-* apps using `master` branch:
 4. **Advanced:** Fork and maintain custom v16-compatible branches
 
 **Recommendation:** Test with `develop` first. If issues arise, remove apps temporarily.
+
+---
+
+## How to Upgrade a Site from v15 to v16 (safe, step-by-step)
+
+### Preconditions
+- v15 stack runs on port 8084; v16 stack on port 8085 (Traefik routing in place).
+- The site’s domain is routed **either** to v15 **or** to v16, never both.
+- You have shell access to the host running the stack (desktop-2/docker-1/etc.).
+
+### 1) Backup on v15 (database + files)
+```bash
+# On v15 backend container
+docker exec -it erpnext-v15-backend-1 bench --site <site> backup
+# Optional: copy backup out if desired
+# docker cp erpnext-v15-backend-1:/home/frappe/frappe-bench/sites/<site>/private/backups ./backups-<site>
+```
+Confirm backup files exist before proceeding.
+
+### 2) Adjust routing (Traefik) to move the site to v16
+- Edit the v15 compose to **remove** the site’s domain from the v15 Host() list.
+- Edit the v16 compose to **add** the site’s domain to the v16 Host() list.
+- Bring the stacks up to apply labels:
+```bash
+# Example for desktop-2
+docker compose --project-name erpnext-v15 -f ~/gitops/desktop-2/erpnext-v15.yaml up -d
+docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml up -d
+```
+Traefik will now route that domain to v16 (port 8085).
+
+### 3) Restore the site into v16
+```bash
+# Copy or place the backup (.sql.gz and files) into v16 sites folder if needed
+# Then inside v16 backend
+docker exec -it erpnext-v16-backend-1 bash -lc "bench --site <site> restore /home/frappe/frappe-bench/sites/<site>/private/backups/<backup>.sql.gz"
+docker exec -it erpnext-v16-backend-1 bench --site <site> migrate
+docker exec -it erpnext-v16-backend-1 bench --site <site> clear-cache
+docker exec -it erpnext-v16-backend-1 bench --site <site> clear-website-cache
+```
+
+### 4) Validate on v16
+- Quick checks: login, desk load, key doctypes, reports, print, email, attachments.
+- Custom apps: run through critical flows specific to the site.
+- Logs to watch:
+```bash
+docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml logs -f frontend backend queue-long queue-short scheduler
+```
+
+### 5) If issues → Rollback to v15
+- Revert routing: remove the domain from v16 Host() list, add back to v15 Host().
+- Bring stacks up to apply labels:
+```bash
+docker compose --project-name erpnext-v15 -f ~/gitops/desktop-2/erpnext-v15.yaml up -d
+docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml up -d
+```
+- Restore the last v15 backup if data was changed during the failed v16 attempt:
+```bash
+docker exec -it erpnext-v15-backend-1 bash -lc "bench --site <site> restore /home/frappe/frappe-bench/sites/<site>/private/backups/<backup>.sql.gz"
+```
+
+### 6) Rinse-and-repeat per site
+- Migrate sites one-by-one; keep untouched sites on v15 until validated.
+- Never have the same site served by both stacks concurrently.
+
+### Tips
+- Keep a dated backup per migration attempt.
+- If payments/webshop misbehave (using develop branches), consider disabling those apps for that site before retrying.
+- After all sites migrate cleanly, you can decommission v15 routing.
