@@ -73,8 +73,8 @@ build_and_push 16 \
     ~/frappe_docker/images/azure/v16.json \
     images/azure/Containerfile \
     version-16 \
-    3.12.8 \
-    22.12.0
+    3.14.5 \
+    24.2.0
 
 echo ""
 echo "=========================================="
