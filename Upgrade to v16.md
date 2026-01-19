@@ -157,3 +157,41 @@ docker exec -it erpnext-v15-backend-1 bash -lc "bench --site <site> restore /hom
 - Keep a dated backup per migration attempt.
 - If payments/webshop misbehave (using develop branches), consider disabling those apps for that site before retrying.
 - After all sites migrate cleanly, you can decommission v15 routing.
+
+---
+
+## Desktop-2 Execution Plan (with AI agent assistance)
+
+Goal: Run v15 (8084) and v16 (8085) side-by-side on desktop-2, migrating sites one-by-one using the steps above, with the agent executing commands safely.
+
+What the agent (or human) must know:
+- v15 compose: `~/gitops/desktop-2/erpnext-v15.yaml` (port 8084, hosts: all except v15.kainotomo.com)
+- v16 compose: `~/gitops/desktop-2/erpnext-v16.yaml` (port 8085, hosts: only v15.kainotomo.com right now)
+- Never serve the same site from both stacks at once. Route a domain to exactly one stack.
+- Redis/DB are shared endpoints; the isolation is achieved by not running the same site on both benches simultaneously.
+
+Typical agent workflow per site:
+1) **Backup on v15**
+  - `docker exec -it erpnext-v15-backend-1 bench --site <site> backup`
+  - Optionally `docker cp` backups out.
+2) **Routing swap**
+  - Remove domain from v15 Host() list, add to v16 Host() list in the compose files.
+  - Apply labels: `docker compose --project-name erpnext-v15 -f ~/gitops/desktop-2/erpnext-v15.yaml up -d`
+              `docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml up -d`
+3) **Restore + migrate on v16**
+  - `docker exec -it erpnext-v16-backend-1 bash -lc "bench --site <site> restore /home/frappe/frappe-bench/sites/<site>/private/backups/<backup>.sql.gz"`
+  - `docker exec -it erpnext-v16-backend-1 bench --site <site> migrate`
+  - `docker exec -it erpnext-v16-backend-1 bench --site <site> clear-cache`
+  - `docker exec -it erpnext-v16-backend-1 bench --site <site> clear-website-cache`
+4) **Validate**
+  - Logs: `docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml logs -f frontend backend queue-long queue-short scheduler`
+  - Manual smoke tests for the site.
+5) **Rollback if needed**
+  - Swap domains back to v15; apply labels with the same compose commands as above.
+  - Restore the v15 backup: `docker exec -it erpnext-v15-backend-1 bash -lc "bench --site <site> restore /home/frappe/frappe-bench/sites/<site>/private/backups/<backup>.sql.gz"`
+
+Important guardrails for the agent:
+- Do not edit hosts/ports for other environments (docker-1, docker-2, localhost).
+- Do not run both v15 and v16 for the same domain at the same time.
+- Always take/verify backup before migrating a site.
+- Make routing changes before restore/migrate to ensure the site isn’t reachable from the wrong stack during migration.
