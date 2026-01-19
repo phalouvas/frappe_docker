@@ -31,3 +31,5 @@ backups
 !.devcontainer
 # NodeJS
 node_modules
+
+.build_manifest
