@@ -3,7 +3,7 @@
 set -e
 
 # Release version - update this for new releases
-RELEASE_VERSION="1.0"
+RELEASE_VERSION="1.1"
 BUILD_MANIFEST=".build_manifest"
 
 echo "=========================================="
