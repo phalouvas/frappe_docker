@@ -134,7 +134,7 @@ This repository is only for container related stuff. You also might want to cont
 
 ### Automated Multi-Version Build (v14, v15, v16)
 
-The `build_all_versions.sh` script automates building, tagging, and pushing all three ERPNext versions to Docker Hub.
+The `build.sh` script automates building, tagging, and pushing all three ERPNext versions to Docker Hub.
 
 **Setup:**
 1. Ensure the required JSON app configuration files exist:
@@ -144,18 +144,18 @@ The `build_all_versions.sh` script automates building, tagging, and pushing all 
 
 2. Make the script executable:
    ```shell
-   chmod +x build_all_versions.sh
+   chmod +x build.sh
    ```
 
 3. Docker Hub credentials must be available (already logged in via `docker login`)
 
 **Usage:**
 ```shell
-./build_all_versions.sh
+./build.sh
 ```
 
 **To release a new version:**
-Edit the `RELEASE_VERSION` variable in `build_all_versions.sh`:
+Edit the `RELEASE_VERSION` variable in `build.sh`:
 ```bash
 RELEASE_VERSION="1.1"  # Change from 1.0 to 1.1, etc.
 ```
