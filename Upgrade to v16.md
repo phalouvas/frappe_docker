@@ -25,7 +25,6 @@
 
 | Site Domain | V16 Database Name | Status | Date | Notes |
 |---|---|---|---|---|
-| v15.kainotomo.com | v16_v15_kainotomo_com | ⬜ Not Started | - | Testing site - starts here |
 | cyprussportsfever.com | v16_cyprussportsfever_com | ⬜ Not Started | - | |
 | kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
 | erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
@@ -85,20 +84,20 @@ docker ps -f "name=erpnext-v16-frontend-1" --format "{{.Names}}: {{.Ports}}"
 ```
 **Expected:** `erpnext-v16-frontend-1: 0.0.0.0:8085->8080/tcp`
 
-### Check 3: Verify v15.kainotomo.com is currently on v15 (not v16)
+### Check 3: Verify kainotomo.com is currently on v15 (not v16)
 ```bash
 grep -A 5 "traefik.http.routers.erpnext-v15-https.rule" ~/gitops/desktop-2/erpnext-v15.yaml | grep v15.kainotomo
 ```
-**Expected:** `v15.kainotomo.com` appears in v15 Host() list
+**Expected:** `kainotomo.com` appears in v15 Host() list
 
 ```bash
 grep "traefik.http.routers.erpnext-v16-https.rule" ~/gitops/desktop-2/erpnext-v16.yaml
 ```
-**Expected:** v15.kainotomo.com is NOT in v16 Host() list (or only Host(`v15.kainotomo.com`) if pre-configured)
+**Expected:** kainotomo.com is NOT in v16 Host() list (or only Host(`kainotomo.com`) if pre-configured)
 
 ### Check 4: Verify both stacks use same MariaDB
 ```bash
-docker exec erpnext-v15-backend-1 cat /home/frappe/frappe-bench/sites/v15.kainotomo.com/site_config.json | grep db_host
+docker exec erpnext-v15-backend-1 cat /home/frappe/frappe-bench/sites/kainotomo.com/site_config.json | grep db_host
 docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/.env 2>/dev/null || echo "Check compose file..."
 ```
 **Expected:** Both point to `mariadb-database` or same host
@@ -121,7 +120,7 @@ docker ps -q | wc -l
 |---|---|---|---|
 | v15 on 8084 | ✅/❌ | Port 8084 listening | |
 | v16 on 8085 | ✅/❌ | Port 8085 listening | |
-| v15.kainotomo.com routed to v15 | ✅/❌ | Domain on v15 not v16 | |
+| kainotomo.com routed to v15 | ✅/❌ | Domain on v15 not v16 | |
 | Both use same MariaDB | ✅/❌ | Shared database instance | |
 | Shell access works | ✅/❌ | Can execute commands | |
 | Desktop-2 is PRODUCTION | ✅/❌ | User confirmed | |
@@ -138,7 +137,6 @@ docker ps -q | wc -l
 ## STEP-BY-STEP MIGRATION PROCESS
 
 ### Sites to Upgrade (Desktop-2)
-- v15.kainotomo.com → v16_v15_kainotomo_com
 - cyprussportsfever.com → v16_cyprussportsfever_com
 - kainotomo.com → v16_kainotomo_com
 - erp.detima.com → v16_erp_detima_com
@@ -160,8 +158,8 @@ docker ps -q | wc -l
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-# Example: v15.kainotomo.com
-SITE="v15.kainotomo.com"
+# Example: kainotomo.com
+SITE="kainotomo.com"
 docker exec erpnext-v15-backend-1 bench --site ${SITE} backup --with-files
 
 # Verify backup created
@@ -187,7 +185,7 @@ docker exec erpnext-v15-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 
 ```bash
 # Define variables
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 V16_DB_NAME="v16_kainotomo_com"  # Format: v16_<database_name>
 DB_PASSWORD="pRep5v3Nzw_aMMV"
 ADMIN_PASSWORD="pRep5v3Nzw_aMMV"
@@ -222,7 +220,7 @@ docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 
 # Enable the scheduler for the site
 docker exec erpnext-v16-backend-1 bench --site ${SITE} set-config scheduler_disabled 0
@@ -250,7 +248,7 @@ docker exec erpnext-v16-backend-1 bench --site ${SITE} get-config scheduler_disa
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 
 # Copy backup files from v15 to v16 backups folder
 # Step 1: Copy entire backups folder to temporary directory on host
@@ -285,19 +283,19 @@ docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 
 **File 1: Edit** `~/gitops/desktop-2/erpnext-v15.yaml`
 ```
-Find this line with your domain (v15.kainotomo.com):
-  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`,`v15.kainotomo.com`)
+Find this line with your domain (kainotomo.com):
+  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`,`kainotomo.com`)
 
-Remove `v15.kainotomo.com` from the list
+Remove `kainotomo.com` from the list
 ```
 
 **File 2: Edit** `~/gitops/desktop-2/erpnext-v16.yaml`
 ```
 Find this line:
-  traefik.http.routers.erpnext-v16-https.rule: Host(`v15.kainotomo.com`)
+  traefik.http.routers.erpnext-v16-https.rule: Host(`kainotomo.com`)
 
 Add your site if not already there. Example:
-  traefik.http.routers.erpnext-v16-https.rule: Host(`v15.kainotomo.com`,`new-site.com`)
+  traefik.http.routers.erpnext-v16-https.rule: Host(`kainotomo.com`,`new-site.com`)
 ```
 
 **After manual edits, run these commands:**
@@ -333,7 +331,7 @@ echo "Traefik routing updated. Domain now points to v16 (port 8085)"
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 BACKUP_FILE="/home/frappe/frappe-bench/sites/${SITE}/private/backups/20260121_114453-v15_kainotomo_com-database.sql.gz"
 DB_PASSWORD="pRep5v3Nzw_aMMV"
 
@@ -375,7 +373,7 @@ docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/si
 **Agent: Warn user about risk and wait for approval before running.**
 
 ```bash
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 
 # Run migrate to upgrade database schema for v16
 echo "Running migration on ${SITE}..."
@@ -406,7 +404,7 @@ echo "Migration and cache clear completed for ${SITE}"
 **Agent: Explain validation checklist and wait for user feedback.**
 
 ```bash
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 
 # Check logs for errors (Ctrl+C to stop)
 echo "Checking v16 logs for errors (Ctrl+C to stop)..."
@@ -449,7 +447,7 @@ echo "✓ Command validation passed"
 **Agent: Only offer rollback if user reports issues in Step 7.**
 
 ```bash
-SITE="v15.kainotomo.com"
+SITE="kainotomo.com"
 V16_DB_NAME="v16_v15_kainotomo_com"
 MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-root}"
 
