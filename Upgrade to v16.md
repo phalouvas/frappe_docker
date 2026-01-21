@@ -86,7 +86,7 @@ docker ps -f "name=erpnext-v16-frontend-1" --format "{{.Names}}: {{.Ports}}"
 
 ### Check 3: Verify kainotomo.com is currently on v15 (not v16)
 ```bash
-grep -A 5 "traefik.http.routers.erpnext-v15-https.rule" ~/gitops/desktop-2/erpnext-v15.yaml | grep v15.kainotomo
+grep -A 5 "traefik.http.routers.erpnext-v15-https.rule" ~/gitops/desktop-2/erpnext-v15.yaml | grep kainotomo
 ```
 **Expected:** `kainotomo.com` appears in v15 Host() list
 
@@ -137,6 +137,7 @@ docker ps -q | wc -l
 ## STEP-BY-STEP MIGRATION PROCESS
 
 ### Sites to Upgrade (Desktop-2)
+- kainotomo.com → v16_kainotomo_com
 - cyprussportsfever.com → v16_cyprussportsfever_com
 - kainotomo.com → v16_kainotomo_com
 - erp.detima.com → v16_erp_detima_com
@@ -187,51 +188,16 @@ docker exec erpnext-v15-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 # Define variables
 SITE="kainotomo.com"
 V16_DB_NAME="v16_kainotomo_com"  # Format: v16_<database_name>
-DB_PASSWORD="pRep5v3Nzw_aMMV"
-ADMIN_PASSWORD="pRep5v3Nzw_aMMV"
 
-# Create site on v16 with specific database name and passwords
+# Create site on v16 with specific database name
 # bench new-site automatically creates the database
-docker exec erpnext-v16-backend-1 bench new-site ${SITE} \
-  --db-name ${V16_DB_NAME} \
-  --admin-password "${ADMIN_PASSWORD}" \
-  --db-password "${DB_PASSWORD}" \
-  --mariadb-root-password "${DB_PASSWORD}" \
-  --force
+docker exec erpnext-v16-backend-1 bench new-site ${SITE} --db-name ${V16_DB_NAME}
 
 # Verify site directory created
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/site_config.json
 ```
 
 **After Step 2:** Verify site_config.json exists. User confirms to proceed to Step 3.
-
----
-
-### 2.1) Enable Scheduler (Optional but Recommended)
-
-**What this step does:**
-- Re-enables the scheduler for the new site on v16
-- The scheduler runs background jobs like email sending, report generation, etc.
-- By default, the scheduler is disabled on new sites
-- Takes ~5 seconds
-
-**Risk:** None - can be disabled if needed later
-
-**Agent: Explain this step and wait for user approval before running.**
-
-```bash
-SITE="kainotomo.com"
-
-# Enable the scheduler for the site
-docker exec erpnext-v16-backend-1 bench --site ${SITE} set-config scheduler_disabled 0
-
-# Verify scheduler is enabled
-docker exec erpnext-v16-backend-1 bench --site ${SITE} get-config scheduler_disabled
-```
-
-**Expected output:** Should return `0` or `null` (meaning scheduler is enabled)
-
-**After Step 2.1:** Scheduler is now enabled. User confirms to proceed to Step 3.
 
 ---
 
@@ -251,13 +217,8 @@ docker exec erpnext-v16-backend-1 bench --site ${SITE} get-config scheduler_disa
 SITE="kainotomo.com"
 
 # Copy backup files from v15 to v16 backups folder
-# Step 1: Copy entire backups folder to temporary directory on host
 docker cp erpnext-v15-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups /tmp/backups-${SITE}
-
-# Step 2: Copy each backup file individually to v16 (docker cp doesn't support wildcards with destinations)
-for file in /tmp/backups-${SITE}/*; do 
-  docker cp "$file" erpnext-v16-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups/
-done
+docker cp /tmp/backups-${SITE}/* erpnext-v16-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups/
 
 # Verify backup in v16
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/private/backups/ | tail -3
@@ -284,7 +245,7 @@ docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 **File 1: Edit** `~/gitops/desktop-2/erpnext-v15.yaml`
 ```
 Find this line with your domain (kainotomo.com):
-  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`,`kainotomo.com`)
+  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`)
 
 Remove `kainotomo.com` from the list
 ```
@@ -332,7 +293,7 @@ echo "Traefik routing updated. Domain now points to v16 (port 8085)"
 
 ```bash
 SITE="kainotomo.com"
-BACKUP_FILE="/home/frappe/frappe-bench/sites/${SITE}/private/backups/20260121_114453-v15_kainotomo_com-database.sql.gz"
+BACKUP_FILE="/home/frappe/frappe-bench/sites/${SITE}/private/backups/YYYYMMDD_HHMMSS-kainotomo_com-database.sql.gz"
 DB_PASSWORD="pRep5v3Nzw_aMMV"
 
 echo "Restoring from: ${BACKUP_FILE}"
@@ -346,12 +307,6 @@ docker exec -e MYSQL_PWD="${DB_PASSWORD}" erpnext-v16-backend-1 bash -lc \
 # Verify restore completed
 docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/site_config.json | grep db_name
 ```
-
-**Important Notes:**
-- Use the specific backup timestamp from Step 3 (replace 20260121_114453 with your backup timestamp if different)
-- The `--site` parameter is REQUIRED for the restore command
-- The `-e MYSQL_PWD` environment variable passes the database password to the container
-- The `--mariadb-root-password` parameter is needed for database user creation
 
 **After Step 5:** Verify restore completed and database name shows v16_* version. User confirms to proceed to Step 6.
 
@@ -430,11 +385,90 @@ echo "✓ Command validation passed"
 - [ ] Check file attachments and downloads work
 - [ ] Test email/notification sending (if applicable)
 
-**After Step 7:** User confirms all tests pass or reports issues. If issues, proceed to Step 8 (Rollback).
+**After Step 7:** User confirms all tests pass or reports issues. If all tests pass, proceed to Step 8 (Cleanup). If issues, proceed to Step 9 (Rollback).
 
 ---
 
-### 8) If issues → Rollback to v15
+### 8) Cleanup v15 Site (Optional - Recommended after 1-7 days)
+
+**What this step does:**
+- Removes the site directory from v15 stack
+- Drops the old v15 database from MariaDB
+- Frees up disk space
+- Prevents confusion about which version is active
+- ⚠️ **IRREVERSIBLE** - Only do this after confirming v16 works perfectly
+
+**Risk:** High if done prematurely - cannot easily rollback after cleanup
+**Mitigation:** Wait 1-7 days after migration, ensure backups exist, test thoroughly
+
+**Agent: ONLY proceed with this step if:**
+- User explicitly requests cleanup
+- Migration completed successfully (Step 7 passed)
+- Site has been running on v16 for at least 24 hours
+- User confirms backups are available
+- User confirms site is working perfectly on v16
+
+```bash
+SITE="kainotomo.com"
+V15_DB_NAME="_ac6c6bb490cd3fa2"  # Original v15 database name (check site_config.json from v15 backup)
+
+echo "⚠️ WARNING: This will permanently delete the v15 site and database!"
+echo "Site: ${SITE}"
+echo "Database: ${V15_DB_NAME}"
+echo ""
+echo "Before proceeding, confirm:"
+echo "1. Site has been running successfully on v16 for at least 24 hours"
+echo "2. Backups exist and are accessible"
+echo "3. You have tested all critical workflows on v16"
+echo "4. You will NOT need to rollback to v15"
+echo ""
+read -p "Type 'DELETE' to confirm cleanup (Ctrl+C to cancel): " CONFIRM
+
+if [ "$CONFIRM" != "DELETE" ]; then
+  echo "Cleanup cancelled."
+  exit 1
+fi
+
+echo "Starting cleanup process..."
+
+# Step 1: Remove site directory from v15
+echo "Removing site directory from v15..."
+docker exec erpnext-v15-backend-1 rm -rf /home/frappe/frappe-bench/sites/${SITE}
+echo "✓ Site directory removed from v15"
+
+# Step 2: Drop old v15 database
+echo "Dropping v15 database: ${V15_DB_NAME}"
+docker exec erpnext-v15-backend-1 mysql -h mariadb-database -u root -ppRep5v3Nzw_aMMV \
+  -e "DROP DATABASE IF EXISTS \`${V15_DB_NAME}\`;"
+echo "✓ V15 database dropped"
+
+# Step 3: Drop v15 database user (optional - only if not shared)
+# docker exec erpnext-v15-backend-1 mysql -h mariadb-database -u root -ppRep5v3Nzw_aMMV \
+#   -e "DROP USER IF EXISTS '${V15_DB_NAME}'@'%';"
+# echo "✓ V15 database user dropped"
+
+# Step 4: Clean up temporary backup files on host
+rm -rf /tmp/backups-${SITE}
+echo "✓ Temporary backup files removed"
+
+echo ""
+echo "✅ Cleanup completed for ${SITE}"
+echo "v15 site and database have been permanently removed."
+echo "Site continues running on v16 only."
+```
+
+**Important Notes:**
+- **DO NOT run this step immediately after migration**
+- Recommended wait time: 1-7 days depending on site criticality
+- Keep v15 stack running for at least 1 week for emergency rollback capability
+- Verify backups are accessible before cleanup
+- Document the original v15 database name before deletion
+
+**After Step 8:** Site cleanup complete. v15 resources freed. Site runs exclusively on v16.
+
+---
+
+### 9) If issues → Emergency Rollback to v15
 
 **What this step does:**
 - Reverts routing back to v15
@@ -448,7 +482,7 @@ echo "✓ Command validation passed"
 
 ```bash
 SITE="kainotomo.com"
-V16_DB_NAME="v16_v15_kainotomo_com"
+V16_DB_NAME="v16_kainotomo_com"
 MYSQL_ROOT_PASSWORD="${MYSQL_ROOT_PASSWORD:-root}"
 
 echo "Rolling back ${SITE} to v15..."
