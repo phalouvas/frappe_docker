@@ -1,5 +1,48 @@
 # Upgrade to v16 - Repository Branch Validation & Issues
 
+---
+
+## 🚀 ERPNext v15 → v16 Migration Guide (Reusable Prompt)
+
+**How to use this document:**
+1. Reference this file in your chat: `#file:Upgrade to v16.md`
+2. AI Agent will read the full migration plan and status
+3. Agent will **ALWAYS ask your approval before executing each step**
+4. Agent will execute step-by-step with clear progress tracking
+5. Update the migration status table below after each successful migration
+
+### ⚠️ IMPORTANT REQUIREMENTS FOR AI AGENT
+- **NEVER run critical commands without explicit user approval**
+- **ALWAYS explain what each step does before executing**
+- **ALWAYS wait for user confirmation after each major step**
+- **Ask if user wants to proceed to next step**
+- **Keep this document updated with migration progress**
+- **Desktop-2 is PRODUCTION - treat with extreme care**
+
+---
+
+## Migration Status Tracker
+
+| Site Domain | V16 Database Name | Status | Date | Notes |
+|---|---|---|---|---|
+| v15.kainotomo.com | v16_v15_kainotomo_com | ⬜ Not Started | - | Testing site - starts here |
+| cyprussportsfever.com | v16_cyprussportsfever_com | ⬜ Not Started | - | |
+| kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
+| erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
+| gpapachristodoulou.com | v16_gpapachristodoulou_com | ⬜ Not Started | - | |
+| mozsportstech.com | v16_mozsportstech_com | ⬜ Not Started | - | |
+| pakore6.kainotomo.com | v16_pakore6_kainotomo_com | ⬜ Not Started | - | |
+| app.swissmedhealth.com | v16_app_swissmedhealth_com | ⬜ Not Started | - | |
+| cpl.kainotomo.com | v16_cpl_kainotomo_com | ⬜ Not Started | - | |
+| eumariaphysio.com | v16_eumariaphysio_com | ⬜ Not Started | - | |
+
+**Legend:**
+- ⬜ Not Started - Pending migration
+- 🟨 In Progress - Currently migrating
+- ✅ Completed - Migration successful
+- ❌ Rollback - Reverted to v15
+
+---
 
 ## How to Upgrade a Site from v15 to v16 (safe, step-by-step)
 
@@ -7,11 +50,26 @@
 
 This approach creates isolated v16 databases for each site, allowing parallel v15/v16 operation with zero downtime and full rollback capability.
 
-### Preconditions
-- v15 stack runs on port 8084; v16 stack on port 8085 (Traefik routing in place).
-- The site's domain is routed **either** to v15 **or** to v16, never both.
-- Both stacks share the **same MariaDB** instance; isolation is achieved by separate databases per version.
-- You have shell access to the host running the stack (desktop-2/docker-1/etc.).
+**EXECUTION FRAMEWORK:**
+- Agent will display each step with explanation
+- Agent will ask: "Ready to proceed with Step X? (yes/no)"
+- Agent will execute only after user confirms
+- Agent will show command output and verify success
+- Agent will ask to proceed to next step
+- User can stop/rollback at any point
+
+### Preconditions (VERIFY BEFORE STARTING)
+- ✅ v15 stack runs on port 8084; v16 stack on port 8085 (Traefik routing in place)
+- ✅ The site's domain is routed **either** to v15 **or** to v16, never both
+- ✅ Both stacks share the **same MariaDB** instance
+- ✅ Shell access available to desktop-2
+- ✅ Desktop-2 is production - double check before proceeding
+
+**Agent: Before starting, confirm with user that all preconditions are met.**
+
+---
+
+## STEP-BY-STEP MIGRATION PROCESS
 
 ### Sites to Upgrade (Desktop-2)
 - v15.kainotomo.com → v16_v15_kainotomo_com
@@ -26,6 +84,15 @@ This approach creates isolated v16 databases for each site, allowing parallel v1
 - eumariaphysio.com → v16_eumariaphysio_com
 
 ### 1) Backup on v15 (database + files)
+
+**What this step does:**
+- Creates a complete backup of v15 site database
+- Includes all files (attachments, custom files)
+- Backup files stored in `/private/backups/` directory
+- ~1-2 minutes per site, non-blocking
+
+**Agent: Explain this step and wait for user approval before running.**
+
 ```bash
 # Example: v15.kainotomo.com
 SITE="v15.kainotomo.com"
@@ -35,7 +102,23 @@ docker exec erpnext-v15-backend-1 bench --site ${SITE} backup --with-files
 docker exec erpnext-v15-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/private/backups/ | tail -5
 ```
 
+**After Step 1:** Verify backup files exist and note the timestamp. User confirms to proceed to Step 2.
+
+---
+
 ### 2) Create site on v16 with new database name
+
+**What this step does:**
+- Creates new site directory structure on v16
+- Automatically creates v16 database (v16_v15_kainotomo_com)
+- Initializes site_config.json with defaults
+- Creates new empty database (will be replaced in Step 5)
+- ~30 seconds
+
+**Risk:** None - can be deleted if migration fails
+
+**Agent: Explain this step and wait for user approval before running.**
+
 ```bash
 # Define variables
 SITE="v15.kainotomo.com"
@@ -49,7 +132,22 @@ docker exec erpnext-v16-backend-1 bench new-site ${SITE} --db-name ${V16_DB_NAME
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/site_config.json
 ```
 
+**After Step 2:** Verify site_config.json exists. User confirms to proceed to Step 3.
+
+---
+
 ### 3) Copy backup files to v16 sites directory
+
+**What this step does:**
+- Copies backup SQL database file from v15 to v16
+- Copies backup configuration file
+- Copies file attachments if any
+- ~1-2 minutes, non-blocking
+
+**Risk:** None - just file copies
+
+**Agent: Explain this step and wait for user approval before running.**
+
 ```bash
 SITE="v15.kainotomo.com"
 
@@ -61,19 +159,45 @@ docker cp /tmp/backups-${SITE}/* erpnext-v16-backend-1:/home/frappe/frappe-bench
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/private/backups/ | tail -3
 ```
 
+**After Step 3:** Verify backup files copied to v16. User confirms to proceed to Step 4.
+
+---
+
 ### 4) Adjust routing (Traefik) - move domain from v15 to v16
+
+**What this step does:**
+- **MANUAL STEP** - User must edit YAML files
+- Removes domain from v15's Traefik routing rules
+- Adds domain to v16's Traefik routing rules
+- Traefik reloads config and routes domain to v16 port (8085)
+- After this: site is NO LONGER accessible on v15
+- ~30 seconds after files saved
+
+**⚠️ CRITICAL:** This is the point of no return for domain access. Domain will briefly be unavailable.
+
+**Agent: Provide exact instructions for manual edits and wait for user confirmation.**
+
+**File 1: Edit** `~/gitops/desktop-2/erpnext-v15.yaml`
+```
+Find this line with your domain (v15.kainotomo.com):
+  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`,`v15.kainotomo.com`)
+
+Remove `v15.kainotomo.com` from the list
+```
+
+**File 2: Edit** `~/gitops/desktop-2/erpnext-v16.yaml`
+```
+Find this line:
+  traefik.http.routers.erpnext-v16-https.rule: Host(`v15.kainotomo.com`)
+
+Add your site if not already there. Example:
+  traefik.http.routers.erpnext-v16-https.rule: Host(`v15.kainotomo.com`,`new-site.com`)
+```
+
+**After manual edits, run these commands:**
+
 ```bash
-# Edit v15 compose: remove site domain from Host() rule
-# File: ~/gitops/desktop-2/erpnext-v15.yaml
-# Find line with: traefik.http.routers.erpnext-v15-https.rule
-# Remove the domain from the Host() list
-
-# Edit v16 compose: add site domain to Host() rule
-# File: ~/gitops/desktop-2/erpnext-v16.yaml
-# Find line with: traefik.http.routers.erpnext-v16-https.rule
-# Add the domain to the Host() list
-
-# After editing both files, apply the changes:
+# Apply the changes
 docker compose --project-name erpnext-v15 -f ~/gitops/desktop-2/erpnext-v15.yaml up -d
 docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml up -d
 
@@ -82,7 +206,26 @@ sleep 10
 echo "Traefik routing updated. Domain now points to v16 (port 8085)"
 ```
 
+**After Step 4:** Domain is now pointing to v16. User confirms to proceed to Step 5.
+
+---
+
 ### 5) Restore database and files into v16
+
+**What this step does:**
+- Reads v15 backup SQL file
+- Imports all v15 data into v16 database
+- Restores site_config.json with all original encryption keys
+- Restores file attachments to correct locations
+- Replaces empty v16 database with v15 data
+- **CRITICAL:** This is when v15 data enters v16
+- ~5-10 minutes depending on data size
+
+**Risk:** Medium - if fails, domain is on v16 but DB not restored (site broken)
+**Mitigation:** Can rollback by reverting routing in Step 4 and restoring v15 backup
+
+**Agent: Explain this step and wait for user approval before running.**
+
 ```bash
 SITE="v15.kainotomo.com"
 
@@ -98,7 +241,25 @@ docker exec erpnext-v16-backend-1 bash -lc "bench restore ${BACKUP_FILE}"
 docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/site_config.json | grep db_name
 ```
 
+**After Step 5:** Verify restore completed and database name shows v16_* version. User confirms to proceed to Step 6.
+
+---
+
 ### 6) Run database migration for v16
+
+**What this step does:**
+- Upgrades database schema from v15 format to v16 format
+- Runs all pending migrations
+- Updates document types, fields, etc.
+- Clears all caches (Redis)
+- **CRITICAL:** Makes data compatible with v16 code
+- ~5-15 minutes depending on data complexity
+
+**Risk:** High - if migration fails, site is broken on v16
+**Mitigation:** Rollback to v15 (Step 8)
+
+**Agent: Warn user about risk and wait for approval before running.**
+
 ```bash
 SITE="v15.kainotomo.com"
 
@@ -113,7 +274,23 @@ docker exec erpnext-v16-backend-1 bench --site ${SITE} clear-website-cache
 echo "Migration and cache clear completed for ${SITE}"
 ```
 
+**After Step 6:** Watch for any errors in console output. User confirms to proceed to Step 7.
+
+---
+
 ### 7) Validate on v16
+
+**What this step does:**
+- Checks v16 logs for errors
+- Tests basic CLI commands (lists users)
+- User performs manual browser tests
+- Verifies custom apps work
+- **NO CHANGES** - just checking everything works
+
+**Risk:** None - read-only validation
+
+**Agent: Explain validation checklist and wait for user feedback.**
+
 ```bash
 SITE="v15.kainotomo.com"
 
@@ -141,7 +318,22 @@ echo "✓ Command validation passed"
 - [ ] Check file attachments and downloads work
 - [ ] Test email/notification sending (if applicable)
 
+**After Step 7:** User confirms all tests pass or reports issues. If issues, proceed to Step 8 (Rollback).
+
+---
+
 ### 8) If issues → Rollback to v15
+
+**What this step does:**
+- Reverts routing back to v15
+- Optionally restores v15 database if needed
+- Optionally cleans up v16 database
+- Site returns to v15, no data loss
+
+**Risk:** None - reverses changes
+
+**Agent: Only offer rollback if user reports issues in Step 7.**
+
 ```bash
 SITE="v15.kainotomo.com"
 V16_DB_NAME="v16_v15_kainotomo_com"
@@ -171,16 +363,26 @@ docker exec erpnext-v15-backend-1 bash -lc "bench --site ${SITE} restore ${BACKU
 echo "✓ Rollback to v15 completed for ${SITE}"
 ```
 
-### 9) Repeat for each site
-Cycle through steps 1–8 for each site on the migration list, adjusting variables:
-- SITE variable (domain name)
-- V16_DB_NAME variable (follows format: v16_<original_name_underscored>)
+**After Step 8:** Site is back on v15. Analyze issues and decide whether to retry or skip this site for now.
 
-### Tips & Best Practices
+---
+
+### 9) Success! Update migration tracker and repeat for next site
+
+**Agent: Update the Migration Status Tracker table above with:**
+- Status: ✅ Completed
+- Date: Today's date
+- Notes: Any issues encountered during migration
+
+**Then ask:** Ready to migrate next site? (list remaining sites)
+
+---
+
+## Tips & Best Practices
 - **One site at a time**: Never migrate all sites simultaneously. Allow 24 hours between migrations.
-- **Keep backups**: Store dated backups before and after each migration attempt.
+- **Keep backups**: Backups stored for 72 hours by default (check keep_backups_for_hours in site_config.json)
 - **Monitor logs**: Watch v16 logs for errors during first 24 hours after cutover.
-- **Database naming**: Always use format `v16_<site_name_underscored>` to keep databases organized and identifiable.
-- **Disable problematic apps if needed**: If `frappe/payments` or `frappe/webshop` cause issues (using develop branches), disable them with `bench disable-module` before retrying.
+- **Database naming**: Always use format `v16_<site_name_underscored>` to keep databases organized.
+- **Disable problematic apps if needed**: If `frappe/payments` or `frappe/webshop` cause issues, disable with `bench disable-module` before retrying.
 - **Rollback window**: Keep v15 stack running for at least 1 week post-migration for emergency rollback.
-- **Test custom workflows**: Each site has unique custom apps and workflows - test thoroughly before considering migration complete.
+- **Test custom workflows**: Each site has unique custom apps and workflows - test thoroughly before declaring success.
