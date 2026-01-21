@@ -394,6 +394,7 @@ echo "✓ Command validation passed"
 **What this step does:**
 - Removes the site directory from v15 stack
 - Drops the old v15 database from MariaDB
+- Automatically archives site backup to `/archived/sites`
 - Frees up disk space
 - Prevents confusion about which version is active
 - ⚠️ **IRREVERSIBLE** - Only do this after confirming v16 works perfectly
@@ -405,22 +406,18 @@ echo "✓ Command validation passed"
 - User explicitly requests cleanup
 - Migration completed successfully (Step 7 passed)
 - Site has been running on v16 for at least 24 hours
-- User confirms backups are available
 - User confirms site is working perfectly on v16
 
 ```bash
 SITE="kainotomo.com"
-V15_DB_NAME="_ac6c6bb490cd3fa2"  # Original v15 database name (check site_config.json from v15 backup)
 
 echo "⚠️ WARNING: This will permanently delete the v15 site and database!"
 echo "Site: ${SITE}"
-echo "Database: ${V15_DB_NAME}"
 echo ""
 echo "Before proceeding, confirm:"
 echo "1. Site has been running successfully on v16 for at least 24 hours"
-echo "2. Backups exist and are accessible"
-echo "3. You have tested all critical workflows on v16"
-echo "4. You will NOT need to rollback to v15"
+echo "2. You have tested all critical workflows on v16"
+echo "3. You will NOT need to rollback to v15"
 echo ""
 read -p "Type 'DELETE' to confirm cleanup (Ctrl+C to cancel): " CONFIRM
 
@@ -431,29 +428,18 @@ fi
 
 echo "Starting cleanup process..."
 
-# Step 1: Remove site directory from v15
-echo "Removing site directory from v15..."
-docker exec erpnext-v15-backend-1 rm -rf /home/frappe/frappe-bench/sites/${SITE}
-echo "✓ Site directory removed from v15"
-
-# Step 2: Drop old v15 database
-echo "Dropping v15 database: ${V15_DB_NAME}"
-docker exec erpnext-v15-backend-1 mysql -h mariadb-database -u root -ppRep5v3Nzw_aMMV \
-  -e "DROP DATABASE IF EXISTS \`${V15_DB_NAME}\`;"
-echo "✓ V15 database dropped"
-
-# Step 3: Drop v15 database user (optional - only if not shared)
-# docker exec erpnext-v15-backend-1 mysql -h mariadb-database -u root -ppRep5v3Nzw_aMMV \
-#   -e "DROP USER IF EXISTS '${V15_DB_NAME}'@'%';"
-# echo "✓ V15 database user dropped"
-
-# Step 4: Clean up temporary backup files on host
-rm -rf /tmp/backups-${SITE}
-echo "✓ Temporary backup files removed"
+# Single command that handles everything:
+# - Creates final backup
+# - Drops database and user
+# - Archives site directory
+echo "Removing v15 site: ${SITE}..."
+echo "${MYSQL_ROOT_PASSWORD:-pRep5v3Nzw_aMMV}" | docker exec -i erpnext-v15-backend-1 bench drop-site ${SITE}
+echo "✓ Site cleanup completed - archived to /home/frappe/frappe-bench/archived/sites"
 
 echo ""
 echo "✅ Cleanup completed for ${SITE}"
 echo "v15 site and database have been permanently removed."
+echo "Final backup archived in v15 container."
 echo "Site continues running on v16 only."
 ```
 
@@ -461,8 +447,8 @@ echo "Site continues running on v16 only."
 - **DO NOT run this step immediately after migration**
 - Recommended wait time: 1-7 days depending on site criticality
 - Keep v15 stack running for at least 1 week for emergency rollback capability
-- Verify backups are accessible before cleanup
-- Document the original v15 database name before deletion
+- Final backup is automatically created and archived
+- Use `bench drop-site` which handles database, files, and cleanup automatically
 
 **After Step 8:** Site cleanup complete. v15 resources freed. Site runs exclusively on v16.
 
