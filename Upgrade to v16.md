@@ -69,6 +69,72 @@ This approach creates isolated v16 databases for each site, allowing parallel v1
 
 ---
 
+## AGENT VERIFICATION CHECKLIST (Run Automatically)
+
+**Agent: Execute these verification commands. Report findings to user and ask for approval to proceed.**
+
+### Check 1: Verify v15 stack on port 8084
+```bash
+docker ps -f "name=erpnext-v15-frontend-1" --format "{{.Names}}: {{.Ports}}"
+```
+**Expected:** `erpnext-v15-frontend-1: 0.0.0.0:8084->8080/tcp`
+
+### Check 2: Verify v16 stack on port 8085
+```bash
+docker ps -f "name=erpnext-v16-frontend-1" --format "{{.Names}}: {{.Ports}}"
+```
+**Expected:** `erpnext-v16-frontend-1: 0.0.0.0:8085->8080/tcp`
+
+### Check 3: Verify v15.kainotomo.com is currently on v15 (not v16)
+```bash
+grep -A 5 "traefik.http.routers.erpnext-v15-https.rule" ~/gitops/desktop-2/erpnext-v15.yaml | grep v15.kainotomo
+```
+**Expected:** `v15.kainotomo.com` appears in v15 Host() list
+
+```bash
+grep "traefik.http.routers.erpnext-v16-https.rule" ~/gitops/desktop-2/erpnext-v16.yaml
+```
+**Expected:** v15.kainotomo.com is NOT in v16 Host() list (or only Host(`v15.kainotomo.com`) if pre-configured)
+
+### Check 4: Verify both stacks use same MariaDB
+```bash
+docker exec erpnext-v15-backend-1 cat /home/frappe/frappe-bench/sites/v15.kainotomo.com/site_config.json | grep db_host
+docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/.env 2>/dev/null || echo "Check compose file..."
+```
+**Expected:** Both point to `mariadb-database` or same host
+
+### Check 5: Verify shell access to containers works
+```bash
+docker ps -q | wc -l
+```
+**Expected:** Non-zero number (containers running)
+
+### Check 6: Get user confirmation this is PRODUCTION
+**Agent: Ask user explicitly:**
+"Is desktop-2 a PRODUCTION environment with live users? (yes/no)"
+
+---
+
+**Agent: After running all checks above, provide a summary:**
+
+| Check | Status | Finding | Proceed? |
+|---|---|---|---|
+| v15 on 8084 | ✅/❌ | Port 8084 listening | |
+| v16 on 8085 | ✅/❌ | Port 8085 listening | |
+| v15.kainotomo.com routed to v15 | ✅/❌ | Domain on v15 not v16 | |
+| Both use same MariaDB | ✅/❌ | Shared database instance | |
+| Shell access works | ✅/❌ | Can execute commands | |
+| Desktop-2 is PRODUCTION | ✅/❌ | User confirmed | |
+
+**If all checks pass:** Ask user "All preconditions verified. Ready to start Step 1? (yes/no)"
+
+**If any check fails:** Report which check failed and why. Ask if user wants to:
+1. Troubleshoot the issue
+2. Skip this migration
+3. Continue anyway at higher risk
+
+---
+
 ## STEP-BY-STEP MIGRATION PROCESS
 
 ### Sites to Upgrade (Desktop-2)
