@@ -188,17 +188,52 @@ docker exec erpnext-v15-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 ```bash
 # Define variables
 SITE="v15.kainotomo.com"
-V16_DB_NAME="v16_v15_kainotomo_com"  # Format: v16_<original_site_name_underscored>
+V16_DB_NAME="v16_kainotomo_com"  # Format: v16_<database_name>
+DB_PASSWORD="pRep5v3Nzw_aMMV"
+ADMIN_PASSWORD="pRep5v3Nzw_aMMV"
 
-# Create site on v16 with specific database name
+# Create site on v16 with specific database name and passwords
 # bench new-site automatically creates the database
-docker exec erpnext-v16-backend-1 bench new-site ${SITE} --db-name ${V16_DB_NAME}
+docker exec erpnext-v16-backend-1 bench new-site ${SITE} \
+  --db-name ${V16_DB_NAME} \
+  --admin-password "${ADMIN_PASSWORD}" \
+  --db-password "${DB_PASSWORD}" \
+  --mariadb-root-password "${DB_PASSWORD}" \
+  --force
 
 # Verify site directory created
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/site_config.json
 ```
 
 **After Step 2:** Verify site_config.json exists. User confirms to proceed to Step 3.
+
+---
+
+### 2.1) Enable Scheduler (Optional but Recommended)
+
+**What this step does:**
+- Re-enables the scheduler for the new site on v16
+- The scheduler runs background jobs like email sending, report generation, etc.
+- By default, the scheduler is disabled on new sites
+- Takes ~5 seconds
+
+**Risk:** None - can be disabled if needed later
+
+**Agent: Explain this step and wait for user approval before running.**
+
+```bash
+SITE="v15.kainotomo.com"
+
+# Enable the scheduler for the site
+docker exec erpnext-v16-backend-1 bench --site ${SITE} set-config scheduler_disabled 0
+
+# Verify scheduler is enabled
+docker exec erpnext-v16-backend-1 bench --site ${SITE} get-config scheduler_disabled
+```
+
+**Expected output:** Should return `0` or `null` (meaning scheduler is enabled)
+
+**After Step 2.1:** Scheduler is now enabled. User confirms to proceed to Step 3.
 
 ---
 
