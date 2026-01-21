@@ -253,8 +253,13 @@ docker exec erpnext-v16-backend-1 bench --site ${SITE} get-config scheduler_disa
 SITE="v15.kainotomo.com"
 
 # Copy backup files from v15 to v16 backups folder
+# Step 1: Copy entire backups folder to temporary directory on host
 docker cp erpnext-v15-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups /tmp/backups-${SITE}
-docker cp /tmp/backups-${SITE}/* erpnext-v16-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups/
+
+# Step 2: Copy each backup file individually to v16 (docker cp doesn't support wildcards with destinations)
+for file in /tmp/backups-${SITE}/*; do 
+  docker cp "$file" erpnext-v16-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups/
+done
 
 # Verify backup in v16
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/private/backups/ | tail -3
@@ -329,18 +334,26 @@ echo "Traefik routing updated. Domain now points to v16 (port 8085)"
 
 ```bash
 SITE="v15.kainotomo.com"
+BACKUP_FILE="/home/frappe/frappe-bench/sites/${SITE}/private/backups/20260121_114453-v15_kainotomo_com-database.sql.gz"
+DB_PASSWORD="pRep5v3Nzw_aMMV"
 
-# Find latest backup file
-BACKUP_FILE=$(docker exec erpnext-v16-backend-1 ls -t /home/frappe/frappe-bench/sites/${SITE}/private/backups/*-database.sql.gz | head -1)
-echo "Using backup: ${BACKUP_FILE}"
+echo "Restoring from: ${BACKUP_FILE}"
 
-# Restore database (replaces empty DB with v15 data)
+# Restore database with --site parameter and MariaDB root password
+# This replaces the empty v16 database with v15 data
 # Also restores files and site_config.json with all original settings/encryption keys
-docker exec erpnext-v16-backend-1 bash -lc "bench restore ${BACKUP_FILE}"
+docker exec -e MYSQL_PWD="${DB_PASSWORD}" erpnext-v16-backend-1 bash -lc \
+  "bench --site ${SITE} restore ${BACKUP_FILE} --mariadb-root-password ${DB_PASSWORD}"
 
 # Verify restore completed
 docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/site_config.json | grep db_name
 ```
+
+**Important Notes:**
+- Use the specific backup timestamp from Step 3 (replace 20260121_114453 with your backup timestamp if different)
+- The `--site` parameter is REQUIRED for the restore command
+- The `-e MYSQL_PWD` environment variable passes the database password to the container
+- The `--mariadb-root-password` parameter is needed for database user creation
 
 **After Step 5:** Verify restore completed and database name shows v16_* version. User confirms to proceed to Step 6.
 
