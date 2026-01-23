@@ -17,7 +17,7 @@
   },
   {
     "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_digital_subscriptions",
@@ -66,7 +66,7 @@
   },
   {
     "url": "https://github.com/kainotomo/invoice2erpnext.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/doc2sys.git",
@@ -90,7 +90,7 @@
   },
   {
     "url": "https://github.com/kainotomo/pakore.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/cyprus_law.git",
