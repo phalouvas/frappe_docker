@@ -16,39 +16,7 @@
     "branch": "version-14"
   },
   {
-    "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_digital_subscriptions",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_vies_validation",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_cyprus_banks.git",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_pos_screen.git",
-    "branch": "master"
-  },
-  {
     "url": "https://github.com/phalouvas/erpnext_theodoulou",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_sports_management.git",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/kainotomo/erpnext-restaurant",
-    "branch": "master"
-  },
-  {
-    "url": "https://github.com/phalouvas/swissmedhealth",
     "branch": "master"
   }
 ]
