@@ -30,7 +30,7 @@
 | erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
 | gpapachristodoulou.com | v16_gpapachristodoulou_com | ⬜ Not Started | - | |
 | mozsportstech.com | v16_mozsportstech_com | ⬜ Not Started | - | |
-| pakore6.kainotomo.com | v16_pakore6_kainotomo_com | ⬜ Not Started | - | |
+| pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | app.swissmedhealth.com | v16_app_swissmedhealth_com | ⬜ Not Started | - | |
 | cpl.kainotomo.com | v16_cpl_kainotomo_com | ⬜ Not Started | - | |
 | eumariaphysio.com | v16_eumariaphysio_com | ⬜ Not Started | - | |
@@ -185,9 +185,8 @@ docker exec erpnext-v15-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-# Define variables
-SITE="kainotomo.com"
-V16_DB_NAME="v16_kainotomo_com"  # Format: v16_<database_name>
+SITE="pakore6.kainotomo.com"
+V16_DB_NAME="v16_pakore6"  # Format: v16_<database_name>
 
 # Create site on v16 with specific database name
 # bench new-site automatically creates the database
@@ -214,11 +213,14 @@ docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-SITE="kainotomo.com"
+SITE="pakore6.kainotomo.com"
 
 # Copy backup files from v15 to v16 backups folder
 docker cp erpnext-v15-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups /tmp/backups-${SITE}
 docker cp /tmp/backups-${SITE}/* erpnext-v16-backend-1:/home/frappe/frappe-bench/sites/${SITE}/private/backups/
+
+# Also copy the original v15 site_config.json for preservation (will update db_name in Step 5)
+docker cp erpnext-v15-backend-1:/home/frappe/frappe-bench/sites/${SITE}/site_config.json /tmp/v15-site_config-${SITE}.json
 
 # Verify backup in v16
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/private/backups/ | tail -3
@@ -275,15 +277,24 @@ echo "Traefik routing updated. Domain now points to v16 (port 8085)"
 
 ---
 
-### 5) Restore database and files into v16
+### 5) Restore database and update site_config with v16 database credentials
+
+**⚠️ CRITICAL ISSUE: Database Password Mismatch Prevention**
+
+When we created the v16 site in Step 2, `bench new-site` automatically generated a database user `v16_pakore6` with a random password. However, the v15 backup's site_config.json contains the OLD v15 database password. **These passwords DO NOT match**, which will cause database connection errors after restore.
+
+**Solution:**
+1. **BEFORE restore:** Capture the auto-generated v16_pakore6 password from the fresh site_config.json
+2. **AFTER restore:** Update the restored site_config.json to use the v16 database password (not the v15 password)
 
 **What this step does:**
+- Captures v16_pakore6 database password (auto-generated in Step 2)
 - Reads v15 backup SQL file
 - Imports all v15 data into v16 database
-- Restores site_config.json with all original encryption keys
+- Restores site_config.json with all original encryption keys and custom settings
 - Restores file attachments to correct locations
-- Replaces empty v16 database with v15 data
-- **CRITICAL:** This is when v15 data enters v16
+- Updates database name from `pakore6` to `v16_pakore6`
+- **CRITICAL:** Updates database password to match the v16 database user
 - ~5-10 minutes depending on data size
 
 **Risk:** Medium - if fails, domain is on v16 but DB not restored (site broken)
@@ -292,23 +303,43 @@ echo "Traefik routing updated. Domain now points to v16 (port 8085)"
 **Agent: Explain this step and wait for user approval before running.**
 
 ```bash
-SITE="kainotomo.com"
-BACKUP_FILE="/home/frappe/frappe-bench/sites/${SITE}/private/backups/YYYYMMDD_HHMMSS-kainotomo_com-database.sql.gz"
-DB_PASSWORD="pRep5v3Nzw_aMMV"
+SITE="pakore6.kainotomo.com"
+V15_DB_NAME="pakore6"  # Original v15 database name (simpler than pakore6_kainotomo_com)
+V16_DB_NAME="v16_pakore6"  # New v16 database name
+BACKUP_FILE="/home/frappe/frappe-bench/sites/${SITE}/private/backups/20260126_103859-pakore6_kainotomo_com-database.sql.gz"
+DB_ROOT_PASSWORD="pRep5v3Nzw_aMMV"
 
-echo "Restoring from: ${BACKUP_FILE}"
+# STEP 1: Capture v16 database password BEFORE restore
+echo "Step 1: Capturing v16 database password..."
+V16_DB_PASSWORD=$(docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/site_config.json | grep '"db_password"' | cut -d'"' -f4)
+echo "✓ Captured v16_pakore6 password: ${V16_DB_PASSWORD}"
 
-# Restore database with --site parameter and MariaDB root password
-# This replaces the empty v16 database with v15 data
-# Also restores files and site_config.json with all original settings/encryption keys
-docker exec -e MYSQL_PWD="${DB_PASSWORD}" erpnext-v16-backend-1 bash -lc \
-  "bench --site ${SITE} restore ${BACKUP_FILE} --mariadb-root-password ${DB_PASSWORD}"
+# STEP 2: Restore v15 backup to v16
+echo ""
+echo "Step 2: Restoring v15 backup to v16 database..."
+docker exec -e MYSQL_PWD="${DB_ROOT_PASSWORD}" erpnext-v16-backend-1 bash -lc \
+  "bench --site ${SITE} restore ${BACKUP_FILE} --mariadb-root-password ${DB_ROOT_PASSWORD}"
 
-# Verify restore completed
-docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/site_config.json | grep db_name
+# STEP 3: Update site_config.json with v16 database name AND password
+echo ""
+echo "Step 3: Updating site_config.json with v16 credentials..."
+docker exec erpnext-v16-backend-1 bash -lc \
+  "cd /home/frappe/frappe-bench && python -c \"import json; config = json.load(open('sites/${SITE}/site_config.json')); config['db_name'] = '${V16_DB_NAME}'; config['db_password'] = '${V16_DB_PASSWORD}'; json.dump(config, open('sites/${SITE}/site_config.json', 'w'), indent=1)\""
+
+# STEP 4: Verify restore completed with correct credentials
+echo ""
+echo "Step 4: Verifying restore and credentials..."
+docker exec erpnext-v16-backend-1 cat /home/frappe/frappe-bench/sites/${SITE}/site_config.json | grep -E '"db_name"|"db_password"'
+
+echo ""
+echo "✓ Restore completed with correct v16 credentials!"
 ```
 
-**After Step 5:** Verify restore completed and database name shows v16_* version. User confirms to proceed to Step 6.
+**After Step 5:** 
+- ✅ Verify restore completed
+- ✅ Verify db_name shows `"db_name": "v16_pakore6"`
+- ✅ Verify db_password matches the captured v16_pakore6 password
+- User confirms to proceed to Step 6
 
 ---
 
@@ -345,7 +376,37 @@ echo "Migration and cache clear completed for ${SITE}"
 
 ---
 
-### 7) Validate on v16
+### 7) Enable Scheduler
+
+**What this step does:**
+- Enables the background scheduler for the site
+- Scheduler runs automated tasks (emails, reports, background jobs)
+- By default, scheduler is disabled after migration
+- **CRITICAL:** Without this, automated tasks won't run
+- ~5 seconds
+
+**Risk:** None - just enables background jobs
+
+**Agent: Explain this step and wait for user approval before running.**
+
+```bash
+SITE="pakore6.kainotomo.com"
+
+# Enable scheduler
+echo "Enabling scheduler for ${SITE}..."
+docker exec erpnext-v16-backend-1 bench --site ${SITE} scheduler enable
+
+# Verify scheduler is enabled
+docker exec erpnext-v16-backend-1 bench --site ${SITE} scheduler status
+
+echo "✓ Scheduler enabled for ${SITE}"
+```
+
+**After Step 7:** Verify scheduler shows as "enabled". User confirms to proceed to Step 8.
+
+---
+
+### 8) Validate on v16
 
 **What this step does:**
 - Checks v16 logs for errors
@@ -385,11 +446,11 @@ echo "✓ Command validation passed"
 - [ ] Check file attachments and downloads work
 - [ ] Test email/notification sending (if applicable)
 
-**After Step 7:** User confirms all tests pass or reports issues. If all tests pass, proceed to Step 8 (Cleanup). If issues, proceed to Step 9 (Rollback).
+**After Step 8:** User confirms all tests pass or reports issues. If all tests pass, proceed to Step 9 (Cleanup). If issues, proceed to Step 10 (Rollback).
 
 ---
 
-### 8) Cleanup v15 Site (Optional - Recommended after 1-7 days)
+### 9) Cleanup v15 Site (Optional - Recommended after 1-7 days)
 
 **What this step does:**
 - Removes the site directory from v15 stack
@@ -450,11 +511,11 @@ echo "Site continues running on v16 only."
 - Final backup is automatically created and archived
 - Use `bench drop-site` which handles database, files, and cleanup automatically
 
-**After Step 8:** Site cleanup complete. v15 resources freed. Site runs exclusively on v16.
+**After Step 9:** Site cleanup complete. v15 resources freed. Site runs exclusively on v16.
 
 ---
 
-### 9) If issues → Emergency Rollback to v15
+### 10) If issues → Emergency Rollback to v15
 
 **What this step does:**
 - Reverts routing back to v15
