@@ -29,7 +29,7 @@
 | kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
 | erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
 | gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
-| mozsportstech.com | v16_mozsportstech_com | ⬜ Not Started | - | |
+| mozsportstech.com | v16_mozsports | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | app.swissmedhealth.com | v16_app_swissmedhealth_com | ⬜ Not Started | - | |
 | cpl.kainotomo.com | v16_cpl_kainotomo_com | ⬜ Not Started | - | |
