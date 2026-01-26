@@ -28,7 +28,7 @@
 | cyprussportsfever.com | v16_cyprussportsfever_com | ⬜ Not Started | - | |
 | kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
 | erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
-| gpapachristodoulou.com | v16_gpapachristodoulou_com | ⬜ Not Started | - | |
+| gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | mozsportstech.com | v16_mozsportstech_com | ⬜ Not Started | - | |
 | pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | app.swissmedhealth.com | v16_app_swissmedhealth_com | ⬜ Not Started | - | |
@@ -226,58 +226,11 @@ docker cp erpnext-v15-backend-1:/home/frappe/frappe-bench/sites/${SITE}/site_con
 docker exec erpnext-v16-backend-1 ls -lh /home/frappe/frappe-bench/sites/${SITE}/private/backups/ | tail -3
 ```
 
-**After Step 3:** Verify backup files copied to v16. User confirms to proceed to Step 4.
+**After Step 3:** Verify backup files copied to v16. Domain still on v15. User confirms to proceed to Step 4.
 
 ---
 
-### 4) Adjust routing (Traefik) - move domain from v15 to v16
-
-**What this step does:**
-- **MANUAL STEP** - User must edit YAML files
-- Removes domain from v15's Traefik routing rules
-- Adds domain to v16's Traefik routing rules
-- Traefik reloads config and routes domain to v16 port (8085)
-- After this: site is NO LONGER accessible on v15
-- ~30 seconds after files saved
-
-**⚠️ CRITICAL:** This is the point of no return for domain access. Domain will briefly be unavailable.
-
-**Agent: Provide exact instructions for manual edits and wait for user confirmation.**
-
-**File 1: Edit** `~/gitops/desktop-2/erpnext-v15.yaml`
-```
-Find this line with your domain (kainotomo.com):
-  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`)
-
-Remove `kainotomo.com` from the list
-```
-
-**File 2: Edit** `~/gitops/desktop-2/erpnext-v16.yaml`
-```
-Find this line:
-  traefik.http.routers.erpnext-v16-https.rule: Host(`kainotomo.com`)
-
-Add your site if not already there. Example:
-  traefik.http.routers.erpnext-v16-https.rule: Host(`kainotomo.com`,`new-site.com`)
-```
-
-**After manual edits, run these commands:**
-
-```bash
-# Apply the changes
-docker compose --project-name erpnext-v15 -f ~/gitops/desktop-2/erpnext-v15.yaml up -d
-docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml up -d
-
-# Verify routing changed (wait 5-10 seconds for Traefik to reload)
-sleep 10
-echo "Traefik routing updated. Domain now points to v16 (port 8085)"
-```
-
-**After Step 4:** Domain is now pointing to v16. User confirms to proceed to Step 5.
-
----
-
-### 5) Restore database and update site_config with v16 database credentials
+### 4) Restore database and update site_config with v16 database credentials
 
 **⚠️ CRITICAL ISSUE: Database Password Mismatch Prevention**
 
@@ -297,8 +250,8 @@ When we created the v16 site in Step 2, `bench new-site` automatically generated
 - **CRITICAL:** Updates database password to match the v16 database user
 - ~5-10 minutes depending on data size
 
-**Risk:** Medium - if fails, domain is on v16 but DB not restored (site broken)
-**Mitigation:** Can rollback by reverting routing in Step 4 and restoring v15 backup
+**Risk:** Low - if fails, domain stays on v15, can retry (no user impact)
+**Mitigation:** Domain still on v15 means users unaffected if this step fails
 
 **Agent: Explain this step and wait for user approval before running.**
 
@@ -335,15 +288,16 @@ echo ""
 echo "✓ Restore completed with correct v16 credentials!"
 ```
 
-**After Step 5:** 
+**After Step 4:** 
 - ✅ Verify restore completed
 - ✅ Verify db_name shows `"db_name": "v16_pakore6"`
 - ✅ Verify db_password matches the captured v16_pakore6 password
-- User confirms to proceed to Step 6
+- Domain still on v15
+- User confirms to proceed to Step 5
 
 ---
 
-### 6) Run database migration for v16
+### 5) Run database migration for v16
 
 **What this step does:**
 - Upgrades database schema from v15 format to v16 format
@@ -351,10 +305,11 @@ echo "✓ Restore completed with correct v16 credentials!"
 - Updates document types, fields, etc.
 - Clears all caches (Redis)
 - **CRITICAL:** Makes data compatible with v16 code
+- Domain still routes to v15 (no downtime yet)
 - ~5-15 minutes depending on data complexity
 
-**Risk:** High - if migration fails, site is broken on v16
-**Mitigation:** Rollback to v15 (Step 8)
+**Risk:** Low - if migration fails, domain stays on v15, can retry
+**Mitigation:** Domain still on v15 means users unaffected if this step fails
 
 **Agent: Warn user about risk and wait for approval before running.**
 
@@ -372,11 +327,103 @@ docker exec erpnext-v16-backend-1 bench --site ${SITE} clear-website-cache
 echo "Migration and cache clear completed for ${SITE}"
 ```
 
-**After Step 6:** Watch for any errors in console output. User confirms to proceed to Step 7.
+**After Step 5:** Watch for any errors in console output. Domain still on v15. User confirms to proceed to Step 6.
 
 ---
 
-### 7) Enable Scheduler
+### 6) Validate v16 is fully functional
+
+**What this step does:**
+- Checks v16 logs for errors
+- Tests basic CLI commands (lists users)
+- User performs manual browser tests on direct v16 port (8085)
+- Verifies custom apps work
+- **NO CHANGES** - just checking everything works
+- Domain still routes to v15 (safe to test)
+
+```bash
+SITE="kainotomo.com"
+
+# Check logs for errors (Ctrl+C to stop)
+echo "Checking v16 logs for errors (Ctrl+C to stop)..."
+docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml logs -f frontend backend queue-long queue-short scheduler --tail 50 &
+LOGS_PID=$!
+sleep 10
+kill $LOGS_PID 2>/dev/null || true
+
+# Quick validation commands:
+echo "Validating site: ${SITE}"
+docker exec erpnext-v16-backend-1 bench --site ${SITE} execute frappe.desk.page.setup_wizard.setup_wizard.get_setup_complete
+docker exec erpnext-v16-backend-1 bench --site ${SITE} list User --limit 3
+
+echo "✓ Command validation passed"
+```
+
+**Manual validation checklist (test on v16 port 8085 - domain still on v15):**
+- [ ] Visit `http://localhost:8085` and test site (or via `:8085/app/...` URL)
+- [ ] Login works with valid credentials
+- [ ] Desk/UI loads without errors
+- [ ] Core doctypes visible (Invoice, Purchase Order, etc.)
+- [ ] Custom apps appear in modules list
+- [ ] Test critical site-specific workflows
+- [ ] Check file attachments and downloads work
+- [ ] Test email/notification sending (if applicable)
+
+**IMPORTANT:** You're testing on port 8085 (direct v16 access). The domain still points to v15!
+
+**After Step 6:** User confirms all tests pass or reports issues. If all tests pass, proceed to Step 7 (Cutover). If issues, proceed to Step 10 (Rollback).
+
+---
+
+### 7) Adjust routing (Traefik) - move domain from v15 to v16 - **FINAL CUTOVER**
+
+**What this step does:**
+- **THIS IS THE ONLY TIME USERS EXPERIENCE DOWNTIME**
+- Removes domain from v15's Traefik routing rules
+- Adds domain to v16's Traefik routing rules
+- Traefik reloads config and routes domain to v16 port (8085)
+- After this: site is NO LONGER accessible on v15
+- After this: domain now serves v16 (fully tested and ready)
+- ~30 seconds total downtime (routing change + Traefik reload)
+
+**⚠️ CRITICAL:** This is the final cutover. **Only proceed if Step 6 validation passed completely.** If there were any issues, do NOT proceed - go to Step 10 (Rollback) instead.
+
+**Agent: Provide exact instructions for manual edits and wait for user confirmation.**
+
+**File 1: Edit** `~/gitops/desktop-2/erpnext-v15.yaml`
+```
+Find this line with your domain (kainotomo.com):
+  traefik.http.routers.erpnext-v15-https.rule: Host(`cyprussportsfever.com`,`kainotomo.com`,`erp.detima.com`,`gpapachristodoulou.com`,`mozsportstech.com`,`pakore6.kainotomo.com`,`app.swissmedhealth.com`,`cpl.kainotomo.com`,`eumariaphysio.com`)
+
+Remove `kainotomo.com` from the list
+```
+
+**File 2: Edit** `~/gitops/desktop-2/erpnext-v16.yaml`
+```
+Find this line:
+  traefik.http.routers.erpnext-v16-https.rule: Host(`kainotomo.com`)
+
+Add your site if not already there. Example:
+  traefik.http.routers.erpnext-v16-https.rule: Host(`kainotomo.com`,`new-site.com`)
+```
+
+**After manual edits, run these commands:**
+
+```bash
+# Apply the changes
+docker compose --project-name erpnext-v15 -f ~/gitops/desktop-2/erpnext-v15.yaml up -d
+docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml up -d
+
+# Verify routing changed (wait 5-10 seconds for Traefik to reload)
+sleep 10
+echo "Traefik routing updated. Domain now points to v16 (port 8085)"
+```
+
+**After Step 7:** Domain now points to v16. Cutover complete. User confirms to proceed to Step 8 (Enable Scheduler).
+
+---
+
+### 8) Enable Scheduler
 
 **What this step does:**
 - Enables the background scheduler for the site
@@ -402,51 +449,7 @@ docker exec erpnext-v16-backend-1 bench --site ${SITE} scheduler status
 echo "✓ Scheduler enabled for ${SITE}"
 ```
 
-**After Step 7:** Verify scheduler shows as "enabled". User confirms to proceed to Step 8.
-
----
-
-### 8) Validate on v16
-
-**What this step does:**
-- Checks v16 logs for errors
-- Tests basic CLI commands (lists users)
-- User performs manual browser tests
-- Verifies custom apps work
-- **NO CHANGES** - just checking everything works
-
-**Risk:** None - read-only validation
-
-**Agent: Explain validation checklist and wait for user feedback.**
-
-```bash
-SITE="kainotomo.com"
-
-# Check logs for errors (Ctrl+C to stop)
-echo "Checking v16 logs for errors (Ctrl+C to stop)..."
-docker compose --project-name erpnext-v16 -f ~/gitops/desktop-2/erpnext-v16.yaml logs -f frontend backend queue-long queue-short scheduler --tail 50 &
-LOGS_PID=$!
-sleep 10
-kill $LOGS_PID 2>/dev/null || true
-
-# Quick validation commands:
-echo "Validating site: ${SITE}"
-docker exec erpnext-v16-backend-1 bench --site ${SITE} execute frappe.desk.page.setup_wizard.setup_wizard.get_setup_complete
-docker exec erpnext-v16-backend-1 bench --site ${SITE} list User --limit 3
-
-echo "✓ Command validation passed"
-```
-
-**Manual validation checklist (in browser at site domain):**
-- [ ] Login works with valid credentials
-- [ ] Desk/UI loads without errors
-- [ ] Core doctypes visible (Invoice, Purchase Order, etc.)
-- [ ] Custom apps appear in modules list
-- [ ] Test critical site-specific workflows
-- [ ] Check file attachments and downloads work
-- [ ] Test email/notification sending (if applicable)
-
-**After Step 8:** User confirms all tests pass or reports issues. If all tests pass, proceed to Step 9 (Cleanup). If issues, proceed to Step 10 (Rollback).
+**After Step 8:** Verify scheduler shows as "enabled". User confirms to proceed to Step 9.
 
 ---
 
@@ -465,7 +468,7 @@ echo "✓ Command validation passed"
 
 **Agent: ONLY proceed with this step if:**
 - User explicitly requests cleanup
-- Migration completed successfully (Step 7 passed)
+- Migration completed successfully (Step 8 passed)
 - Site has been running on v16 for at least 24 hours
 - User confirms site is working perfectly on v16
 
@@ -515,7 +518,7 @@ echo "Site continues running on v16 only."
 
 ---
 
-### 10) If issues → Emergency Rollback to v15
+### 10) If issues in Step 6 → Emergency Rollback to v15
 
 **What this step does:**
 - Reverts routing back to v15
@@ -525,7 +528,7 @@ echo "Site continues running on v16 only."
 
 **Risk:** None - reverses changes
 
-**Agent: Only offer rollback if user reports issues in Step 7.**
+**Agent: Only offer rollback if user reports issues in Step 6 BEFORE proceeding to Step 7.**
 
 ```bash
 SITE="kainotomo.com"
@@ -556,11 +559,11 @@ docker exec erpnext-v15-backend-1 bash -lc "bench --site ${SITE} restore ${BACKU
 echo "✓ Rollback to v15 completed for ${SITE}"
 ```
 
-**After Step 8:** Site is back on v15. Analyze issues and decide whether to retry or skip this site for now.
+**After Step 10:** Site is back on v15. Analyze issues and decide whether to retry or skip this site for now.
 
 ---
 
-### 9) Success! Update migration tracker and repeat for next site
+### 11) Success! Update migration tracker and repeat for next site
 
 **Agent: Update the Migration Status Tracker table above with:**
 - Status: ✅ Completed
