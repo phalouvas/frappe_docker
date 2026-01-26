@@ -25,19 +25,19 @@
   },
   {
     "url": "https://github.com/phalouvas/erpnext_vies_validation",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus_banks.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_pos_screen.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_theodoulou",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
@@ -45,11 +45,11 @@
   },
   {
     "url": "https://github.com/kainotomo/erpnext-restaurant",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/myproperty",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/frappe/health",
@@ -74,7 +74,7 @@
   },
   {
     "url": "https://github.com/phalouvas/smartpractices.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/optimusland.git",
@@ -86,7 +86,7 @@
   },
   {
     "url": "https://github.com/kainotomo/nimbus_theme.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/kainotomo/pakore.git",
@@ -94,11 +94,11 @@
   },
   {
     "url": "https://github.com/phalouvas/cyprus_law.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/isellandfix.git",
-    "branch": "master"
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/cognitive_folio.git",
