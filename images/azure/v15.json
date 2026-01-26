@@ -41,7 +41,7 @@
   },
   {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
-    "branch": "master"
+    "branch": "version-15"
   },
   {
     "url": "https://github.com/kainotomo/erpnext-restaurant",
@@ -70,7 +70,7 @@
   },
   {
     "url": "https://github.com/phalouvas/doc2sys.git",
-    "branch": "master"
+    "branch": "version-15"
   },
   {
     "url": "https://github.com/phalouvas/smartpractices.git",
@@ -102,6 +102,6 @@
   },
   {
     "url": "https://github.com/phalouvas/cognitive_folio.git",
-    "branch": "master"
+    "branch": "version-15"
   }
 ]
