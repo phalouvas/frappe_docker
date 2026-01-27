@@ -25,7 +25,7 @@
 
 | Site Domain | V16 Database Name | Status | Date | Notes |
 |---|---|---|---|---|
-| cyprussportsfever.com | v16_cyprussportsfever_com | ⬜ Not Started | - | |
+| cyprussportsfever.com | v16_sports | ✅ Completed | 2026-01-27 | Successfully migrated with preserved DB credentials |
 | kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
 | erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
 | gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
