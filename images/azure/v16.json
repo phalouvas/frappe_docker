@@ -24,27 +24,11 @@
     "branch": "version-16"
   },
   {
-    "url": "https://github.com/phalouvas/erpnext_vies_validation",
-    "branch": "version-16"
-  },
-  {
     "url": "https://github.com/phalouvas/erpnext_cyprus_banks.git",
     "branch": "version-16"
   },
   {
-    "url": "https://github.com/phalouvas/erpnext_pos_screen.git",
-    "branch": "version-16"
-  },
-  {
-    "url": "https://github.com/phalouvas/erpnext_theodoulou",
-    "branch": "version-16"
-  },
-  {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
-    "branch": "version-16"
-  },
-  {
-    "url": "https://github.com/phalouvas/myproperty",
     "branch": "version-16"
   },
   {
@@ -69,10 +53,6 @@
     "branch": "version-16"
   },
   {
-    "url": "https://github.com/phalouvas/smartpractices.git",
-    "branch": "version-16"
-  },
-  {
     "url": "https://github.com/phalouvas/optimusland.git",
     "branch": "version-16"
   },
@@ -86,14 +66,6 @@
   },
   {
     "url": "https://github.com/kainotomo/pakore.git",
-    "branch": "version-16"
-  },
-  {
-    "url": "https://github.com/phalouvas/cyprus_law.git",
-    "branch": "version-16"
-  },
-  {
-    "url": "https://github.com/phalouvas/isellandfix.git",
     "branch": "version-16"
   },
   {
