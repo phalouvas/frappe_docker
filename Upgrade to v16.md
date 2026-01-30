@@ -27,7 +27,7 @@
 |---|---|---|---|---|
 | cyprussportsfever.com | v16_sports | ✅ Completed | 2026-01-27 | Successfully migrated with preserved DB credentials |
 | kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
-| erp.detima.com | v16_erp_detima_com | ⬜ Not Started | - | |
+| erp.detima.com | v16_erp_detima_com | ✅ Completed | 2026-01-30 | Cutover to v16 complete; scheduler enabled |
 | gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | mozsportstech.com | v16_mozsports | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
