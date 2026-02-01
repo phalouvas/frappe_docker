@@ -25,13 +25,13 @@
 
 | Site Domain | V16 Database Name | Status | Date | Notes |
 |---|---|---|---|---|
-| cyprussportsfever.com | v16_sports | ✅ Completed | 2026-01-27 | Successfully migrated with preserved DB credentials |
+| cyprussportsfever.com | v16_sports | ⬜ Not Started | - | |
 | kainotomo.com | v16_kainotomo | ⬜ Not Started | - | |
 | erp.detima.com | v16_detima | ⬜ Not Started | - | |
 | gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | mozsportstech.com | v16_mozsports | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
-| app.swissmedhealth.com | v16_swissmed | ⬜ Not Started | - | |
+| app.swissmedhealth.com | v16_swissmed | ❌ Rollback | 2026-02-01 | Data migration successful, domain routed back to v15. Issue: Web forms failing on v16 - requires investigation |
 | cpl.kainotomo.com | v16_cpl | ⬜ Not Started | - | |
 | eumariaphysio.com | v16_eumariaphysio | ⬜ Not Started | - | |
 
