@@ -26,14 +26,14 @@
 | Site Domain | V16 Database Name | Status | Date | Notes |
 |---|---|---|---|---|
 | cyprussportsfever.com | v16_sports | ✅ Completed | 2026-01-27 | Successfully migrated with preserved DB credentials |
-| kainotomo.com | v16_kainotomo_com | ⬜ Not Started | - | |
-| erp.detima.com | v16_erp_detima_com | ✅ Completed | 2026-01-30 | Cutover to v16 complete; scheduler enabled |
+| kainotomo.com | v16_kainotomo | ⬜ Not Started | - | |
+| erp.detima.com | v16_detima | ⬜ Not Started | - | |
 | gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | mozsportstech.com | v16_mozsports | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
-| app.swissmedhealth.com | v16_app_swissmedhealth_com | ⬜ Not Started | - | |
-| cpl.kainotomo.com | v16_cpl_kainotomo_com | ⬜ Not Started | - | |
-| eumariaphysio.com | v16_eumariaphysio_com | ⬜ Not Started | - | |
+| app.swissmedhealth.com | v16_swissmed | ⬜ Not Started | - | |
+| cpl.kainotomo.com | v16_cpl | ⬜ Not Started | - | |
+| eumariaphysio.com | v16_eumariaphysio | ⬜ Not Started | - | |
 
 **Legend:**
 - ⬜ Not Started - Pending migration
