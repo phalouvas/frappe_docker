@@ -33,7 +33,7 @@
 | pakore6.kainotomo.com | v16_pakore6 | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | app.swissmedhealth.com | v16_swissmed | ❌ Rollback | 2026-02-01 | Data migration successful, domain routed back to v15. Issue: Web forms failing on v16 - requires investigation |
 | cpl.kainotomo.com | v16_cpl | ⬜ Not Started | - | |
-| eumariaphysio.com | v16_eumariaphysio | ⬜ Not Started | - | |
+| eumariaphysio.com | v16_eumariaphysio | ✅ Completed | 2026-02-03 | Successfully migrated with preserved DB credentials and files. Domain routed to v16 |
 
 **Legend:**
 - ⬜ Not Started - Pending migration
