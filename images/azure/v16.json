@@ -12,8 +12,8 @@
     "branch": "version-16"
   },
   {
-    "url": "https://github.com/frappe/webshop",
-    "branch": "develop"
+    "url": "https://github.com/phalouvas/erpnext_webshop",
+    "branch": "version-16"
   },
   {
     "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
