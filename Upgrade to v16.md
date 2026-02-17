@@ -26,7 +26,7 @@
 | Site Domain | V16 Database Name | Status | Date | Notes |
 |---|---|---|---|---|
 | cyprussportsfever.com | v16_sports | ⬜ Not Started | - | |
-| kainotomo.com | v16_kainotomo | ⬜ Not Started | - | |
+| kainotomo.com | v16_kainotomo | ✅ Completed | 2026-02-17 | Full migration completed: DB + files restored, schema migrated, domain cutover to v16, scheduler enabled |
 | erp.detima.com | v16_detima | ✅ Completed | 2026-02-06 | Cutover complete, validation passed |
 | gpapachristodoulou.com | v6_gpapa | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
 | mozsportstech.com | v16_mozsports | ✅ Completed | 2026-01-26 | Successfully migrated with preserved DB credentials |
