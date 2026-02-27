@@ -20,10 +20,6 @@
     "branch": "version-15"
   },
   {
-    "url": "https://github.com/phalouvas/erpnext_digital_subscriptions",
-    "branch": "version-15"
-  },
-  {
     "url": "https://github.com/phalouvas/erpnext_cyprus_banks.git",
     "branch": "version-15"
   },
@@ -36,10 +32,6 @@
     "branch": "version-15"
   },
   {
-    "url": "https://github.com/phalouvas/eumaria",
-    "branch": "version-15"
-  },
-  {
     "name": "swissmedhealth",
     "url": "https://github.com/phalouvas/swissmedhealth.git",
     "branch": "version-15"
@@ -49,27 +41,11 @@
     "branch": "version-15"
   },
   {
-    "url": "https://github.com/phalouvas/doc2sys.git",
-    "branch": "version-15"
-  },
-  {
     "url": "https://github.com/phalouvas/optimusland.git",
     "branch": "version-15"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus",
-    "branch": "version-15"
-  },
-  {
-    "url": "https://github.com/kainotomo/nimbus_theme.git",
-    "branch": "version-15"
-  },
-  {
-    "url": "https://github.com/kainotomo/pakore.git",
-    "branch": "version-15"
-  },
-  {
-    "url": "https://github.com/phalouvas/cognitive_folio.git",
     "branch": "version-15"
   }
 ]
