@@ -71,5 +71,9 @@
   {
     "url": "https://github.com/phalouvas/cognitive_folio.git",
     "branch": "version-16"
+  },
+  {
+    "url": "https://github.com/phalouvas/cese.git",
+    "branch": "version-16"
   }
 ]
