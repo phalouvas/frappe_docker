@@ -130,6 +130,13 @@ RUN export APP_INSTALL_ARGS="" && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
+# Fix namespace package conflicts (e.g., agent-framework meta-package
+# overwriting agent-framework-core's __init__.py). Must run after bench init
+# so all pip deps are installed first, then we force-reinstall the core
+# package last and verify integrity. Build fails if verification fails.
+COPY images/azure/fix-namespace-packages.sh /opt/frappe/fix-namespace-packages.sh
+RUN /opt/frappe/fix-namespace-packages.sh
+
 FROM base AS backend
 
 USER frappe
