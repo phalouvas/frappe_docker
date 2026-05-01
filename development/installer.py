@@ -211,7 +211,8 @@ def install_additional_packages(args):
         "beautifulsoup4",
         "markdownify",
         "pdfplumber",
-        "edgartools"
+        "edgartools",
+        "anthropic-ai/claude-code"
     ]
     for package in packages:
         cprint(f"Installing {package}...", level=3)
