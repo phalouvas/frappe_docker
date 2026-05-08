@@ -75,9 +75,5 @@
   {
     "url": "https://github.com/phalouvas/cese.git",
     "branch": "version-16"
-  },
-  {
-    "url": "https://github.com/phalouvas/ph_agent.git",
-    "branch": "version-16"
   }
 ]
