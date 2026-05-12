@@ -46,5 +46,8 @@
   "shutdownAction": "stopCompose",
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/frappe/.ssh,type=bind,consistency=cached"
-  ]
+  ],
+  "remoteEnv": {
+    "FRAPPE_BRANCH": "version-16"
+  }
 }
