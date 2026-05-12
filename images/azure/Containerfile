@@ -9,7 +9,7 @@ ARG WKHTMLTOPDF_VERSION=0.12.6.1-3
 ARG WKHTMLTOPDF_DISTRO=bookworm
 ARG NODE_VERSION=18.18.2
 ENV NVM_DIR=/home/frappe/.nvm
-ENV PATH ${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/:${PATH}
+ENV PATH=${NVM_DIR}/versions/node/v${NODE_VERSION}/bin/:${PATH}
 
 RUN useradd -ms /bin/bash frappe \
     && apt-get update \
@@ -129,13 +129,6 @@ RUN export APP_INSTALL_ARGS="" && \
   cd /home/frappe/frappe-bench && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
-
-# Fix namespace package conflicts (e.g., agent-framework meta-package
-# overwriting agent-framework-core's __init__.py). Must run after bench init
-# so all pip deps are installed first, then we force-reinstall the core
-# package last and verify integrity. Build fails if verification fails.
-COPY images/azure/fix-namespace-packages.sh /opt/frappe/fix-namespace-packages.sh
-RUN /opt/frappe/fix-namespace-packages.sh
 
 FROM base AS backend
 

@@ -71,7 +71,7 @@ build_and_push() {
     export APPS_JSON_BASE64=$(base64 -w 0 "$json_file")
     
     # Build image with release tag (e.g., 14-1.0)
-    docker build --no-cache \
+    docker build $CACHE_OPTION \
         --build-arg=FRAPPE_PATH=https://github.com/frappe/frappe \
         --build-arg=FRAPPE_BRANCH=$frappe_branch \
         --build-arg=PYTHON_VERSION=$python_version \
@@ -86,25 +86,59 @@ build_and_push() {
     docker tag phalouvas/erpnext-worker:$version-$RELEASE_VERSION phalouvas/erpnext-worker:$version-latest
     echo "✓ Tagged as: phalouvas/erpnext-worker:$version-latest"
     
-    # Push both tags
-    echo "Pushing images..."
-    docker push phalouvas/erpnext-worker:$version-$RELEASE_VERSION
-    docker push phalouvas/erpnext-worker:$version-latest
-    echo "✓ v$version pushed successfully"
+    # Push both tags (if enabled)
+    if [ "$SHOULD_PUSH" = true ]; then
+        echo "Pushing images..."
+        docker push phalouvas/erpnext-worker:$version-$RELEASE_VERSION
+        docker push phalouvas/erpnext-worker:$version-latest
+        echo "✓ v$version pushed successfully"
+    else
+        echo "⊘ Push skipped (--no-push)"
+    fi
     
     # Record build
     record_build $version
 }
 
-# Determine which versions to build
+# Parse arguments for --cache and --no-push flags and versions
+USE_CACHE=false
+SHOULD_PUSH=true
 VERSIONS_TO_BUILD=()
 
-if [ $# -eq 0 ]; then
-    # No arguments - build all versions
+for arg in "$@"; do
+    case "$arg" in
+        --cache)
+            USE_CACHE=true
+            ;;
+        --no-push)
+            SHOULD_PUSH=false
+            ;;
+        *)
+            # Treat as version number
+            VERSIONS_TO_BUILD+=("$arg")
+            ;;
+    esac
+done
+
+# If no versions specified, build all
+if [ ${#VERSIONS_TO_BUILD[@]} -eq 0 ]; then
     VERSIONS_TO_BUILD=(14 15 16)
+fi
+
+# Set docker build cache option
+if [ "$USE_CACHE" = true ]; then
+    CACHE_OPTION=""
+    echo "Docker cache enabled"
 else
-    # Build specific versions passed as arguments
-    VERSIONS_TO_BUILD=("$@")
+    CACHE_OPTION="--no-cache"
+    echo "Docker cache disabled (--no-cache)"
+fi
+
+# Set push option
+if [ "$SHOULD_PUSH" = true ]; then
+    echo "Push to Docker Hub: enabled"
+else
+    echo "Push to Docker Hub: disabled (--no-push)"
 fi
 
 echo "Versions to build: ${VERSIONS_TO_BUILD[*]}"
@@ -160,6 +194,12 @@ echo "All builds and pushes complete!"
 echo "Release Version: $RELEASE_VERSION"
 echo ""
 echo "Usage examples:"
-echo "  ./build.sh          # Build all versions (14, 15, 16)"
-echo "  ./build.sh 16       # Build only v16"
-echo "  ./build.sh 15 16    # Build only v15 and v16"
+echo "  ./build.sh                    # Build all versions (14, 15, 16) with --no-cache, push enabled"
+echo "  ./build.sh --cache            # Build all versions with Docker cache enabled, push enabled"
+echo "  ./build.sh --no-push          # Build all versions with --no-cache, no push"
+echo "  ./build.sh 16                 # Build only v16 with --no-cache, push enabled"
+echo "  ./build.sh --cache 16         # Build only v16 with cache, push enabled"
+echo "  ./build.sh --no-push 16       # Build only v16 with --no-cache, no push"
+echo "  ./build.sh --cache --no-push 16 # Build only v16 with cache, no push"
+echo "  ./build.sh 15 16              # Build v15 and v16 with --no-cache, push enabled"
+echo "  ./build.sh --cache --no-push 15 16 # Build v15 and v16 with cache, no push"
