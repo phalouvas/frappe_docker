@@ -1,17 +1,37 @@
-# Frappe Docker
-
-[![Build Stable](https://github.com/frappe/frappe_docker/actions/workflows/build_stable.yml/badge.svg)](https://github.com/frappe/frappe_docker/actions/workflows/build_stable.yml)
-[![Build Develop](https://github.com/frappe/frappe_docker/actions/workflows/build_develop.yml/badge.svg)](https://github.com/frappe/frappe_docker/actions/workflows/build_develop.yml)
-
-Docker images and orchestration for Frappe applications.
+<div align="center">
+  <img src="docs/public/frappe-docker.png" alt="Frappe Docker" width="80" />
+  <h1>Frappe Docker</h1>
+  <p>Docker images and orchestration for Frappe applications.</p>
+  <p>
+    <a href="https://github.com/frappe/frappe_docker/actions/workflows/core-build-stable.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/frappe/frappe_docker/core-build-stable.yml?branch=main&label=Build%20Stable" alt="Build Stable" />
+    </a>
+    <a href="https://github.com/frappe/frappe_docker/actions/workflows/core-build-develop.yml">
+      <img src="https://img.shields.io/github/actions/workflow/status/frappe/frappe_docker/core-build-develop.yml?branch=main&label=Build%20Develop" alt="Build Develop" />
+    </a>
+    <a href="https://frappe.github.io/frappe_docker/">
+      <img src="https://img.shields.io/badge/Docs-Open%20Site-0A7EA4" alt="Docs" />
+    </a>
+  </p>
+</div>
 
 ## What is this?
 
-This repository handles the containerization of the Frappe stack, including the application server, database, Redis, and supporting services. It provides quick disposable demo setups, a development environment, production-ready Docker images and compose configurations for deploying Frappe applications including ERPNext.
+This repository is the official container setup for Frappe applications.
+
+It provides Docker images, Compose configurations, and documentation for running Frappe applications, including ERPNext, CRM, Helpdesk, and other Frappe apps, in containers.
+
+Use it if you want to:
+
+- run ERPNext, CRM, Helpdesk, or other Frappe apps with Docker
+- start from a quick demo setup
+- use production-ready Docker images and Compose setups
+- build custom app images
+- deploy and operate Frappe in production
 
 ## Repository Structure
 
-```
+```bash
 frappe_docker/
 ├── docs/                 # Complete documentation
 ├── overrides/            # Docker Compose configurations for different scenarios
@@ -34,11 +54,18 @@ frappe_docker/
 
 ## Documentation
 
-**The official documentation for `frappe_docker` is maintained in the `docs/` folder in this repository.**
+The full `frappe_docker` documentation is available in [`docs/`](docs/) and published at [frappe.github.io/frappe_docker](https://frappe.github.io/frappe_docker/).
 
-**New to Frappe Docker?** Read the [Getting Started Guide](docs/getting-started.md) for a comprehensive overview of repository structure, development workflow, custom apps, Docker concepts, and quick start examples.
+### Recommended entry points:
 
-If you are already familiar with Frappe, you can jump right into the [different deployment methods](docs/01-getting-started/01-choosing-a-deployment-method.md) and select the one best suited to your use case.
+- **New here:** [Getting Started Guide](docs/getting-started.md)
+- **Choosing a setup:** [Deployment methods](docs/01-getting-started/01-choosing-a-deployment-method.md)
+- **ARM64 notes:** [ARM64](docs/01-getting-started/03-arm64.md)
+- **Container setup overview:** [Container Setup Overview](docs/02-setup/01-overview.md)
+- **Running in production:** [Production docs](docs/03-production/)
+- **Operating a deployment:** [Operations docs](docs/04-operations/)
+- **Development workflows:** [Development](docs/05-development/01-development.md)
+- **FAQ:** [Frequently Asked Questions](https://github.com/frappe/frappe_docker/wiki/Frequently-Asked-Questions)
 
 ## Prerequisites
 
@@ -50,17 +77,13 @@ If you are already familiar with Frappe, you can jump right into the [different 
 
 ## Demo setup
 
-The fastest way to try Frappe is to play in an already set up sandbox, in your browser, click the button below:
-
-<a href="https://labs.play-with-docker.com/?stack=https://raw.githubusercontent.com/frappe/frappe_docker/main/pwd.yml">
-  <img src="https://raw.githubusercontent.com/play-with-docker/stacks/master/assets/images/button.png" alt="Try in PWD"/>
-</a>
+The fastest way to try Frappe locally is with the single-file demo setup in `pwd.yml`.
 
 ### Try on your environment
 
 > **⚠️ Disposable demo only**
 >
-> **This setup is intended for quick evaluation. Expect to throw the environment away.** You will not be able to install custom apps to this setup. For production deployments, custom configurations, and detailed explanations, see the full documentation.
+> **This setup is intended for short-lived evaluation only.** You will not be able to install custom apps to this setup. For production deployments, custom configurations, and detailed explanations, see the full documentation.
 
 First clone the repo:
 
@@ -76,22 +99,6 @@ docker compose -f pwd.yml up -d
 ```
 
 Wait for a couple of minutes for ERPNext site to be created or check `create-site` container logs before opening browser on port `8080`. (username: `Administrator`, password: `admin`)
-
-## Documentation Links
-
-### [Getting Started Guide](docs/getting-started.md)
-
-### [Frequently Asked Questions](https://github.com/frappe/frappe_docker/wiki/Frequently-Asked-Questions)
-
-### [Getting Started](#getting-started)
-
-### [Deployment Methods](docs/01-getting-started/01-choosing-a-deployment-method.md)
-
-### [ARM64](docs/01-getting-started/03-arm64.md)
-
-### [Container Setup Overview](docs/02-setup/01-overview.md)
-
-### [Development](docs/05-development/01-development.md)
 
 ## Contributing
 

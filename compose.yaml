@@ -1,6 +1,6 @@
 x-customizable-image: &customizable_image
   # By default the image used only contains the `frappe` and `erpnext` apps.
-  # See https://github.com/frappe/frappe_docker/blob/main/docs/container-setup/02-build-setup.md#define-custom-apps
+  # See https://github.com/frappe/frappe_docker/blob/main/docs/02-setup/02-build-setup.md#define-custom-apps
   # about using custom images.
   image: phalouvas/erpnext-worker:${ERPNEXT_VERSION:?No ERPNext version set}
   pull_policy: if_not_present
@@ -32,6 +32,7 @@ services:
         bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
         bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
         bench set-config -gp socketio_port $$SOCKETIO_PORT;
+        bench set-config -g chromium_path /usr/bin/chromium-headless-shell;
     environment:
       DB_HOST: ${DB_HOST:-}
       DB_PORT: ${DB_PORT:-}

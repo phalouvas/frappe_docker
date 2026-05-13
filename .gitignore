@@ -33,3 +33,6 @@ backups
 node_modules
 
 .build_manifest
+# VitePress
+**/.vitepress/dist
+**/.vitepress/cache

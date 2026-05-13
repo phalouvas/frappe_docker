@@ -1,3 +1,7 @@
+---
+title: Environment Variables
+---
+
 # Environment Variables Reference
 
 Environment variables configure your Frappe Docker setup. They can be set directly in the container or defined in a `.env` file referenced by Docker Compose.
@@ -43,22 +47,49 @@ Then edit `.env` and set variables according to your needs.
 
 ---
 
-## HTTPS & SSL Configuration
+## Reverse Proxy and SSL (HTTPS) Configuration
 
-| Variable            | Purpose                                          | Default | When to Set                              |
-| ------------------- | ------------------------------------------------ | ------- | ---------------------------------------- |
-| `LETSENCRYPT_EMAIL` | Email for Let's Encrypt certificate registration | —       | Required if using HTTPS override         |
-| `SITES`             | List of domains for SSL certificates             | —       | Required if using reverse proxy override |
+### Traefik (compose.proxy.yaml / compose.https.yaml)
 
-**Format for `SITES`:**
+| Variable            | Purpose                                          | Default | When to Set                                  |
+| ------------------- | ------------------------------------------------ | ------- | -------------------------------------------- |
+| `LETSENCRYPT_EMAIL` | Email for Let's Encrypt certificate registration | -       | Required for `compose.https.yaml`            |
+| `SITES_RULE`        | Domains for routing (Traefik rule expression)    | -       | Required for Traefik routing/HTTPS overrides |
+
+**Format for `SITES_RULE`:**
 
 ```bash
 # Single site
-SITES=`mysite.example.com`
+SITES_RULE=Host(`mysite.example.com`)
 
-# Wildcard (any subdomain)
-SITES=`{any:.+}`
+# Multiple sites
+SITES_RULE=Host(`a.example.com`) || Host(`b.example.com`)
 ```
+
+> Note: The Traefik v3 migration is complete. Use `SITES_RULE` as a full v3 rule expression; `SITES` is deprecated.
+> Rule syntax now defaults to v3, so no `core.defaultRuleSyntax` or per-router `ruleSyntax` settings are required.
+
+### nginx-proxy + acme-companion (compose.nginxproxy\*.yaml)
+
+| Variable            | Purpose                                   | Default | When to Set                                |
+| ------------------- | ----------------------------------------- | ------- | ------------------------------------------ |
+| `LETSENCRYPT_EMAIL` | Email for Let's Encrypt certificate       | -       | Required for `compose.nginxproxy-ssl.yaml` |
+| `NGINX_PROXY_HOSTS` | Comma-separated hostnames for nginx-proxy | -       | Required for `compose.nginxproxy*.yaml`    |
+
+**Example:**
+
+```bash
+NGINX_PROXY_HOSTS=example.com,www.example.com
+```
+
+> Note: Automatic certificates require port 80 to be reachable (HTTP-01).
+
+### Published Ports (Traefik and nginx-proxy)
+
+| Variable             | Purpose              | Default                         | When to Set                  |
+| -------------------- | -------------------- | ------------------------------- | ---------------------------- |
+| `HTTP_PUBLISH_PORT`  | Published HTTP port  | `80` (proxy) / `8080` (noproxy) | Change if port is in use     |
+| `HTTPS_PUBLISH_PORT` | Published HTTPS port | `443`                           | Change if port 443 is in use |
 
 ---
 
@@ -91,13 +122,12 @@ If your site is named `example.com` and you access it via that domain, no need t
 
 ---
 
-## Nginx Proxy Configuration
+## Frontend Nginx Configuration (inside the frontend container)
 
 | Variable               | Purpose                            | Default        | Allowed Values                               |
 | ---------------------- | ---------------------------------- | -------------- | -------------------------------------------- |
 | `BACKEND`              | Backend service address and port   | `0.0.0.0:8000` | `{host}:{port}`                              |
 | `SOCKETIO`             | Socket.IO service address and port | `0.0.0.0:9000` | `{host}:{port}`                              |
-| `HTTP_PUBLISH_PORT`    | Published HTTP port                | `8080`         | Any available port                           |
 | `PROXY_READ_TIMEOUT`   | Upstream request timeout           | `120s`         | Any nginx timeout value (e.g., `300s`, `5m`) |
 | `CLIENT_MAX_BODY_SIZE` | Maximum upload file size           | `50m`          | Any nginx size value (e.g., `100m`, `1g`)    |
 
@@ -110,3 +140,11 @@ Use these variables when running behind a reverse proxy or load balancer:
 | `UPSTREAM_REAL_IP_ADDRESS`   | Trusted upstream IP address for real IP detection | `127.0.0.1`       |
 | `UPSTREAM_REAL_IP_HEADER`    | Request header containing client IP               | `X-Forwarded-For` |
 | `UPSTREAM_REAL_IP_RECURSIVE` | Enable recursive IP search                        | `off`             |
+
+---
+
+## Migration Service
+
+| Variable        | Purpose                         | Default                    | Allowed Values   |
+| --------------- | ------------------------------- | -------------------------- | ---------------- |
+| `MIGRATE_SITES` | Switch auto migration on or off | `true` - auto migration on | `true` , `false` |

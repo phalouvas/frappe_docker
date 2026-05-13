@@ -1,4 +1,4 @@
-name: Bench
+name: Core / Build Bench
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
     paths:
       - images/bench/**
       - docker-bake.hcl
-      - .github/workflows/build_bench.yml
+      - .github/workflows/core-build-bench.yml
 
   schedule:
     # Every day at 12:00 pm
@@ -23,13 +23,13 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
         with:
           image: tonistiigi/binfmt:latest
           platforms: all
 
       - name: Setup Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Set Environment Variables
         run: cat example.env | grep -o '^[^#]*' >> "$GITHUB_ENV"
@@ -38,21 +38,21 @@ jobs:
         run: echo "LATEST_BENCH_RELEASE=$(curl -s 'https://api.github.com/repos/frappe/bench/releases/latest' | jq -r '.tag_name')" >> "$GITHUB_ENV"
 
       - name: Build and test
-        uses: docker/bake-action@v6.10.0
+        uses: docker/bake-action@v7.1.0
         with:
           source: .
           targets: bench-test
 
       - name: Login
         if: ${{ github.repository == 'frappe/frappe_docker' && github.event_name != 'pull_request' }}
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Push
         if: ${{ github.repository == 'frappe/frappe_docker' && github.event_name != 'pull_request' }}
-        uses: docker/bake-action@v6.10.0
+        uses: docker/bake-action@v7.1.0
         with:
           targets: bench
           push: true

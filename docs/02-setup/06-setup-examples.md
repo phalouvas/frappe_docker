@@ -1,3 +1,7 @@
+---
+title: Setup Examples
+---
+
 # Setup Examples
 
 This guide provides practical examples for common setup scenarios. These examples build upon the [container setup guide](01-overview.md) and demonstrate how to combine the base compose file with overrides.
@@ -78,7 +82,7 @@ Setup Frappe/ERPNext using containerized MariaDB and Redis with Let's Encrypt SS
 
 **Requirements:**
 
-- Set `LETSENCRYPT_EMAIL` and `SITES` environment variables
+- Set `LETSENCRYPT_EMAIL` and `SITES_RULE` environment variables
 - DNS must point to your server IP
 
 ```sh
@@ -93,7 +97,7 @@ docker compose -f compose.yaml \
 docker compose --project-name <project-name> -f ~/gitops/docker-compose.yml up -d
 ```
 
-> **Note:** Ensure your `SITES` variable is properly formatted. See [environment variables](04-env-variables.md) for the correct format.
+> **Note:** Ensure your `SITES_RULE` variable is properly formatted. See [environment variables](04-env-variables.md) for the correct format.
 
 ## Create First Site
 
