@@ -199,27 +199,7 @@ def init_bench_if_not_exist(args):
 
 
 def install_additional_packages(args):
-    cprint("Installing additional packages...", level=2)
-    packages = [
-        "azure-ai-documentintelligence",
-        "yfinance",
-        "openai",
-        "PyPDF2",
-        "tiktoken",
-        "duckduckgo_search",
-        "requests",
-        "beautifulsoup4",
-        "markdownify",
-        "pdfplumber",
-        "edgartools",
-        "anthropic-ai/claude-code"
-    ]
-    for package in packages:
-        cprint(f"Installing {package}...", level=3)
-        subprocess.call(
-            ["bench", "pip", "install", package],
-            cwd=os.path.join(os.getcwd(), args.bench_name),
-        )
+    pass
 
 
 def create_site_in_bench(args):
