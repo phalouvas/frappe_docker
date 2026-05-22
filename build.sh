@@ -177,8 +177,14 @@ generate_build_apps_json() {
                         pin=m[1]
                     }
 
+                    # bench init clones apps with --branch <ref> --depth 1.
+                    # commit SHAs are not valid branch refs for shallow clone.
+                    # Use pin only when it looks like a tag-like ref.
                     if (pin != "") {
-                        gsub(/"branch"[[:space:]]*:[[:space:]]*"[^"]+"/, "\"branch\": \"" pin "\"", obj)
+                        is_commit = (pin ~ /^[0-9a-fA-F]+$/ && length(pin) >= 7 && length(pin) <= 40)
+                        if (!is_commit) {
+                            gsub(/"branch"[[:space:]]*:[[:space:]]*"[^"]+"/, "\"branch\": \"" pin "\"", obj)
+                        }
                     }
 
                     printf "%s", obj
