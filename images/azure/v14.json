@@ -1,22 +1,27 @@
 [
   {
     "url": "https://github.com/frappe/erpnext.git",
-    "branch": "version-14"
+    "branch": "version-14",
+    "pin": "bd7e5b3e0589db07e45e49cbe1b250b62ad868d3"
   },
   {
     "url": "https://github.com/frappe/payments",
-    "branch": "version-14"
+    "branch": "version-14",
+    "pin": "eee267ac41e71b940838e97eaeecf74bff95c200"
   },
   {
     "url": "https://github.com/frappe/hrms",
-    "branch": "version-14"
+    "branch": "version-14",
+    "pin": "v14.38.1"
   },
   {
     "url": "https://github.com/frappe/health",
-    "branch": "version-14"
+    "branch": "version-14",
+    "pin": "v14.1.3"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_theodoulou",
-    "branch": "master"
+    "branch": "master",
+    "pin": "16.0.0"
   }
 ]

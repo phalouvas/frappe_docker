@@ -1,51 +1,63 @@
 [
   {
     "url": "https://github.com/frappe/erpnext.git",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "v15.108.3"
   },
   {
     "url": "https://github.com/frappe/payments",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "6c3be057f87c041779f34c6fcb319d8bf0eda5b0"
   },
   {
     "url": "https://github.com/frappe/hrms",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "v15.60.3"
   },
   {
     "url": "https://github.com/frappe/webshop",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "6c8fd0013dfe297edb6ebcc10e27ba495902dd19"
   },
   {
     "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "16.0.0"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus_banks.git",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "16.0.0"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "b6bfbff1327d1085a626dfdb991e63d70da5c06b"
   },
   {
     "url": "https://github.com/frappe/health",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "v15.1.20"
   },
   {
     "name": "swissmedhealth",
     "url": "https://github.com/phalouvas/swissmedhealth.git",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "15.1.1"
   },
   {
     "url": "https://github.com/kainotomo/invoice2erpnext.git",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "ebddc8601db6e745b15026fd9bef79feea9ad267"
   },
   {
     "url": "https://github.com/phalouvas/optimusland.git",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "15.0.0"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus",
-    "branch": "version-15"
+    "branch": "version-15",
+    "pin": "15.0.0"
   }
 ]

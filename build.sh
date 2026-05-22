@@ -175,6 +175,166 @@ generate_build_apps_json() {
     ' "$input_json" > "$output_json"
 }
 
+json_file_for_version() {
+    local version="$1"
+
+    case "$version" in
+        14) echo "$HOME/frappe_docker/images/azure/v14.json" ;;
+        15) echo "$HOME/frappe_docker/images/azure/v15.json" ;;
+        16) echo "$HOME/frappe_docker/images/azure/v16.json" ;;
+        *) return 1 ;;
+    esac
+}
+
+resolve_pin_for_ref() {
+    local url="$1"
+    local branch="$2"
+    local head_sha tag_candidates chosen_tag
+    local all_tags
+
+    head_sha=$(git ls-remote "$url" "refs/heads/$branch" | awk '{print $1}')
+    if [ -z "$head_sha" ]; then
+        # Fallback when an indicator branch no longer exists remotely.
+        all_tags=$(git ls-remote --tags "$url" | awk '
+            $2 ~ /^refs\/tags\// {
+                name = $2
+                sub(/^refs\/tags\//, "", name)
+                sub(/\^\{\}$/, "", name)
+                print name
+            }
+        ' | sort -u)
+
+        if [ -z "$all_tags" ]; then
+            return 1
+        fi
+
+        chosen_tag=$(echo "$all_tags" | sort -V | tail -n 1)
+        echo "⚠ Branch $branch not found for $url; using latest tag $chosen_tag" >&2
+        echo "$chosen_tag"
+        return 0
+    fi
+
+    tag_candidates=$(git ls-remote --tags "$url" | awk -v h="$head_sha" '
+        $1 == h && $2 ~ /^refs\/tags\// {
+            name = $2
+            sub(/^refs\/tags\//, "", name)
+            sub(/\^\{\}$/, "", name)
+            print name
+        }
+    ' | sort -u)
+
+    if [ -n "$tag_candidates" ]; then
+        chosen_tag=$(echo "$tag_candidates" | sort -V | tail -n 1)
+        echo "$chosen_tag"
+    else
+        echo "$head_sha"
+    fi
+}
+
+refresh_pins_in_json() {
+    local json_file="$1"
+    local version="$2"
+    local tmp_out
+    local -A pin_map
+
+    while IFS=$'\t' read -r url branch; do
+        if [ -z "$url" ] || [ -z "$branch" ]; then
+            continue
+        fi
+
+        local resolved_pin
+        if ! resolved_pin=$(resolve_pin_for_ref "$url" "$branch"); then
+            echo "✗ Could not resolve HEAD for $url on branch $branch"
+            return 1
+        fi
+
+        pin_map["$url|$branch"]="$resolved_pin"
+        echo "  v$version: $url@$branch -> $resolved_pin"
+    done < <(awk '
+        match($0, /"url"[[:space:]]*:[[:space:]]*"([^"]+)"/, m) { url=m[1] }
+        match($0, /"branch"[[:space:]]*:[[:space:]]*"([^"]+)"/, m) {
+            branch=m[1]
+            if (url != "" && branch != "") {
+                printf "%s\t%s\n", url, branch
+                url=""
+            }
+        }
+    ' "$json_file")
+
+    tmp_out=$(mktemp)
+    local current_url=""
+
+    while IFS= read -r line || [ -n "$line" ]; do
+        if echo "$line" | grep -qE '"url"[[:space:]]*:[[:space:]]*"[^"]+"'; then
+            current_url=$(echo "$line" | sed -E 's/.*"url"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+            echo "$line" >> "$tmp_out"
+            continue
+        fi
+
+        # Always rewrite pin from resolved source of truth.
+        if echo "$line" | grep -qE '"pin"[[:space:]]*:'; then
+            continue
+        fi
+
+        if echo "$line" | grep -qE '"branch"[[:space:]]*:[[:space:]]*"[^"]+"'; then
+            local indent
+            local branch_ref
+            indent=$(echo "$line" | sed -E 's/^([[:space:]]*).*/\1/')
+            branch_ref=$(echo "$line" | sed -E 's/.*"branch"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+            local key="$current_url|$branch_ref"
+            local resolved_pin="${pin_map[$key]}"
+
+            if [ -z "$resolved_pin" ]; then
+                echo "✗ Missing resolved pin for $current_url on branch $branch_ref"
+                rm -f "$tmp_out"
+                return 1
+            fi
+
+            local branch_line="${line%,}"
+            echo "${branch_line}," >> "$tmp_out"
+            echo "${indent}\"pin\": \"$resolved_pin\"" >> "$tmp_out"
+            continue
+        fi
+
+        if [[ "$line" =~ ^[[:space:]]*\}[[:space:]]*,?[[:space:]]*$ ]]; then
+            current_url=""
+        fi
+
+        echo "$line" >> "$tmp_out"
+    done < "$json_file"
+
+    mv "$tmp_out" "$json_file"
+}
+
+refresh_pins_for_versions() {
+    local version
+    local refresh_failed=false
+
+    echo "Refreshing pins from remote refs (tag preferred, commit fallback)..."
+    for version in "${VERSIONS_TO_BUILD[@]}"; do
+        local json_file
+        if ! json_file=$(json_file_for_version "$version"); then
+            echo "⚠ Unknown version for pin refresh: $version"
+            continue
+        fi
+
+        if [ ! -f "$json_file" ]; then
+            echo "⚠ Skipping pin refresh for v$version - $(basename "$json_file") not found"
+            continue
+        fi
+
+        echo "Refreshing v$version pins in $json_file"
+        if ! refresh_pins_in_json "$json_file" "$version"; then
+            echo "⚠ Pin refresh incomplete for v$version; leaving file unchanged"
+            refresh_failed=true
+        fi
+    done
+
+    if [ "$refresh_failed" = true ]; then
+        echo "⚠ Some pin refresh operations failed"
+    fi
+}
+
 # Function to build, tag, and push image
 build_and_push() {
     local version=$1
@@ -259,6 +419,7 @@ SHOULD_PUSH=true
 REFRESH_APPS=false
 ALLOW_UNPINNED_APPS=false
 CHECK_PINS_ONLY=false
+REFRESH_PINS=false
 VERSIONS_TO_BUILD=()
 
 for arg in "$@"; do
@@ -281,6 +442,9 @@ for arg in "$@"; do
             ;;
         --check-pins)
             CHECK_PINS_ONLY=true
+            ;;
+        --refresh-pins)
+            REFRESH_PINS=true
             ;;
         *)
             # Treat as version number
@@ -320,15 +484,17 @@ fi
 echo "Versions to build: ${VERSIONS_TO_BUILD[*]}"
 echo ""
 
+if [ "$REFRESH_PINS" = true ]; then
+    refresh_pins_for_versions
+    echo ""
+fi
+
 # Validate pinning before build (production safety)
 PIN_CHECK_FAILED=false
 for version in "${VERSIONS_TO_BUILD[@]}"; do
-    case $version in
-        14) json_file=~/frappe_docker/images/azure/v14.json ;;
-        15) json_file=~/frappe_docker/images/azure/v15.json ;;
-        16) json_file=~/frappe_docker/images/azure/v16.json ;;
-        *) continue ;;
-    esac
+    if ! json_file=$(json_file_for_version "$version"); then
+        continue
+    fi
 
     if [ ! -f "$json_file" ]; then
         continue
@@ -359,7 +525,7 @@ for version in "${VERSIONS_TO_BUILD[@]}"; do
     case $version in
         14)
             build_and_push 14 \
-                ~/frappe_docker/images/azure/v14.json \
+                "$HOME/frappe_docker/images/azure/v14.json" \
                 images/azure/Containerfile \
                 version-14 \
                 3.10.13 \
@@ -367,7 +533,7 @@ for version in "${VERSIONS_TO_BUILD[@]}"; do
             ;;
         15)
             build_and_push 15 \
-                ~/frappe_docker/images/azure/v15.json \
+                "$HOME/frappe_docker/images/azure/v15.json" \
                 images/azure/Containerfile \
                 version-15 \
                 3.11.6 \
@@ -375,7 +541,7 @@ for version in "${VERSIONS_TO_BUILD[@]}"; do
             ;;
         16)
             build_and_push 16 \
-                ~/frappe_docker/images/azure/v16.json \
+                "$HOME/frappe_docker/images/azure/v16.json" \
                 images/azure/Containerfile \
                 version-16 \
                 3.14.2 \
@@ -409,5 +575,6 @@ echo "  ./build.sh --no-cache         # Build all versions without cache"
 echo "  ./build.sh --no-push          # Build all versions with cache, no push"
 echo "  ./build.sh 16                 # Build only v16 with cache, push enabled"
 echo "  ./build.sh --refresh-apps 16  # Refresh app layer for v16 and keep other cache"
+echo "  ./build.sh --refresh-pins 16  # Refresh v16 pin values from GitHub"
 echo "  ./build.sh --check-pins 16    # Validate v16 app refs are pinned (no build)"
 echo "  ./build.sh --allow-unpinned-apps 16 # Override pin enforcement"
