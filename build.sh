@@ -3,7 +3,7 @@
 set -e
 
 # Release version - update this for new releases
-RELEASE_VERSION="1.29"
+RELEASE_VERSION="1.30"
 BUILD_MANIFEST=".build_manifest"
 APP_CACHE_BUST=0
 
@@ -11,6 +11,27 @@ echo "=========================================="
 echo "Building ERPNext Multi-Version Images"
 echo "Release Version: $RELEASE_VERSION"
 echo "=========================================="
+
+print_usage() {
+    echo "Usage: ./build.sh [OPTIONS] [VERSIONS]"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help                 Show this help and exit"
+    echo "  --no-cache                 Disable Docker build cache"
+    echo "  --no-push                  Build only; skip Docker push"
+    echo "  --refresh-apps             Bust only app install layer cache"
+    echo "  --refresh-pins             Refresh pin values from GitHub"
+    echo "  --check-pins               Validate refs are pinned (no build)"
+    echo "  --allow-unpinned-apps      Override pin enforcement"
+    echo ""
+    echo "Versions: 14 15 16 (default: all)"
+    echo ""
+    echo "Examples:"
+    echo "  ./build.sh"
+    echo "  ./build.sh 16"
+    echo "  ./build.sh --refresh-pins --check-pins 16"
+    echo "  ./build.sh --no-push 15 16"
+}
 
 # Function to check if image was already built
 image_exists() {
@@ -424,6 +445,10 @@ VERSIONS_TO_BUILD=()
 
 for arg in "$@"; do
     case "$arg" in
+        -h|--help)
+            print_usage
+            exit 0
+            ;;
         --cache)
             # Kept for backward compatibility; cache is enabled by default.
             USE_CACHE=true
@@ -445,6 +470,12 @@ for arg in "$@"; do
             ;;
         --refresh-pins)
             REFRESH_PINS=true
+            ;;
+        --*)
+            echo "Unknown option: $arg"
+            echo ""
+            print_usage
+            exit 1
             ;;
         *)
             # Treat as version number
