@@ -115,7 +115,9 @@ USER frappe
 
 ARG FRAPPE_BRANCH=version-15
 ARG FRAPPE_PATH=https://github.com/frappe/frappe
-RUN export APP_INSTALL_ARGS="" && \
+ARG APPS_CACHE_BUST=0
+RUN echo "apps-cache-bust=${APPS_CACHE_BUST}" >/dev/null && \
+  export APP_INSTALL_ARGS="" && \
   if [ -n "${APPS_JSON_BASE64}" ]; then \
     export APP_INSTALL_ARGS="--apps_path=/opt/frappe/apps.json"; \
   fi && \

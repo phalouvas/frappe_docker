@@ -5,6 +5,7 @@ set -e
 # Release version - update this for new releases
 RELEASE_VERSION="1.29"
 BUILD_MANIFEST=".build_manifest"
+APP_CACHE_BUST=0
 
 echo "=========================================="
 echo "Building ERPNext Multi-Version Images"
@@ -34,6 +35,144 @@ record_build() {
     sed -i "/^v$version:/d" "$BUILD_MANIFEST" 2>/dev/null || true
     # Add new entry
     echo "v$version:$timestamp:$RELEASE_VERSION" >> "$BUILD_MANIFEST"
+}
+
+is_pinned_ref() {
+    local ref="$1"
+
+    # Commit SHA (short/full)
+    if [[ "$ref" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+        return 0
+    fi
+
+    # Common immutable tag patterns (v1.2.3, 1.2.3, v16.0.0-rc1)
+    if [[ "$ref" =~ ^v?[0-9]+(\.[0-9]+){1,3}([.-][A-Za-z0-9._-]+)?$ ]]; then
+        return 0
+    fi
+
+    # Explicit tag refs
+    if [[ "$ref" =~ ^refs/tags/ ]]; then
+        return 0
+    fi
+
+    return 1
+}
+
+validate_apps_json_pins() {
+    local json_file="$1"
+    local version="$2"
+    local found_unpinned=0
+
+    while IFS=$'\t' read -r line_no app_url branch_ref pin_ref; do
+        local check_field="branch"
+        local effective_ref="$branch_ref"
+
+        # If pin is present, use it as the immutable build ref and keep branch as indicator.
+        if [ -n "$pin_ref" ]; then
+            check_field="pin"
+            effective_ref="$pin_ref"
+        fi
+
+        if [ -z "$branch_ref" ]; then
+            echo "✗ Missing branch in $json_file for v$version (line $line_no, url=$app_url)"
+            found_unpinned=1
+            continue
+        fi
+
+        if ! is_pinned_ref "$effective_ref"; then
+            echo "✗ Unpinned app ref in $json_file for v$version (line $line_no, url=$app_url): $check_field=$effective_ref"
+            found_unpinned=1
+        fi
+    done < <(awk '
+        BEGIN {
+            in_obj=0
+            start=0
+            url=""
+            branch=""
+            pin=""
+        }
+
+        /^[[:space:]]*\{[[:space:]]*$/ {
+            in_obj=1
+            start=NR
+            url=""
+            branch=""
+            pin=""
+        }
+
+        {
+            if (in_obj == 1) {
+                if (match($0, /"url"[[:space:]]*:[[:space:]]*"([^"]+)"/, m)) {
+                    url=m[1]
+                }
+                if (match($0, /"branch"[[:space:]]*:[[:space:]]*"([^"]+)"/, m)) {
+                    branch=m[1]
+                }
+                if (match($0, /"pin"[[:space:]]*:[[:space:]]*"([^"]+)"/, m)) {
+                    pin=m[1]
+                }
+            }
+        }
+
+        /^[[:space:]]*\}[[:space:]]*,?[[:space:]]*$/ {
+            if (in_obj == 1 && (url != "" || branch != "" || pin != "")) {
+                printf "%s\t%s\t%s\t%s\n", start, url, branch, pin
+            }
+            in_obj=0
+        }
+    ' "$json_file")
+
+    if [ "$found_unpinned" -eq 1 ]; then
+        return 1
+    fi
+
+    return 0
+}
+
+generate_build_apps_json() {
+    local input_json="$1"
+    local output_json="$2"
+
+    # Keep branch as policy metadata in source json, but use pin as build ref when present.
+    awk '
+        BEGIN {
+            in_obj=0
+            obj=""
+        }
+
+        /^[[:space:]]*\{[[:space:]]*$/ {
+            in_obj=1
+            obj=$0 ORS
+            next
+        }
+
+        {
+            if (in_obj == 1) {
+                obj=obj $0 ORS
+
+                if ($0 ~ /^[[:space:]]*\}[[:space:]]*,?[[:space:]]*$/) {
+                    pin=""
+                    if (match(obj, /"pin"[[:space:]]*:[[:space:]]*"([^"]+)"/, m)) {
+                        pin=m[1]
+                    }
+
+                    if (pin != "") {
+                        gsub(/"branch"[[:space:]]*:[[:space:]]*"[^"]+"/, "\"branch\": \"" pin "\"", obj)
+                    }
+
+                    printf "%s", obj
+                    obj=""
+                    in_obj=0
+                }
+
+                next
+            }
+        }
+
+        {
+            print
+        }
+    ' "$input_json" > "$output_json"
 }
 
 # Function to build, tag, and push image
@@ -68,7 +207,16 @@ build_and_push() {
         fi
     fi
     
-    export APPS_JSON_BASE64=$(base64 -w 0 "$json_file")
+    local build_json_file="$json_file"
+    local generated_build_json=""
+
+    if grep -q '"pin"[[:space:]]*:' "$json_file"; then
+        generated_build_json=$(mktemp)
+        generate_build_apps_json "$json_file" "$generated_build_json"
+        build_json_file="$generated_build_json"
+    fi
+
+    export APPS_JSON_BASE64=$(base64 -w 0 "$build_json_file")
     
     # Build image with release tag (e.g., 14-1.0)
     docker build $CACHE_OPTION \
@@ -76,9 +224,14 @@ build_and_push() {
         --build-arg=FRAPPE_BRANCH=$frappe_branch \
         --build-arg=PYTHON_VERSION=$python_version \
         --build-arg=NODE_VERSION=$node_version \
+        --build-arg=APPS_CACHE_BUST=$APP_CACHE_BUST \
         --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
         --tag=phalouvas/erpnext-worker:$version-$RELEASE_VERSION \
         --file=$containerfile .
+
+    if [ -n "$generated_build_json" ]; then
+        rm -f "$generated_build_json"
+    fi
     
     echo "✓ v$version build complete"
     
@@ -100,18 +253,34 @@ build_and_push() {
     record_build $version
 }
 
-# Parse arguments for --cache and --no-push flags and versions
-USE_CACHE=false
+# Parse arguments for build behavior flags and versions
+USE_CACHE=true
 SHOULD_PUSH=true
+REFRESH_APPS=false
+ALLOW_UNPINNED_APPS=false
+CHECK_PINS_ONLY=false
 VERSIONS_TO_BUILD=()
 
 for arg in "$@"; do
     case "$arg" in
         --cache)
+            # Kept for backward compatibility; cache is enabled by default.
             USE_CACHE=true
+            ;;
+        --no-cache)
+            USE_CACHE=false
             ;;
         --no-push)
             SHOULD_PUSH=false
+            ;;
+        --refresh-apps)
+            REFRESH_APPS=true
+            ;;
+        --allow-unpinned-apps)
+            ALLOW_UNPINNED_APPS=true
+            ;;
+        --check-pins)
+            CHECK_PINS_ONLY=true
             ;;
         *)
             # Treat as version number
@@ -128,10 +297,17 @@ fi
 # Set docker build cache option
 if [ "$USE_CACHE" = true ]; then
     CACHE_OPTION=""
-    echo "Docker cache enabled"
+    echo "Docker cache enabled (default)"
 else
     CACHE_OPTION="--no-cache"
     echo "Docker cache disabled (--no-cache)"
+fi
+
+if [ "$REFRESH_APPS" = true ]; then
+    APP_CACHE_BUST=$(date -u +"%Y%m%d%H%M%S")
+    echo "App refresh enabled (--refresh-apps)"
+else
+    echo "App refresh disabled (stable app layer cache)"
 fi
 
 # Set push option
@@ -143,6 +319,40 @@ fi
 
 echo "Versions to build: ${VERSIONS_TO_BUILD[*]}"
 echo ""
+
+# Validate pinning before build (production safety)
+PIN_CHECK_FAILED=false
+for version in "${VERSIONS_TO_BUILD[@]}"; do
+    case $version in
+        14) json_file=~/frappe_docker/images/azure/v14.json ;;
+        15) json_file=~/frappe_docker/images/azure/v15.json ;;
+        16) json_file=~/frappe_docker/images/azure/v16.json ;;
+        *) continue ;;
+    esac
+
+    if [ ! -f "$json_file" ]; then
+        continue
+    fi
+
+    if ! validate_apps_json_pins "$json_file" "$version"; then
+        PIN_CHECK_FAILED=true
+    fi
+done
+
+if [ "$PIN_CHECK_FAILED" = true ] && [ "$ALLOW_UNPINNED_APPS" = false ]; then
+    echo ""
+    echo "Build aborted due to unpinned app refs."
+    echo "Use pinned tags/commits in apps json, or run with --allow-unpinned-apps to override."
+    exit 1
+fi
+
+if [ "$CHECK_PINS_ONLY" = true ]; then
+    if [ "$PIN_CHECK_FAILED" = true ]; then
+        exit 1
+    fi
+    echo "✓ Pin check passed"
+    exit 0
+fi
 
 # Build requested versions
 for version in "${VERSIONS_TO_BUILD[@]}"; do
@@ -194,12 +404,10 @@ echo "All builds and pushes complete!"
 echo "Release Version: $RELEASE_VERSION"
 echo ""
 echo "Usage examples:"
-echo "  ./build.sh                    # Build all versions (14, 15, 16) with --no-cache, push enabled"
-echo "  ./build.sh --cache            # Build all versions with Docker cache enabled, push enabled"
-echo "  ./build.sh --no-push          # Build all versions with --no-cache, no push"
-echo "  ./build.sh 16                 # Build only v16 with --no-cache, push enabled"
-echo "  ./build.sh --cache 16         # Build only v16 with cache, push enabled"
-echo "  ./build.sh --no-push 16       # Build only v16 with --no-cache, no push"
-echo "  ./build.sh --cache --no-push 16 # Build only v16 with cache, no push"
-echo "  ./build.sh 15 16              # Build v15 and v16 with --no-cache, push enabled"
-echo "  ./build.sh --cache --no-push 15 16 # Build v15 and v16 with cache, no push"
+echo "  ./build.sh                    # Build all versions with cache (default), push enabled"
+echo "  ./build.sh --no-cache         # Build all versions without cache"
+echo "  ./build.sh --no-push          # Build all versions with cache, no push"
+echo "  ./build.sh 16                 # Build only v16 with cache, push enabled"
+echo "  ./build.sh --refresh-apps 16  # Refresh app layer for v16 and keep other cache"
+echo "  ./build.sh --check-pins 16    # Validate v16 app refs are pinned (no build)"
+echo "  ./build.sh --allow-unpinned-apps 16 # Override pin enforcement"
