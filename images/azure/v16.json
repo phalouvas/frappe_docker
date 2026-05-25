@@ -27,7 +27,7 @@
   {
     "url": "https://github.com/phalouvas/erpnext_digital_subscriptions",
     "branch": "version-16",
-    "pin": "16.1.2"
+    "pin": "16.2.0"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus_banks.git",
