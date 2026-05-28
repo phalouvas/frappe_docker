@@ -2,12 +2,12 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.19.1"
+    "pin": "v16.20.0"
   },
   {
     "url": "https://github.com/frappe/payments",
     "branch": "develop",
-    "pin": "76e0bf1329b79a0981dc377a38d63417eb3eb407"
+    "pin": "07ea0798f95e8d754bc2f7019708a68a71ebead3"
   },
   {
     "url": "https://github.com/frappe/hrms",
@@ -47,13 +47,13 @@
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.6.7"
+    "pin": "16.6.8"
   },
   {
     "name": "swissmedhealth",
     "url": "https://github.com/phalouvas/swissmedhealth.git",
     "branch": "version-16",
-    "pin": "820e8d9fc294ed0650b00f4b96da074fe2ea9811"
+    "pin": "16.0.0"
   },
   {
     "url": "https://github.com/kainotomo/invoice2erpnext.git",
