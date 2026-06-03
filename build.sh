@@ -403,6 +403,8 @@ build_and_push() {
         build_json_file="$generated_build_json"
     fi
 
+    local cache_bust_value="$APP_CACHE_BUST"
+    cache_bust_value="${cache_bust_value}:$(sha256sum "$build_json_file" | awk '{print $1}')"
     export APPS_JSON_BASE64=$(base64 -w 0 "$build_json_file")
     
     # Build image with release tag (e.g., 14-1.0)
@@ -411,7 +413,7 @@ build_and_push() {
         --build-arg=FRAPPE_BRANCH=$frappe_branch \
         --build-arg=PYTHON_VERSION=$python_version \
         --build-arg=NODE_VERSION=$node_version \
-        --build-arg=APPS_CACHE_BUST=$APP_CACHE_BUST \
+        --build-arg=APPS_CACHE_BUST=$cache_bust_value \
         --build-arg=APPS_JSON_BASE64=$APPS_JSON_BASE64 \
         --tag=phalouvas/erpnext-worker:$version-$RELEASE_VERSION \
         --file=$containerfile .
