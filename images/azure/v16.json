@@ -2,7 +2,7 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.21.0"
+    "pin": "v16.21.1"
   },
   {
     "url": "https://github.com/frappe/payments",
