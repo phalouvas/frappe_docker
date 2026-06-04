@@ -42,7 +42,7 @@
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.6.8"
+    "pin": "16.6.9"
   },
   {
     "name": "swissmedhealth",
