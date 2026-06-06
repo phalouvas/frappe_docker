@@ -37,12 +37,12 @@
   {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
     "branch": "version-16",
-    "pin": "7f2e03d648c9184f5f14985970c3191f3702d0b6"
+    "pin": "16.0.1"
   },
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.6.10"
+    "pin": "16.6.11"
   },
   {
     "name": "swissmedhealth",
@@ -79,11 +79,6 @@
     "url": "https://github.com/kainotomo/pakore.git",
     "branch": "version-16",
     "pin": "1.4.0"
-  },
-  {
-    "url": "https://github.com/phalouvas/cognitive_folio.git",
-    "branch": "version-16",
-    "pin": "16.4.6"
   },
   {
     "url": "https://github.com/phalouvas/cese.git",
