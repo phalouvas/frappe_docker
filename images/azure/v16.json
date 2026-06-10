@@ -2,7 +2,7 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.21.1"
+    "pin": "v16.22.0"
   },
   {
     "url": "https://github.com/frappe/payments",
@@ -42,7 +42,7 @@
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.6.11"
+    "pin": "16.6.12"
   },
   {
     "name": "swissmedhealth",
