@@ -2,17 +2,17 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.22.0"
+    "pin": "v16.23.0"
   },
   {
     "url": "https://github.com/frappe/payments",
     "branch": "develop",
-    "pin": "07ea0798f95e8d754bc2f7019708a68a71ebead3"
+    "pin": "aa3516827fe51d5557975b74e574e3bca9a3070d"
   },
   {
     "url": "https://github.com/frappe/hrms",
     "branch": "version-16",
-    "pin": "v16.8.0"
+    "pin": "v16.9.0"
   },
   {
     "url": "https://github.com/frappe/health",
@@ -42,7 +42,7 @@
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.7.1"
+    "pin": "16.7.2"
   },
   {
     "name": "swissmedhealth",
