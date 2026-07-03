@@ -2,7 +2,7 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.26.1"
+    "pin": "v16.26.2"
   },
   {
     "url": "https://github.com/frappe/payments",
@@ -63,7 +63,7 @@
   {
     "url": "https://github.com/phalouvas/optimusland.git",
     "branch": "version-16",
-    "pin": "16.2.0"
+    "pin": "16.2.1"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_cyprus",
