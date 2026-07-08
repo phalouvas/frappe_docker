@@ -22,7 +22,7 @@
   {
     "url": "https://github.com/phalouvas/erpnext_webshop",
     "branch": "version-16",
-    "pin": "16.0.8"
+    "pin": "16.0.9"
   },
   {
     "url": "https://github.com/phalouvas/erpnext-paypal-standard-checkout",
