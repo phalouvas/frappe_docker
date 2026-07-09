@@ -66,9 +66,9 @@
     "pin": "16.4.0"
   },
   {
-    "url": "https://github.com/phalouvas/erpnext_cyprus",
+    "url": "https://github.com/kainotomo/erpnext_cyprus",
     "branch": "version-16",
-    "pin": "16.1.0"
+    "pin": "16.1.1"
   },
   {
     "url": "https://github.com/kainotomo/nimbus_theme.git",
