@@ -63,7 +63,7 @@
   {
     "url": "https://github.com/phalouvas/optimusland.git",
     "branch": "version-16",
-    "pin": "16.4.0"
+    "pin": "16.5.0"
   },
   {
     "url": "https://github.com/kainotomo/erpnext_cyprus",
