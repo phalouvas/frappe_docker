@@ -42,7 +42,7 @@
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.7.2"
+    "pin": "16.7.3"
   },
   {
     "name": "swissmedhealth",
@@ -84,5 +84,10 @@
     "url": "https://github.com/phalouvas/cese.git",
     "branch": "version-16",
     "pin": "1.0.1"
+  },
+  {
+    "url": "https://github.com/kainotomo/erpnext_bank_import.git",
+    "branch": "version-16",
+    "pin": "c967412cf2132cff98f73e49e569c79304144769"
   }
 ]
