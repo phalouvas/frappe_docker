@@ -19,6 +19,7 @@ print_usage() {
     echo "  -h, --help                 Show this help and exit"
     echo "  --no-cache                 Disable Docker build cache"
     echo "  --no-push                  Build only; skip Docker push"
+    echo "  --push-only                Push existing images without rebuilding"
     echo "  --refresh-apps             Bust only app install layer cache"
     echo "  --refresh-pins             Refresh pin values from GitHub"
     echo "  --check-pins               Validate refs are pinned (no build)"
@@ -362,6 +363,30 @@ refresh_pins_for_versions() {
     fi
 }
 
+# Function to push existing images for a version without rebuilding
+push_only() {
+    local version=$1
+
+    echo ""
+    echo "Pushing existing images for v$version..."
+
+    if docker image inspect "phalouvas/erpnext-worker:$version-$RELEASE_VERSION" &>/dev/null; then
+        echo "Pushing phalouvas/erpnext-worker:$version-$RELEASE_VERSION"
+        docker push "phalouvas/erpnext-worker:$version-$RELEASE_VERSION"
+    else
+        echo "⚠ Image phalouvas/erpnext-worker:$version-$RELEASE_VERSION not found locally; skipping"
+    fi
+
+    if docker image inspect "phalouvas/erpnext-worker:$version-latest" &>/dev/null; then
+        echo "Pushing phalouvas/erpnext-worker:$version-latest"
+        docker push "phalouvas/erpnext-worker:$version-latest"
+    else
+        echo "⚠ Image phalouvas/erpnext-worker:$version-latest not found locally; skipping"
+    fi
+
+    echo "✓ v$version push complete"
+}
+
 # Function to build, tag, and push image
 build_and_push() {
     local version=$1
@@ -449,6 +474,7 @@ REFRESH_APPS=false
 ALLOW_UNPINNED_APPS=false
 CHECK_PINS_ONLY=false
 REFRESH_PINS=false
+PUSH_ONLY=false
 VERSIONS_TO_BUILD=()
 
 for arg in "$@"; do
@@ -466,6 +492,9 @@ for arg in "$@"; do
             ;;
         --no-push)
             SHOULD_PUSH=false
+            ;;
+        --push-only)
+            PUSH_ONLY=true
             ;;
         --refresh-apps)
             REFRESH_APPS=true
@@ -559,6 +588,22 @@ if [ "$CHECK_PINS_ONLY" = true ]; then
     exit 0
 fi
 
+# Push-only mode: skip builds entirely
+if [ "$PUSH_ONLY" = true ]; then
+    echo "Push-only mode (--push-only): pushing existing images, no builds"
+    echo ""
+    for version in "${VERSIONS_TO_BUILD[@]}"; do
+        push_only "$version"
+    done
+
+    echo ""
+    echo "=========================================="
+    echo "Push Summary:"
+    echo "=========================================="
+    echo "All pushes complete!"
+    exit 0
+fi
+
 # Build requested versions
 for version in "${VERSIONS_TO_BUILD[@]}"; do
     case $version in
@@ -616,4 +661,5 @@ echo "  ./build.sh 16                 # Build only v16 with cache, push enabled"
 echo "  ./build.sh --refresh-apps 16  # Refresh app layer for v16 and keep other cache"
 echo "  ./build.sh --refresh-pins 16  # Refresh v16 pin values from GitHub"
 echo "  ./build.sh --check-pins 16    # Validate v16 app refs are pinned (no build)"
-echo "  ./build.sh --allow-unpinned-apps 16 # Override pin enforcement"
+    echo "  ./build.sh --push-only        # Push existing images without rebuilding"
+    echo "  ./build.sh --push-only 16     # Push existing v16 images only"
