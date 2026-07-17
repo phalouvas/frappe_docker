@@ -2,7 +2,7 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.27.0"
+    "pin": "v16.28.0"
   },
   {
     "url": "https://github.com/frappe/payments",
@@ -12,7 +12,7 @@
   {
     "url": "https://github.com/frappe/hrms",
     "branch": "version-16",
-    "pin": "v16.12.2"
+    "pin": "v16.13.0"
   },
   {
     "url": "https://github.com/frappe/health",
@@ -88,6 +88,6 @@
   {
     "url": "https://github.com/kainotomo/erpnext_bank_import.git",
     "branch": "version-16",
-    "pin": "c967412cf2132cff98f73e49e569c79304144769"
+    "pin": "1.0.0"
   }
 ]
