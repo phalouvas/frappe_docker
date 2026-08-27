@@ -2,22 +2,22 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.29.0"
+    "pin": "v16.33.0"
   },
   {
     "url": "https://github.com/frappe/payments",
     "branch": "develop",
-    "pin": "aa3516827fe51d5557975b74e574e3bca9a3070d"
+    "pin": "86fefa9faf8ad825fe6f08c4753acfe44817900b"
   },
   {
     "url": "https://github.com/frappe/hrms",
     "branch": "version-16",
-    "pin": "v16.14.0"
+    "pin": "v16.16.0"
   },
   {
     "url": "https://github.com/frappe/health",
     "branch": "version-16",
-    "pin": "v16.4.1"
+    "pin": "v16.5.2"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_webshop",
