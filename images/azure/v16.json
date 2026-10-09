@@ -2,7 +2,7 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.37.0"
+    "pin": "v16.50.0"
   },
   {
     "url": "https://github.com/frappe/payments",
@@ -12,7 +12,7 @@
   {
     "url": "https://github.com/frappe/hrms",
     "branch": "version-16",
-    "pin": "v16.20.1"
+    "pin": "v16.50.0"
   },
   {
     "url": "https://github.com/frappe/health",
@@ -42,7 +42,7 @@
   {
     "url": "https://github.com/phalouvas/eumaria",
     "branch": "version-16",
-    "pin": "16.7.4"
+    "pin": "16.7.5"
   },
   {
     "name": "swissmedhealth",
@@ -63,7 +63,7 @@
   {
     "url": "https://github.com/phalouvas/optimusland.git",
     "branch": "version-16",
-    "pin": "16.6.0"
+    "pin": "16.6.1"
   },
   {
     "url": "https://github.com/kainotomo/erpnext_cyprus",
@@ -78,7 +78,7 @@
   {
     "url": "https://github.com/kainotomo/pakore.git",
     "branch": "version-16",
-    "pin": "1.4.1"
+    "pin": "1.4.2"
   },
   {
     "url": "https://github.com/phalouvas/cese.git",
