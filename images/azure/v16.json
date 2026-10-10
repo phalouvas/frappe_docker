@@ -37,7 +37,7 @@
   {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
     "branch": "version-16",
-    "pin": "16.0.1"
+    "pin": "16.0.2"
   },
   {
     "url": "https://github.com/phalouvas/eumaria",
