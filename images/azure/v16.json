@@ -2,7 +2,7 @@
   {
     "url": "https://github.com/frappe/erpnext.git",
     "branch": "version-16",
-    "pin": "v16.51.1"
+    "pin": "v16.52.0"
   },
   {
     "url": "https://github.com/frappe/payments",
@@ -32,7 +32,7 @@
   {
     "url": "https://github.com/phalouvas/erpnext_digital_subscriptions",
     "branch": "version-16",
-    "pin": "16.2.0"
+    "pin": "16.2.1"
   },
   {
     "url": "https://github.com/phalouvas/erpnext_sports_management.git",
@@ -58,7 +58,7 @@
   {
     "url": "https://github.com/phalouvas/doc2sys.git",
     "branch": "version-16",
-    "pin": "16.0.2"
+    "pin": "16.0.3"
   },
   {
     "url": "https://github.com/phalouvas/optimusland.git",
@@ -68,7 +68,7 @@
   {
     "url": "https://github.com/kainotomo/erpnext_cyprus",
     "branch": "version-16",
-    "pin": "16.1.2"
+    "pin": "16.1.3"
   },
   {
     "url": "https://github.com/kainotomo/nimbus_theme.git",
