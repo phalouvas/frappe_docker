@@ -3,7 +3,7 @@
 set -e
 
 # Release version - update this for new releases
-RELEASE_VERSION="1.69"
+RELEASE_VERSION="1.70"
 BUILD_MANIFEST=".build_manifest"
 APP_CACHE_BUST=0
 
