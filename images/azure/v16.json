@@ -7,7 +7,7 @@
   {
     "url": "https://github.com/frappe/payments",
     "branch": "version-16",
-    "pin": "16.0.1"
+    "pin": "v16.0.1"
   },
   {
     "url": "https://github.com/frappe/hrms",
